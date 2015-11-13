@@ -1,0 +1,17 @@
+{
+    "name": "DoNothingBot",
+    "author": "icesphere",
+    "buyRules": [
+        {
+            "card": "*",
+            "score": 0
+        }
+
+    ],
+    "discardRules": [],
+    "scrapRules": [],
+    "scrapForBenefitRules": [],
+    "useBaseRules": [],
+    "playRules": [],
+    "makeChoiceRules": []
+}

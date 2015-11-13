@@ -1,0 +1,169 @@
+--ExpensiveBot--
+ExpensiveBot v HareBot - 27.93% - 72.07% (Avg # turns: 27.88)
+ExpensiveBot v AttackBot - 40.39% - 59.61% (Avg # turns: 27.77)
+ExpensiveBot v DefenseBot - 42.48% - 57.52% (Avg # turns: 30.23)
+ExpensiveBot v VelocityBot - 23.84% - 76.16% (Avg # turns: 27.67)
+ExpensiveBot v TortoiseBot - 29.96% - 70.04% (Avg # turns: 28.45)
+ExpensiveBot v ExpensiveBot - 1st player wins: 55.20% (Avg # turns: 29.57)
+
+--VelocityBot--
+VelocityBot v HareBot - 53.97% - 46.03% (Avg # turns: 27.26)
+VelocityBot v AttackBot - 59.85% - 40.15% (Avg # turns: 26.45)
+VelocityBot v DefenseBot - 70.78% - 29.22% (Avg # turns: 28.91)
+VelocityBot v TortoiseBot - 57.67% - 42.33% (Avg # turns: 28.14)
+VelocityBot v ExpensiveBot - 76.36% - 23.64% (Avg # turns: 27.60)
+VelocityBot v VelocityBot - 1st player wins: 57.92% (Avg # turns: 27.70)
+
+--AttackBot--
+AttackBot v HareBot - 39.37% - 60.63% (Avg # turns: 27.95)
+AttackBot v DefenseBot - 52.04% - 47.96% (Avg # turns: 29.68)
+AttackBot v VelocityBot - 39.05% - 60.95% (Avg # turns: 26.52)
+AttackBot v TortoiseBot - 44.50% - 55.50% (Avg # turns: 27.23)
+AttackBot v ExpensiveBot - 60.03% - 39.97% (Avg # turns: 27.88)
+AttackBot v AttackBot - 1st player wins: 54.66% (Avg # turns: 29.48)
+
+--DefenseBot--
+DefenseBot v HareBot - 37.84% - 62.16% (Avg # turns: 29.44)
+DefenseBot v AttackBot - 48.10% - 51.90% (Avg # turns: 29.93)
+DefenseBot v VelocityBot - 30.54% - 69.46% (Avg # turns: 28.96)
+DefenseBot v TortoiseBot - 35.81% - 64.19% (Avg # turns: 31.65)
+DefenseBot v ExpensiveBot - 58.57% - 41.43% (Avg # turns: 30.36)
+DefenseBot v DefenseBot - 1st player wins: 56.94% (Avg # turns: 36.17)
+
+--TortoiseBot--
+TortoiseBot v HareBot - 48.46% - 51.54% (Avg # turns: 27.77)
+TortoiseBot v AttackBot - 56.20% - 43.80% (Avg # turns: 27.28)
+TortoiseBot v DefenseBot - 63.97% - 36.03% (Avg # turns: 31.25)
+TortoiseBot v VelocityBot - 41.54% - 58.46% (Avg # turns: 28.14)
+TortoiseBot v ExpensiveBot - 69.29% - 30.71% (Avg # turns: 28.47)
+TortoiseBot v TortoiseBot - 1st player wins: 58.46% (Avg # turns: 30.37)
+
+--HareBot--
+HareBot v AttackBot - 60.91% - 39.09% (Avg # turns: 27.91)
+HareBot v DefenseBot - 62.83% - 37.17% (Avg # turns: 29.11)
+HareBot v VelocityBot - 46.15% - 53.85% (Avg # turns: 27.07)
+HareBot v TortoiseBot - 52.69% - 47.31% (Avg # turns: 28.06)
+HareBot v ExpensiveBot - 71.70% - 28.30% (Avg # turns: 27.86)
+HareBot v HareBot - 1st player wins: 56.81% (Avg # turns: 27.84)
+
+
+HareBot (always 1st) v HareBot (always 2nd)
+1st player starts with 3 cards: 56.81% - 43.19%
+1st player starts with 2 cards: 48.3% - 51.7%
+
+1st player wins across all different strategies: (60,000 games):
+1st player starts with 3 cards: 1st player wins 55.89%
+1st player starts with 2 cards: 1st player wins 49.24%
+
+
+60,000 games with HareBot against itself and 5 other bots:
+1st player wins when 1st player has 8 Scouts and 2 Vipers: 56.97%
+1st player wins when 1st player has 7 Scouts and 3 Vipers: 55.02%
+1st player wins when 1st player has 6 Scouts and 4 Vipers: 51.7%
+1st player wins when 1st player has 5 Scouts and 5 Vipers: 47.61%
+
+scrap for benefit right away:
+UnrulyBot v HareBot - 11.41% - 88.59% (Avg # turns: 25.35)
+UnrulyBot v AttackBot - 19.28% - 80.72% (Avg # turns: 25.61)
+UnrulyBot v DefenseBot - 21.67% - 78.33% (Avg # turns: 28.88)
+UnrulyBot v VelocityBot - 11.68% - 88.32% (Avg # turns: 25.07)
+UnrulyBot v TortoiseBot - 14.40% - 85.60% (Avg # turns: 26.32)
+UnrulyBot v ExpensiveBot - 29.47% - 70.53% (Avg # turns: 28.05)
+UnrulyBot v UnrulyBot - 1st player wins: 56.94% (Avg # turns: 26.88)
+
+never scrap for benefit:
+UnrulyBot v HareBot - 9.12% - 90.88% (Avg # turns: 28.01)
+UnrulyBot v AttackBot - 18.63% - 81.37% (Avg # turns: 28.77)
+UnrulyBot v DefenseBot - 17.41% - 82.59% (Avg # turns: 31.30)
+UnrulyBot v VelocityBot - 8.17% - 91.83% (Avg # turns: 27.45)
+UnrulyBot v TortoiseBot - 11.48% - 88.52% (Avg # turns: 28.53)
+UnrulyBot v ExpensiveBot - 24.24% - 75.76% (Avg # turns: 30.98)
+UnrulyBot v UnrulyBot - 1st player wins: 55.30% (Avg # turns: 36.24)
+
+sometimes scrap for benefit:
+HareBot v AttackBot - 60.64% - 39.36% (Avg # turns: 27.60)
+HareBot v DefenseBot - 62.92% - 37.08% (Avg # turns: 29.20)
+HareBot v VelocityBot - 45.77% - 54.23% (Avg # turns: 27.10)
+HareBot v TortoiseBot - 51.46% - 48.54% (Avg # turns: 27.96)
+HareBot v ExpensiveBot - 71.95% - 28.05% (Avg # turns: 27.78)
+HareBot v UnrulyBot - 88.42% - 11.58% (Avg # turns: 25.23)
+HareBot v HareBot - 1st player wins: 58.05% (Avg # turns: 27.89)
+
+scrap for benefit right away:
+HareBot v AttackBot - 48.31% - 51.69% (Avg # turns: 26.29)
+HareBot v DefenseBot - 55.94% - 44.06% (Avg # turns: 28.27)
+HareBot v VelocityBot - 37.55% - 62.45% (Avg # turns: 25.53)
+HareBot v TortoiseBot - 45.53% - 54.47% (Avg # turns: 26.87)
+HareBot v ExpensiveBot - 64.25% - 35.75% (Avg # turns: 26.62)
+HareBot v UnrulyBot - 80.70% - 19.30% (Avg # turns: 24.60)
+HareBot v HareBot - 1st player wins: 56.21% (Avg # turns: 25.22)
+
+
+--BlueGreenBot--
+BlueGreenBot v BlueYellowBot - 58.43% - 41.57% (Avg # turns: 31.25)
+BlueGreenBot v GreenYellowBot - 61.25% - 38.75% (Avg # turns: 29.13)
+BlueGreenBot v RedBlueBot - 46.24% - 53.76% (Avg # turns: 28.57)
+BlueGreenBot v RedGreenBot - 49.93% - 50.07% (Avg # turns: 27.29)
+BlueGreenBot v YellowRedBot - 49.55% - 50.45% (Avg # turns: 26.88)
+BlueGreenBot v BlueGreenBot - 1st player wins: 55.48% (Avg # turns: 30.55)
+
+--RedBlueBot--
+RedBlueBot v BlueGreenBot - 53.04% - 46.96% (Avg # turns: 28.43)
+RedBlueBot v BlueYellowBot - 63.12% - 36.88% (Avg # turns: 32.44)
+RedBlueBot v GreenYellowBot - 57.57% - 42.43% (Avg # turns: 27.57)
+RedBlueBot v RedGreenBot - 50.58% - 49.42% (Avg # turns: 28.80)
+RedBlueBot v YellowRedBot - 50.79% - 49.21% (Avg # turns: 31.24)
+RedBlueBot v RedBlueBot - 1st player wins: 58.47% (Avg # turns: 34.39)
+
+--RedGreenBot--
+RedGreenBot v BlueGreenBot - 50.54% - 49.46% (Avg # turns: 27.31)
+RedGreenBot v BlueYellowBot - 58.07% - 41.93% (Avg # turns: 27.60)
+RedGreenBot v GreenYellowBot - 56.41% - 43.59% (Avg # turns: 27.45)
+RedGreenBot v RedBlueBot - 48.30% - 51.70% (Avg # turns: 29.08)
+RedGreenBot v YellowRedBot - 50.73% - 49.27% (Avg # turns: 27.30)
+RedGreenBot v RedGreenBot - 1st player wins: 56.60% (Avg # turns: 29.33)
+
+--GreenYellowBot--
+GreenYellowBot v BlueGreenBot - 38.05% - 61.95% (Avg # turns: 29.32)
+GreenYellowBot v BlueYellowBot - 47.32% - 52.68% (Avg # turns: 30.54)
+GreenYellowBot v RedBlueBot - 42.12% - 57.88% (Avg # turns: 27.73)
+GreenYellowBot v RedGreenBot - 43.85% - 56.15% (Avg # turns: 27.58)
+GreenYellowBot v YellowRedBot - 47.10% - 52.90% (Avg # turns: 27.33)
+GreenYellowBot v GreenYellowBot - 1st player wins: 54.56% (Avg # turns: 30.41)
+
+--BlueYellowBot--
+BlueYellowBot v BlueGreenBot - 42.68% - 57.32% (Avg # turns: 31.26)
+BlueYellowBot v GreenYellowBot - 52.71% - 47.29% (Avg # turns: 30.71)
+BlueYellowBot v RedBlueBot - 36.44% - 63.56% (Avg # turns: 32.25)
+BlueYellowBot v RedGreenBot - 42.33% - 57.67% (Avg # turns: 27.84)
+BlueYellowBot v YellowRedBot - 42.33% - 57.67% (Avg # turns: 30.60)
+BlueYellowBot v BlueYellowBot - 1st player wins: 55.65% (Avg # turns: 36.29)
+
+--YellowRedBot--
+YellowRedBot v BlueGreenBot - 49.34% - 50.66% (Avg # turns: 26.89)
+YellowRedBot v BlueYellowBot - 57.78% - 42.22% (Avg # turns: 30.68)
+YellowRedBot v GreenYellowBot - 52.45% - 47.55% (Avg # turns: 27.53)
+YellowRedBot v RedBlueBot - 49.22% - 50.78% (Avg # turns: 30.96)
+YellowRedBot v RedGreenBot - 49.39% - 50.61% (Avg # turns: 27.34)
+YellowRedBot v YellowRedBot - 1st player wins: 57.31% (Avg # turns: 31.61)
+
+--DoNothingBot--
+DoNothingBot v HareBot - 0% - 100.00% (Avg # turns: 22.01)
+DoNothingBot v AttackBot - .07% - 99.93% (Avg # turns: 22.94)
+DoNothingBot v DefenseBot - .01% - 99.99% (Avg # turns: 25.08)
+DoNothingBot v VelocityBot - 0% - 100.00% (Avg # turns: 21.83)
+DoNothingBot v TortoiseBot - 0% - 100.00% (Avg # turns: 22.78)
+DoNothingBot v ExpensiveBot - 0% - 100.00% (Avg # turns: 22.73)
+DoNothingBot v ExplorerBot - 0% - 100.00% (Avg # turns: 25.19)
+DoNothingBot v BlueGreenBot - .01% - 99.99% (Avg # turns: 22.68)
+DoNothingBot v DoNothingBot - 1st player wins: 51.31% (Avg # turns: 98.83)
+
+--ExplorerBot--
+ExplorerBot v HareBot - .14% - 99.86% (Avg # turns: 22.16)
+ExplorerBot v AttackBot - .94% - 99.06% (Avg # turns: 22.61)
+ExplorerBot v DefenseBot - .52% - 99.48% (Avg # turns: 25.57)
+ExplorerBot v VelocityBot - .09% - 99.91% (Avg # turns: 22.33)
+ExplorerBot v TortoiseBot - .12% - 99.88% (Avg # turns: 23.32)
+ExplorerBot v ExpensiveBot - .02% - 99.98% (Avg # turns: 23.28)
+ExplorerBot v BlueGreenBot - .05% - 99.95% (Avg # turns: 23.04)
+ExplorerBot v ExplorerBot - 1st player wins: 54.13% (Avg # turns: 24.52)

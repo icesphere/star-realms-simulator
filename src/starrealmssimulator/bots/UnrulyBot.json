@@ -1,0 +1,341 @@
+{
+  "name": "UnrulyBot",
+  "author": "gmc14",
+  "buyRules": [
+    {
+      "card": "Blob World",
+      "score": 100
+    },
+    {
+      "card": "The Hive",
+      "score": 100
+    } ,
+    {
+      "card": "Blob Wheel",
+      "score": 100
+    },
+    {
+      "card": "Mothership",
+      "score": 100
+    },
+    {
+      "card": "Blob Carrier",
+      "score": 100
+    },
+    {
+      "card": "Battle Blob",
+      "score": 100
+    },
+    {
+      "card": "Blob Destroyer",
+      "score": 100
+    },
+    {
+      "card": "Ram",
+      "score": 100
+    },
+    {
+      "card": "Battle Pod",
+      "score": 100
+    },
+    {
+      "card": "Trade Pod",
+      "score": 100
+    },
+    {
+      "card": "Blob Fighter",
+      "score": 100
+    },
+    {
+      "card": "Port Of Call",
+      "score": 100
+    },
+    {
+      "card": "Central Office",
+      "score": 100
+    },
+    {
+      "card": "Defense Center",
+      "score": 100
+    },
+    {
+      "card": "Barter World",
+      "score": 100
+    },
+    {
+      "card": "Trading Post",
+      "score": 100
+    } ,
+    {
+      "card": "Flagship",
+      "score": 100
+    },
+    {
+      "card": "Trade Escort",
+      "score": 100
+    },
+    {
+      "card": "Command Ship",
+      "score": 100
+    },
+    {
+      "card": "Freighter",
+      "score": 100
+    },
+    {
+      "card": "Embassy Yacht",
+      "score": 100
+    },
+    {
+      "card": "Cutter",
+      "score": 100
+    },
+    {
+      "card": "Federation Shuttle",
+      "score": 100
+    },
+    {
+      "card": "Fleet HQ",
+      "score": 100
+    } ,
+    {
+      "card": "Royal Redoubt",
+      "score": 100
+    },
+    {
+      "card": "War World",
+      "score": 100
+    },
+    {
+      "card": "Recycling Station",
+      "score": 100
+    },
+    {
+      "card": "Space Station",
+      "score": 100
+    },
+    {
+      "card": "Dreadnaught",
+      "score": 100
+    },
+    {
+      "card": "Battlecruiser",
+      "score": 100
+    },
+    {
+      "card": "Corvette",
+      "score": 100
+    },
+    {
+      "card": "Survey Ship",
+      "score": 100
+    },
+    {
+      "card": "Imperial Frigate",
+      "score": 100
+    },
+    {
+      "card": "Imperial Fighter",
+      "score": 100
+    },
+    {
+      "card": "Junkyard",
+      "score": 100
+    },
+    {
+      "card": "Machine Base",
+      "score": 100
+    },
+    {
+      "card": "Brain World",
+      "score": 100
+    },
+    {
+      "card": "Mech World",
+      "score": 100
+    },
+    {
+      "card": "Battle Station",
+      "score": 100
+    },
+    {
+      "card": "Missile Mech",
+      "score": 100
+    },
+    {
+      "card": "Battle Mech",
+      "score": 100
+    },
+    {
+      "card": "Stealth Needle",
+      "score": 100
+    },
+    {
+      "card": "Patrol Mech",
+      "score": 100
+    },
+    {
+      "card": "Supply Bot",
+      "score": 100
+    },
+    {
+      "card": "Missile Bot",
+      "score": 100
+    },
+    {
+      "card": "Trade Bot",
+      "score": 100
+    },
+    {
+      "card": "Explorer",
+      "score": 100
+    }
+  ],
+  "discardRules": [
+    {
+      "card": "Viper",
+      "score": 100
+    },
+    {
+      "card": "Scout",
+      "score": 100
+    },
+    {
+      "card": "Explorer",
+      "score": 100
+    }
+  ],
+  "scrapRules": [
+    {
+      "card": "Viper",
+      "score": 100
+    },
+    {
+      "card": "Scout",
+      "score": 100
+    },
+    {
+      "card": "Explorer",
+      "score": 100
+    }
+  ],
+  "scrapForBenefitRules": [
+    {
+      "card": "Barter World",
+      "score": 100
+    },
+    {
+      "card": "Battle Blob",
+      "score": 100
+    },
+    {
+      "card": "Battle Station",
+      "score": 100
+    },
+    {
+      "card": "Trading Post",
+      "score": 100
+    },
+    {
+      "card": "Dreadnaught",
+      "score": 100
+    },
+    {
+      "card": "Battlecruiser",
+      "score": 100
+    },
+    {
+      "card": "Imperial Frigate",
+      "score": 100
+    },
+    {
+      "card": "Port Of Call",
+      "score": 100
+    },
+    {
+      "card": "Survey Ship",
+      "score": 100
+    },
+    {
+      "card": "Blob Wheel",
+      "score": 100
+    },
+    {
+      "card": "Ram",
+      "score": 100
+    },
+    {
+      "card": "Space Station",
+      "score": 100
+    },
+    {
+      "card": "Explorer",
+      "score": 100
+    }
+  ],
+  "useBaseRules": [
+    {
+      "card": "Recycling Station",
+      "score": 100
+    },
+    {
+      "card": "Machine Base",
+      "score": 100
+    },
+    {
+      "card": "Junkyard",
+      "score": 100
+    },
+    {
+      "card": "Brain World",
+      "score": 100
+    },
+    {
+      "card": "Blob World",
+      "score": 100
+    }
+  ],
+  "playRules": [
+    {
+      "card": "Recycling Station",
+      "score": 100
+    },
+    {
+      "card": "Supply Bot",
+      "score": 100
+    },
+    {
+      "card": "Trade Bot",
+      "score": 100
+    },
+    {
+      "card": "Missile Bot",
+      "score": 100
+    },
+    {
+      "card": "Patrol Mech",
+      "score": 100
+    },
+    {
+      "card": "Brain World",
+      "score": 100
+    },
+    {
+      "card": "Stealth Needle",
+      "score": 100
+    },
+    {
+      "card": "Explorer",
+      "score": 100
+    },
+    {
+      "card": "Scout",
+      "score": 100
+    },
+    {
+      "card": "Viper",
+      "score": 100
+    }
+  ],
+  "makeChoiceRules": []
+}

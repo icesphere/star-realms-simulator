@@ -1,0 +1,26 @@
+{
+    "name": "ExplorerBot",
+    "author": "icesphere",
+    "buyRules": [
+        {
+            "card": "Explorer",
+            "score": 100
+        },
+        {
+            "card": "*",
+            "score": 0
+        }
+
+    ],
+    "discardRules": [],
+    "scrapRules": [],
+    "scrapForBenefitRules": [
+        {
+            "card": "Explorer",
+            "score": 100
+        }
+    ],
+    "useBaseRules": [],
+    "playRules": [],
+    "makeChoiceRules": []
+}

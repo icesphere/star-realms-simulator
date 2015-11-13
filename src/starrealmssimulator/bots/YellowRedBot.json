@@ -1,0 +1,880 @@
+{
+    "name": "YellowRedBot",
+    "author": "icesphere",
+    "buyRules": [
+        {
+            "card": "Blob World",
+            "rules": [
+                {
+                    "bases": "> 3",
+                    "score": 30
+                },
+                {
+                    "score": 15
+                }
+            ]
+        },
+        {
+            "card": "The Hive",
+            "rules": [
+                {
+                    "bases": "> 3",
+                    "score": 10
+                }
+            ]
+        } ,
+        {
+            "card": "Blob Wheel",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 20
+                },
+                {
+                    "deck": 2,
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Mothership",
+            "score": 30
+        },
+        {
+            "card": "Blob Carrier",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 5
+                },
+                {
+                    "score": 15
+                }
+            ]
+        },
+        {
+            "card": "Battle Blob",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 20
+                },
+                {
+                    "score": 40
+                }
+            ]
+        },
+        {
+            "card": "Blob Destroyer",
+            "rules": [
+                {
+                    "opponent.bases": "> 3",
+                    "score": 20
+                },
+                {
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Ram",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 20
+                },
+                {
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Battle Pod",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Trade Pod",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 15
+                },
+                {
+                    "deck": 2,
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Blob Fighter",
+            "score": 0
+        },
+        {
+            "card": "Port Of Call",
+            "score": 10
+        },
+        {
+            "card": "Central Office",
+            "score": 15
+        },
+        {
+            "card": "Defense Center",
+            "score": 5
+        },
+        {
+            "card": "Barter World",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 25
+                },
+                {
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Trading Post",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 15
+                }
+            ]
+        } ,
+        {
+            "card": "Flagship",
+            "score": 30
+        },
+        {
+            "card": "Trade Escort",
+            "score": 10
+        },
+        {
+            "card": "Command Ship",
+            "score": 50
+        },
+        {
+            "card": "Freighter",
+            "score": 0
+        },
+        {
+            "card": "Embassy Yacht",
+            "score": 0
+        },
+        {
+            "card": "Cutter",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 40
+                },
+                {
+                    "deck": 2,
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Federation Shuttle",
+            "score": 0
+        },
+        {
+            "card": "Fleet HQ",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 40
+                },
+                {
+                    "score": 20
+                }
+            ]
+        } ,
+        {
+            "card": "Royal Redoubt",
+            "rules": [
+                {
+                    "bases": "> 2",
+                    "score": 70
+                },
+                {
+                    "score": 60
+                }
+            ]
+        },
+        {
+            "card": "War World",
+            "rules": [
+                {
+                    "bases": "> 2",
+                    "score": 50
+                },
+                {
+                    "score": 40
+                }
+            ]
+        },
+        {
+            "card": "Recycling Station",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 30
+                },
+                {
+                    "deck": 2,
+                    "score": 45
+                },
+                {
+                    "score": 55
+                }
+            ]
+        },
+        {
+            "card": "Space Station",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 60
+                },
+                {
+                    "deck": 2,
+                    "score": 50
+                },
+                {
+                    "score": 40
+                }
+            ]
+        },
+        {
+            "card": "Dreadnaught",
+            "score": 85
+        },
+        {
+            "card": "Battlecruiser",
+            "score": 75
+        },
+        {
+            "card": "Corvette",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 15
+                },
+                {
+                    "score": 25
+                }
+            ]
+        },
+        {
+            "card": "Survey Ship",
+            "score": 10
+        },
+        {
+            "card": "Imperial Frigate",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 25
+                },
+                {
+                    "score": 40
+                }
+            ]
+        },
+        {
+            "card": "Imperial Fighter",
+            "score": 10
+        },
+        {
+            "card": "Junkyard",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 40
+                },
+                {
+                    "bases": "> 3",
+                    "score": 25
+                },
+                {
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Machine Base",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 90
+                },
+                {
+                    "deck": 3,
+                    "score": 85
+                },
+                {
+                    "score": 80
+                }
+            ]
+        },
+        {
+            "card": "Brain World",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 100
+                },
+                {
+                    "deck": 3,
+                    "score": 90
+                },
+                {
+                    "score": 85
+                }
+            ]
+        },
+        {
+            "card": "Mech World",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 20
+                },
+                {
+                    "score": 50
+                }
+            ]
+        },
+        {
+            "card": "Battle Station",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 15
+                },
+                {
+                    "score": 40
+                }
+            ]
+        },
+        {
+            "card": "Missile Mech",
+            "rules": [
+                {
+                    "opponent.bases": "> 3",
+                    "score": 80
+                },
+                {
+                    "score": 60
+                }
+            ]
+        },
+        {
+            "card": "Battle Mech",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 80
+                },
+                {
+                    "score": 50
+                }
+            ]
+        },
+        {
+            "card": "Stealth Needle",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 30
+                },
+                {
+                    "score": 60
+                }
+            ]
+        },
+        {
+            "card": "Patrol Mech",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 80
+                },
+                {
+                    "deck": 2,
+                    "score": 60
+                },
+                {
+                    "score": 30
+                }
+            ]
+        },
+        {
+            "card": "Supply Bot",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 90
+                },
+                {
+                    "deck": 2,
+                    "score": 70
+                },
+                {
+                    "deck": 3,
+                    "score": 30
+                }
+            ]
+        },
+        {
+            "card": "Missile Bot",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 80
+                },
+                {
+                    "deck": 2,
+                    "score": 60
+                },
+                {
+                    "deck": 3,
+                    "score": 30
+                },
+                {
+                    "score": 15
+                }
+            ]
+        },
+        {
+            "card": "Trade Bot",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 75
+                },
+                {
+                    "deck": 2,
+                    "score": 55
+                },
+                {
+                    "deck": 3,
+                    "score": 15
+                },
+                {
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Explorer",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 15
+                },
+                {
+                    "deck": 2,
+                    "score": 5
+                }
+            ]
+        }
+    ],
+    "discardRules": [
+        {
+            "card": "Viper",
+            "score": 100
+        },
+        {
+            "card": "Scout",
+            "score": 90
+        },
+        {
+            "card": "Explorer",
+            "score": 80
+        }
+    ],
+    "scrapRules": [
+        {
+            "card": "Viper",
+            "score": 100
+        },
+        {
+            "card": "Scout",
+            "score": 90
+        },
+        {
+            "card": "Explorer",
+            "score": 80
+        }
+    ],
+    "scrapForBenefitRules": [
+        {
+            "card": "Barter World",
+            "rules": [
+                {
+                    "opponent.authority": "< 6",
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Battle Blob",
+            "rules": [
+                {
+                    "opponent.authority": "< 5",
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Battle Station",
+            "rules": [
+                {
+                    "opponent.authority": "< 6",
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Trading Post",
+            "rules": [
+                {
+                    "opponent.authority": "< 4",
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Dreadnaught",
+            "rules": [
+                {
+                    "opponent.authority": "< 6",
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Battlecruiser",
+            "rules": [
+                {
+                    "opponent.outposts.inplay": "> 0",
+                    "opponent.authority": "<= combat",
+                    "score": 10
+                },
+                {
+                    "opponent.authority": "< 6",
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Imperial Frigate",
+            "rules": [
+                {
+                    "opponent.authority": "< 11",
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Port Of Call",
+            "rules": [
+                {
+                    "opponent.outposts.inplay": "> 0",
+                    "opponent.authority": "<= combat",
+                    "score": 10
+                },
+                {
+                    "authority": "> 20",
+                    "opponent.authority": "< 10",
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Survey Ship",
+            "rules": [
+                {
+                    "opponent.hand.size": "< 4",
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Blob Wheel",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "buy.score.increase": "> 20",
+                    "score": 5
+                },
+                {
+                    "buy.score.increase": "> 40",
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Ram",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "buy.score.increase": "> 20",
+                    "score": 5
+                },
+                {
+                    "buy.score.increase": "> 40",
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Space Station",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "buy.score.increase": "> 20",
+                    "score": 5
+                },
+                {
+                    "buy.score.increase": "> 40",
+                    "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Explorer",
+            "rules": [
+                {
+                    "opponent.authority": "< 3",
+                    "score": 10
+                },
+                {
+                    "deck": "> 2",
+                    "score": 5
+                },
+                {
+                    "hand.size": 0,
+                    "bases.unused": 0,
+                    "combat": "< opponent.bases.smallest",
+                    "combat.plus.card.scrap.combat": ">= opponent.bases.smallest",
+                    "score": 5
+                }
+            ]
+        }
+    ],
+    "useBaseRules": [
+        {
+            "card": "Recycling Station",
+            "score": 100
+        },
+        {
+            "card": "Machine Base",
+            "score": 90
+        },
+        {
+            "card": "Junkyard",
+            "score": 80
+        },
+        {
+            "card": "Brain World",
+            "score": 70
+        },
+        {
+            "card": "Blob World",
+            "score": 10
+        }
+    ],
+    "playRules": [
+        {
+            "card": "Recycling Station",
+            "score": 100,
+            "useBaseAfterPlay": true
+        },
+        {
+            "card": "Supply Bot",
+            "score": 95
+        },
+        {
+            "card": "Trade Bot",
+            "score": 90
+        },
+        {
+            "card": "Missile Bot",
+            "score": 85
+        },
+        {
+            "card": "Patrol Mech",
+            "score": 80,
+            "useAllyAfterPlay": true
+        },
+        {
+            "card": "Brain World",
+            "score": 70,
+            "useBaseAfterPlay": true
+        },
+        {
+            "card": "Stealth Needle",
+            "score": 10
+        },
+        {
+            "card": "Explorer",
+            "score": 9
+        },
+        {
+            "card": "Scout",
+            "score": 8
+        },
+        {
+            "card": "Viper",
+            "score": 7
+        }
+    ],
+    "makeChoiceRules": [
+        {
+            "card": "Barter World",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "choice": 2
+                },
+                {
+                    "choice": 1
+                }
+            ]
+        },
+        {
+            "card": "Blob World",
+            "rules": [
+                {
+                    "cards.played.blob": "> 1",
+                    "opponent.authority": "> 5",
+                    "choice": 2
+                },
+                {
+                    "choice": 1
+                }
+            ]
+        },
+        {
+            "card": "Defense Center",
+            "rules": [
+                {
+                    "authority": "> 10",
+                    "opponent.authority": "< 10",
+                    "choice": 2
+                },
+                {
+                    "choice": 1
+                }
+            ]
+        },
+        {
+            "card": "Patrol Mech",
+            "rules": [
+                {
+                    "deck": "> 2",
+                    "choice": 2
+                },
+                {
+                    "opponent.authority": "< 30",
+                    "choice": 2
+                },
+                {
+                    "choice": 1
+                }
+            ]
+        },
+        {
+            "card": "Recycling Station",
+            "choice": 2
+        },
+        {
+            "card": "Trading Post",
+            "choice": 2
+        }
+    ],
+    "destroyBaseRules": [
+        {
+            "card": "Brain World",
+            "rules": [
+                {
+                    "opponent.cards.all.starter_cards": ">= 8",
+                    "score": 12
+                },
+                {
+                    "opponent.cards.all.starter_cards": ">= 6",
+                    "score": 11
+                },
+                {
+                    "opponent.cards.all.starter_cards": ">= 4",
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Machine Base",
+            "rules": [
+                {
+                    "opponent.cards.all.starter_cards": ">= 8",
+                    "score": 11
+                },
+                {
+                    "opponent.cards.all.starter_cards": ">= 6",
+                    "score": 10
+                },
+                {
+                    "opponent.cards.all.starter_cards": ">= 4",
+                    "score": 9
+                }
+            ]
+        },
+        {
+            "card": "Junkyard",
+            "rules": [
+                {
+                    "opponent.cards.all.starter_cards": ">= 8",
+                    "score": 8
+                },
+                {
+                    "opponent.cards.all.starter_cards": ">= 6",
+                    "score": 7
+                }
+            ]
+        },
+        {
+            "card": "Blob World",
+            "rules": [
+                {
+                    "opponent.cards.all.blob": ">= 6",
+                    "score": 10
+                },
+                {
+                    "opponent.cards.all.blob": ">= 3",
+                    "score": 9
+                }
+            ]
+        },
+        {
+            "card": "Recycling Station",
+            "rules": [
+                {
+                    "opponent.cards.all.starter_cards": ">= 8",
+                    "score": 6
+                },
+                {
+                    "opponent.cards.all.starter_cards": ">= 5",
+                    "score": 5
+                }
+            ]
+        }
+    ]
+}
