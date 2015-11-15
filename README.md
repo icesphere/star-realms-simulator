@@ -3,9 +3,9 @@ Star Realms Simulator
 
 ##Create a bot
 
-Currently there is only one type of bot - the *JsonBot.java*.
+Currently there is only one type of bot - *JsonBot.java*.
 
-Other types bots can be created by extending *Bot.java*.
+Other types of bots can be created by extending *Bot.java*.
 
 See [Create JSON Bot](create_json_bot.md) for instructions on how to create a JSON bot
 
