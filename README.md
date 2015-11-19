@@ -25,3 +25,6 @@ Once you have created your bot, add it to the *starrealmssimulator/bots* package
 
 See [Simulator Results](simulator_results.txt) for some interesting results from running the simulator.
 
+##Trello Board
+
+If you are interested in seeing what is being worked on, or if you would like to help work on the simulator, check out the Trello Board: [https://trello.com/b/OYgPboK0/star-realms-simulator](https://trello.com/b/OYgPboK0/star-realms-simulator)
