@@ -1,8 +1,6 @@
 package starrealmssimulator.model;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -88,10 +86,12 @@ public abstract class Bot extends Player {
             }
 
             if (getTrade() > 0) {
-                Card cardToBuy = getCardToBuy();
-                if (cardToBuy != null) {
+                List<Card> cardsToBuy = getCardsToBuy();
+                if (!cardsToBuy.isEmpty()) {
                     endTurn = false;
-                    this.buyCard(cardToBuy);
+                    for (Card card : cardsToBuy) {
+                        this.buyCard(card);
+                    }
                 }
             }
         }
@@ -138,15 +138,70 @@ public abstract class Bot extends Player {
         endTurn();
     }
 
-    public Card getCardToBuy() {
-        getGame().gameLog("Determining card to buy. Current Trade: " + getTrade());
+    public List<Card> getCardsToBuy() {
+        List<Card> cardsToBuy = new ArrayList<>();
+
+        getGame().gameLog("Determining cards to buy. Current Trade: " + getTrade());
+
         List<Card> cards = new ArrayList<>(getGame().getTradeRow());
         cards.add(getGame().getExplorer());
+        cards.add(getGame().getExplorer());
+
         List<Card> sortedCards = cards.stream().filter(c -> getTrade() >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
         if (!sortedCards.isEmpty() && getBuyCardScore(sortedCards.get(0)) > 0) {
-            return sortedCards.get(0);
+            Card cardWithHighestBuyScore = sortedCards.get(0);
+
+            getGame().gameLog("Card with highest buy score: " + cardWithHighestBuyScore.getName());
+
+            if (sortedCards.size() > 2) {
+                Map<Card, Integer> cardToBuyScoreMap = new HashMap<>();
+
+                for (Card card : cards) {
+                    if (!cardToBuyScoreMap.containsKey(card)) {
+                        cardToBuyScoreMap.put(card, getBuyCardScore(card));
+                    }
+                }
+
+                List<List<Card>> twoCardsList = new ArrayList<>();
+
+                for (int i = 1; i < sortedCards.size() - 1; i++) {
+                    Card cardToCompareAgainst = sortedCards.get(i);
+                    for (int j = i + 1; j < sortedCards.size(); j++) {
+                        if (addTwoCardListIfEnoughTrade(twoCardsList, cardToCompareAgainst, sortedCards.get(j))) {
+                            break;
+                        }
+                    }
+                }
+
+                for (List<Card> cardList : twoCardsList) {
+                    int totalBuyScore = 0;
+                    totalBuyScore += cardToBuyScoreMap.get(cardList.get(0));
+                    totalBuyScore += cardToBuyScoreMap.get(cardList.get(1));
+
+                    getGame().gameLog("Buy score for " + cardWithHighestBuyScore.getName() + ": " + cardToBuyScoreMap.get(cardWithHighestBuyScore));
+                    getGame().gameLog("Buy score for " + getGame().getCardsAsString(cardList) + ": " + totalBuyScore);
+
+                    if (totalBuyScore > cardToBuyScoreMap.get(cardWithHighestBuyScore)) {
+                        return cardList;
+                    }
+                }
+            }
+
+            cardsToBuy.add(cardWithHighestBuyScore);
         }
-        return null;
+
+        return cardsToBuy;
+    }
+
+    private boolean addTwoCardListIfEnoughTrade(List<List<Card>> twoCardList, Card card1, Card card2) {
+        if ((card1.getCost() + card2.getCost()) <= getTrade()) {
+            List<Card> cards = new ArrayList<>(2);
+            cards.add(card1);
+            cards.add(card2);
+            twoCardList.add(cards);
+            return true;
+        }
+        return false;
     }
 
     public abstract int getBuyCardScore(Card card);
@@ -332,9 +387,11 @@ public abstract class Bot extends Player {
     public int getBuyScoreIncrease(Card card) {
         int cardToBuyScore = 0;
 
-        Card cardToBuy = getCardToBuy();
-        if (cardToBuy != null) {
-            cardToBuyScore = getBuyCardScore(getCardToBuy());
+        List<Card> cardsToBuy = getCardsToBuy();
+        if (!cardsToBuy.isEmpty()) {
+            for (Card cardToBuy : cardsToBuy) {
+                cardToBuyScore += getBuyCardScore(cardToBuy);
+            }
         }
 
         List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> getTrade() + card.getTradeWhenScrapped() >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
