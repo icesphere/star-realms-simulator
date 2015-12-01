@@ -2,5 +2,6 @@ package starrealmssimulator.model;
 
 public enum CardSet
 {
-    CORE
+    CORE,
+    PROMO_YEAR_1
 }

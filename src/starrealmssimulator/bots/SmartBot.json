@@ -467,6 +467,106 @@
             }
         },
         {
+            "card": "Battle Screecher",
+            "info": {
+                "aggressive": 4,
+                "defensive": 0,
+                "velocity": 0,
+                "economy": 1,
+                "startGame": [
+                    {
+                        "cards.all.blob": "> 0",
+                        "score": 5
+                    },
+                    {
+                        "opponent.bases": "> 0",
+                        "score": 5
+                    },
+                    {
+                        "score": 3
+                    }
+                ],
+                "midGame": [
+                    {
+                        "cards.all.blob": ">= 2",
+                        "score": 4
+                    },
+                    {
+                        "score": 3
+                    }
+                ],
+                "endGame": [
+                    {
+                        "cards.all.blob": ">= 3",
+                        "score": 3
+                    },
+                    {
+                        "score": 2
+                    }
+                ]
+            }
+        },
+        {
+            "card": "Breeding Site",
+            "info": {
+                "aggressive": 3,
+                "defensive": 2,
+                "velocity": 0,
+                "economy": 0,
+                "startGame": [
+                    {
+                        "cards.all.blob": "> 0",
+                        "score": 5
+                    },
+                    {
+                        "opponent.bases": "> 0",
+                        "score": 5
+                    },
+                    {
+                        "bases": "> 0",
+                        "score": 5
+                    },
+                    {
+                        "score": 3
+                    }
+                ],
+                "midGame": [
+                    {
+                        "cards.all.blob": ">= 2",
+                        "score": 5
+                    },
+                    {
+                        "bases": ">= 2",
+                        "score": 5
+                    },
+                    {
+                        "bases": 0,
+                        "score": 2
+                    },
+                    {
+                        "score": 3
+                    }
+                ],
+                "endGame": [
+                    {
+                        "cards.all.blob": ">= 3",
+                        "score": 4
+                    },
+                    {
+                        "bases": ">= 3",
+                        "score": 4
+                    },
+                    {
+                        "bases": 0,
+                        "score": 1
+                    },
+                    {
+                        "score": 2
+                    }
+                ]
+            }
+        },
+        {
             "card": "Port Of Call",
             "info": {
                 "aggressive": 0,
@@ -928,10 +1028,10 @@
                 "startGame": [
                     {
                         "cards.all.trade_federation": "> 0",
-                        "score": 5
+                        "score": 6
                     },
                     {
-                        "score": 4
+                        "score": 5
                     }
                 ],
                 "midGame": [
@@ -950,14 +1050,14 @@
                 "endGame": [
                     {
                         "cards.all.trade_federation": ">= 3",
-                        "score": 2
+                        "score": 3
                     },
                     {
                         "cards.all.trade_federation": 0,
-                        "score": 0
+                        "score": 1
                     },
                     {
-                        "score": 1
+                        "score": 2
                     }
                 ]
             }
@@ -995,6 +1095,102 @@
                     {
                         "cards.all.trade_federation": ">= 3",
                         "score": 1
+                    },
+                    {
+                        "score": 0
+                    }
+                ]
+            }
+        },
+        {
+            "card": "Megahauler",
+            "info": {
+                "aggressive": 0,
+                "defensive": 3,
+                "velocity": 0,
+                "economy": 3,
+                "startGame": [
+                    {
+                        "cards.all.trade_federation": "> 0",
+                        "score": 8
+                    },
+                    {
+                        "score": 7
+                    }
+                ],
+                "midGame": [
+                    {
+                        "cards.all.trade_federation": ">= 2",
+                        "score": 8
+                    },
+                    {
+                        "cards.all.trade_federation": 0,
+                        "score": 6
+                    },
+                    {
+                        "score": 7
+                    }
+                ],
+                "endGame": [
+                    {
+                        "cards.all.trade_federation": ">= 3",
+                        "score": 7
+                    },
+                    {
+                        "cards.all.trade_federation": 0,
+                        "score": 3
+                    },
+                    {
+                        "score": 5
+                    }
+                ]
+            }
+        },
+        {
+            "card": "Starmarket",
+            "info": {
+                "aggressive": 0,
+                "defensive": 5,
+                "velocity": 0,
+                "economy": 4,
+                "startGame": [
+                    {
+                        "cards.all.trade_federation": "> 0",
+                        "score": 6
+                    },
+                    {
+                        "bases": "> 0",
+                        "score": 6
+                    },
+                    {
+                        "score": 5
+                    }
+                ],
+                "midGame": [
+                    {
+                        "cards.all.trade_federation": ">= 2",
+                        "score": 4
+                    },
+                    {
+                        "bases": ">= 2",
+                        "score": 4
+                    },
+                    {
+                        "cards.all.trade_federation": 0,
+                        "score": 1
+                    },
+                    {
+                        "bases": 0,
+                        "score": 1
+                    },
+                    {
+                        "score": 2
+                    }
+                ],
+                "endGame": [
+                    {
+                        "cards.all.trade_federation": ">= 3",
+                        "score": 2
                     },
                     {
                         "score": 0
@@ -1475,6 +1671,130 @@
             }
         },
         {
+            "card": "Battle Barge",
+            "info": {
+                "aggressive": 4,
+                "defensive": 0,
+                "velocity": 0,
+                "economy": 0,
+                "startGame": [
+                    {
+                        "cards.all.star_empire": "> 0",
+                        "score": 5
+                    },
+                    {
+                        "opponent.bases": "> 0",
+                        "score": 5
+                    },
+                    {
+                        "bases": "> 0",
+                        "score": 5
+                    },
+                    {
+                        "score": 3
+                    }
+                ],
+                "midGame": [
+                    {
+                        "bases": ">= 4",
+                        "score": 6
+                    },
+                    {
+                        "bases": ">= 2",
+                        "score": 5
+                    },
+                    {
+                        "cards.all.star_empire": ">= 2",
+                        "score": 5
+                    },
+                    {
+                        "cards.all.star_empire": 0,
+                        "score": 3
+                    },
+                    {
+                        "score": 4
+                    }
+                ],
+                "endGame": [
+                    {
+                        "bases": ">= 5",
+                        "score": 6
+                    },
+                    {
+                        "bases": ">= 3",
+                        "score": 5
+                    },
+                    {
+                        "cards.all.star_empire": ">= 3",
+                        "score": 5
+                    },
+                    {
+                        "cards.all.star_empire": 0,
+                        "score": 3
+                    },
+                    {
+                        "score": 4
+                    }
+                ]
+            }
+        },
+        {
+            "card": "Starbase Omega",
+            "info": {
+                "aggressive": 0,
+                "defensive": 4,
+                "velocity": 2,
+                "economy": 0,
+                "startGame": [
+                    {
+                        "cards.all.star_empire": "> 0",
+                        "score": 4
+                    },
+                    {
+                        "bases": "> 0",
+                        "score": 4
+                    },
+                    {
+                        "score": 3
+                    }
+                ],
+                "midGame": [
+                    {
+                        "cards.all.star_empire": ">= 2",
+                        "score": 4
+                    },
+                    {
+                        "bases": ">= 2",
+                        "score": 4
+                    },
+                    {
+                        "bases": 0,
+                        "score": 2
+                    },
+                    {
+                        "score": 3
+                    }
+                ],
+                "endGame": [
+                    {
+                        "cards.all.star_empire": ">= 3",
+                        "score": 3
+                    },
+                    {
+                        "bases": ">= 3",
+                        "score": 3
+                    },
+                    {
+                        "bases": 0,
+                        "score": 1
+                    },
+                    {
+                        "score": 2
+                    }
+                ]
+            }
+        },
+        {
             "card": "Junkyard",
             "info": {
                 "aggressive": 0,
@@ -1816,23 +2136,23 @@
                 "startGame": [
                     {
                         "cards.all.machine_cult": "> 0",
-                        "score": 5
+                        "score": 6
                     },
                     {
-                        "score": 4
+                        "score": 5
                     }
                 ],
                 "midGame": [
                     {
                         "cards.all.machine_cult": ">= 2",
-                        "score": 2
+                        "score": 3
                     },
                     {
                         "cards.all.machine_cult": 0,
-                        "score": 0
+                        "score": 1
                     },
                     {
-                        "score": 1
+                        "score": 2
                     }
                 ],
                 "endGame": [
@@ -1873,7 +2193,11 @@
                 ],
                 "endGame": [
                     {
-                        "score": 0
+                        "cards.all.machine_cult": ">= 3",
+                        "score": 2
+                    },
+                    {
+                        "score": 1
                     }
                 ]
             }
@@ -1888,10 +2212,46 @@
                 "startGame": [
                     {
                         "cards.all.machine_cult": "> 0",
-                        "score": 3
+                        "score": 4
                     },
                     {
-                        "score": 2
+                        "score": 3
+                    }
+                ],
+                "midGame": [
+                    {
+                        "cards.all.machine_cult": ">= 2",
+                        "score": 1
+                    },
+                    {
+                        "score": 0
+                    }
+                ],
+                "endGame": [
+                    {
+                        "score": 0
+                    }
+                ]
+            }
+        },
+        {
+            "card": "Fortress Oblivion",
+            "info": {
+                "aggressive": 0,
+                "defensive": 3,
+                "velocity": 3,
+                "economy": 0,
+                "startGame": [
+                    {
+                        "cards.all.machine_cult": "> 0",
+                        "score": 4
+                    },
+                    {
+                        "bases": "> 0",
+                        "score": 4
+                    },
+                    {
+                        "score": 3
                     }
                 ],
                 "midGame": [
@@ -1900,7 +2260,11 @@
                         "score": 2
                     },
                     {
-                        "cards.all.machine_cult": 0,
+                        "bases": ">= 2",
+                        "score": 2
+                    },
+                    {
+                        "bases": 0,
                         "score": 0
                     },
                     {
@@ -1915,6 +2279,66 @@
             }
         },
         {
+            "card": "The Ark",
+            "info": {
+                "aggressive": 4,
+                "defensive": 0,
+                "velocity": 5,
+                "economy": 0,
+                "startGame": [
+                    {
+                        "score": 10
+                    }
+                ],
+                "midGame": [
+                    {
+                        "cards.all.machine_cult": ">= 2",
+                        "score": 10
+                    },
+                    {
+                        "cards.all.machine_cult": 0,
+                        "score": 8
+                    },
+                    {
+                        "score": 9
+                    }
+                ],
+                "endGame": [
+                    {
+                        "score": 8
+                    }
+                ]
+            }
+        },
+        {
+            "card": "Merc Cruiser",
+            "info": {
+                "aggressive": 4,
+                "defensive": 0,
+                "velocity": 0,
+                "economy": 0,
+                "startGame": [
+                    {
+                        "opponent.bases": "> 0",
+                        "score": 3
+                    },
+                    {
+                        "score": 2
+                    }
+                ],
+                "midGame": [
+                    {
+                        "score": 3
+                    }
+                ],
+                "endGame": [
+                    {
+                        "score": 3
+                    }
+                ]
+            }
+        },
+        {
             "card": "Explorer",
             "info": {
                 "aggressive": 1,
@@ -1923,7 +2347,7 @@
                 "economy": 3,
                 "startGame": [
                     {
-                        "score": 2
+                        "score": 1
                     }
                 ],
                 "midGame": [
@@ -2121,6 +2545,20 @@
             ]
         },
         {
+            "card": "The Ark",
+            "rules": [
+                {
+                    "opponent.outposts.inplay": "> 0",
+                    "opponent.authority": "<= combat",
+                    "score": 10
+                },
+                {
+                    "opponent.authority": "< 6",
+                    "score": 5
+                }
+            ]
+        },
+        {
             "card": "Explorer",
             "rules": [
                 {
@@ -2270,6 +2708,18 @@
         {
             "card": "Trading Post",
             "choice": 2
+        },
+        {
+            "card": "Starmarket",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "choice": 2
+                },
+                {
+                    "choice": 1
+                }
+            ]
         }
     ],
     "destroyBaseRules": [

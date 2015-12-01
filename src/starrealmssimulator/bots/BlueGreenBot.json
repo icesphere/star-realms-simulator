@@ -132,6 +132,43 @@
             ]
         },
         {
+            "card": "Battle Screecher",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 60
+                },
+                {
+                    "score": 50
+                }
+            ]
+        },
+        {
+            "card": "Breeding Site",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "bases": "> 0",
+                    "score": 55
+                },
+                {
+                    "deck": "< 3",
+                    "score": 50
+                },
+                {
+                    "bases": ">= 2",
+                    "score": 50
+                },
+                {
+                    "bases": 0,
+                    "score": 30
+                },
+                {
+                    "score": 40
+                }
+            ]
+        },
+        {
             "card": "Port Of Call",
             "rules": [
                 {
@@ -319,6 +356,52 @@
             ]
         },
         {
+            "card": "Megahauler",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 90
+                },
+                {
+                    "deck": 3,
+                    "score": 75
+                },
+                {
+                    "score": 50
+                }
+            ]
+        },
+        {
+            "card": "Starmarket",
+            "rules": [
+                {
+                    "deck": 1,
+                    "bases": "> 0",
+                    "score": 75
+                },
+                {
+                    "deck": 1,
+                    "score": 65
+                },
+                {
+                    "deck": 2,
+                    "bases": "> 0",
+                    "score": 60
+                },
+                {
+                    "deck": 2,
+                    "score": 50
+                },
+                {
+                    "deck": 3,
+                    "score": 30
+                },
+                {
+                    "score": 10
+                }
+            ]
+        },
+        {
             "card": "Fleet HQ",
             "rules": [
                 {
@@ -399,6 +482,47 @@
                 },
                 {
                     "score": 8
+                }
+            ]
+        },
+        {
+            "card": "Battle Barge",
+            "rules": [
+                {
+                    "bases": ">= 4",
+                    "score": 20
+                },
+                {
+                    "bases": ">= 2",
+                    "score": 15
+                },
+                {
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "card": "Starbase Omega",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "bases": "> 0",
+                    "score": 5
+                },
+                {
+                    "deck": "< 3",
+                    "score": 0
+                },
+                {
+                    "bases": ">= 2",
+                    "score": 5
+                },
+                {
+                    "bases": 0,
+                    "score": 0
+                },
+                {
+                    "score": 5
                 }
             ]
         },
@@ -518,6 +642,47 @@
                 {
                     "deck": 1,
                     "score": 5
+                }
+            ]
+        },
+        {
+            "card": "Fortress Oblivion",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "bases": "> 0",
+                    "score": 10
+                },
+                {
+                    "deck": "< 3",
+                    "score": 5
+                },
+                {
+                    "score": 0
+                }
+            ]
+        },
+        {
+            "card": "The Ark",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "score": 50
+                },
+                {
+                    "score": 45
+                }
+            ]
+        },
+        {
+            "card": "Merc Cruiser",
+            "rules": [
+                {
+                    "deck": 1,
+                    "score": 10
+                },
+                {
+                    "score": 30
                 }
             ]
         },
@@ -695,6 +860,20 @@
             ]
         },
         {
+            "card": "The Ark",
+            "rules": [
+                {
+                    "opponent.outposts.inplay": "> 0",
+                    "opponent.authority": "<= combat",
+                    "score": 10
+                },
+                {
+                    "opponent.authority": "< 6",
+                    "score": 5
+                }
+            ]
+        },
+        {
             "card": "Explorer",
             "rules": [
                 {
@@ -844,6 +1023,18 @@
         {
             "card": "Trading Post",
             "choice": 2
+        },
+        {
+            "card": "Starmarket",
+            "rules": [
+                {
+                    "deck": "< 3",
+                    "choice": 2
+                },
+                {
+                    "choice": 1
+                }
+            ]
         }
     ],
     "destroyBaseRules": [

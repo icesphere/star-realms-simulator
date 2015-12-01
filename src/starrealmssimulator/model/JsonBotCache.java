@@ -17,6 +17,7 @@ public class JsonBotCache {
     private Map<String, CardRules> copyShipRulesMap;
     private Map<String, CardRules> scrapTradeRowRulesMap;
     private Map<String, CardRules> cardToTopOfDeckRulesMap;
+    private Map<String, CardRules> returnBaseToHandRulesMap;
     private Map<String, CardInfo> cardInfoMap;
 
     public String getBotName() {
@@ -137,5 +138,13 @@ public class JsonBotCache {
 
     public void setCardInfoMap(Map<String, CardInfo> cardInfoMap) {
         this.cardInfoMap = cardInfoMap;
+    }
+
+    public Map<String, CardRules> getReturnBaseToHandRulesMap() {
+        return returnBaseToHandRulesMap;
+    }
+
+    public void setReturnBaseToHandRulesMap(Map<String, CardRules> returnBaseToHandRulesMap) {
+        this.returnBaseToHandRulesMap = returnBaseToHandRulesMap;
     }
 }

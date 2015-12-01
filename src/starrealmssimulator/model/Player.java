@@ -1,9 +1,6 @@
 package starrealmssimulator.model;
 
-import starrealmssimulator.cards.Explorer;
-import starrealmssimulator.cards.FleetHQ;
-import starrealmssimulator.cards.MechWorld;
-import starrealmssimulator.cards.StealthNeedle;
+import starrealmssimulator.cards.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -317,6 +314,13 @@ public abstract class Player {
         return cardsToScrap.size();
     }
 
+    public void scrapToDrawCards(int cards) {
+        int numCardsScrapped = scrapCards(cards);
+        if (numCardsScrapped > 0) {
+            drawCards(numCardsScrapped);
+        }
+    }
+
     private void scrapCardFromDiscard(Card card) {
         getGame().gameLog("Scrapped " + card.getName() + " from discard");
         discard.remove(card);
@@ -354,15 +358,19 @@ public abstract class Player {
     public abstract List<List<Card>> getCardsToOptionallyScrapFromDiscardOrHand(int cards);
 
     public void scrapCardInTradeRow() {
-        Card card = chooseCardToScrapInTradeRow();
-        if (card != null) {
+        scrapCardsInTradeRow(1);
+    }
+
+    public void scrapCardsInTradeRow(int cards) {
+        List<Card> cardsToScrap = chooseCardsToScrapInTradeRow(cards);
+        for (Card card : cardsToScrap) {
             getGame().gameLog("Scrapped " + card.getName() + " from trade row");
             game.getTradeRow().remove(card);
             game.getScrapped().add(card);
         }
     }
 
-    public abstract Card chooseCardToScrapInTradeRow();
+    public abstract List<Card> chooseCardsToScrapInTradeRow(int cards);
 
     public void acquireFreeShipAndPutOnTopOfDeck() {
         if (!getGame().getTradeRow().isEmpty()) {
@@ -559,4 +567,27 @@ public abstract class Player {
     public int countCardsByType(List<Card> cards, Function<Card, Boolean> typeMatcher) {
         return (int) cards.stream().filter(typeMatcher::apply).count();
     }
+
+    public boolean basePlayedThisTurn() {
+        for (Card card : getPlayed()) {
+            if (card.isBase()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void returnTargetBaseToHand() {
+        Base base = chooseBaseToReturnToHand();
+        if (base != null) {
+            getGame().gameLog("Returned base to hand: " + base.getName());
+            bases.remove(base);
+            hand.add(base);
+            cardRemovedFromPlay(base);
+        }
+    }
+
+    public abstract Base chooseBaseToReturnToHand();
+
+    public abstract Faction chooseFactionForCard(Card card);
 }

@@ -28,6 +28,7 @@ public class JsonBot extends Bot {
     private Map<String, CardRules> copyShipRulesMap;
     private Map<String, CardRules> scrapTradeRowRulesMap;
     private Map<String, CardRules> cardToTopOfDeckRulesMap;
+    private Map<String, CardRules> returnBaseToHandRulesMap;
     private Map<String, CardInfo> cardInfoMap;
 
     public JsonBot(String botFile) {
@@ -48,6 +49,7 @@ public class JsonBot extends Bot {
             copyShipRulesMap = jsonBotCache.getCopyShipRulesMap();
             scrapTradeRowRulesMap = jsonBotCache.getScrapTradeRowRulesMap();
             cardToTopOfDeckRulesMap = jsonBotCache.getCardToTopOfDeckRulesMap();
+            returnBaseToHandRulesMap = jsonBotCache.getReturnBaseToHandRulesMap();
             cardInfoMap = jsonBotCache.getCardInfoMap();
         } else {
             loadBotFile(botFile);
@@ -83,6 +85,7 @@ public class JsonBot extends Bot {
             copyShipRulesMap = loadCardRules(obj, "copyShipRules");
             scrapTradeRowRulesMap = loadCardRules(obj, "scrapTradeRowRules");
             cardToTopOfDeckRulesMap = loadCardRules(obj, "cardToTopOfDeckRules");
+            returnBaseToHandRulesMap = loadCardRules(obj, "returnBaseToHandRules");
             cardInfoMap = loadCardInfo(obj, "cardInfo");
             cache.setBotName(botName);
             cache.setAuthor(author);
@@ -98,6 +101,7 @@ public class JsonBot extends Bot {
             cache.setCopyShipRulesMap(copyShipRulesMap);
             cache.setScrapTradeRowRulesMap(scrapTradeRowRulesMap);
             cache.setCardToTopOfDeckRulesMap(cardToTopOfDeckRulesMap);
+            cache.setReturnBaseToHandRulesMap(returnBaseToHandRulesMap);
             cache.setCardInfoMap(cardInfoMap);
             GameService.addBotToCache(botFile, cache);
         } catch (Exception e) {
@@ -307,6 +311,12 @@ public class JsonBot extends Bot {
     public int getCardToTopOfDeckScore(Card card) {
         int defaultScore = card.getCost();
         return getCardScore(card, cardToTopOfDeckRulesMap, defaultScore);
+    }
+
+    @Override
+    public int getReturnBaseToHandScore(Base card) {
+        int defaultScore = card.getCost();
+        return getCardScore(card, returnBaseToHandRulesMap, defaultScore);
     }
 
     @Override

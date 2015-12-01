@@ -25,6 +25,7 @@ public abstract class Bot extends Player {
     protected Comparator<Card> copyShipScoreDescending = (c1, c2) -> Integer.compare(getCopyShipScore((Ship) c2), getCopyShipScore((Ship) c1));
     protected Comparator<Card> scrapCardFromTradeRowScoreDescending = (c1, c2) -> Integer.compare(getScrapCardFromTradeRowScore(c2), getScrapCardFromTradeRowScore(c1));
     protected Comparator<Card> cardToTopOfDeckScoreDescending = (c1, c2) -> Integer.compare(getCardToTopOfDeckScore(c2), getCardToTopOfDeckScore(c1));
+    protected Comparator<Base> returnBaseToHandScoreDescending = (c1, c2) -> Integer.compare(getReturnBaseToHandScore(c2), getReturnBaseToHandScore(c1));
 
     @Override
     public void takeTurn() {
@@ -54,10 +55,11 @@ public abstract class Bot extends Player {
             List<Base> unusedBasesAndOutposts = getUnusedBasesAndOutposts();
 
             if (!unusedBasesAndOutposts.isEmpty()) {
-                endTurn = false;
                 List<Base> sortedBases = getUnusedBasesAndOutposts().stream().sorted(useBaseScoreDescending).collect(toList());
                 for (Base sortedBase : sortedBases) {
-                    sortedBase.useBase(this);
+                    if (sortedBase.useBase(this)) {
+                        endTurn = false;
+                    }
                 }
             }
 
@@ -220,6 +222,8 @@ public abstract class Bot extends Player {
 
     public abstract int getCardToTopOfDeckScore(Card card);
 
+    public abstract int getReturnBaseToHandScore(Base card);
+
     @Override
     public int discardCards(int cards, boolean optional) {
         int cardsDiscarded = 0;
@@ -298,18 +302,19 @@ public abstract class Bot extends Player {
     }
 
     @Override
-    public Card chooseCardToScrapInTradeRow() {
+    public List<Card> chooseCardsToScrapInTradeRow(int cards) {
         List<Card> sortedCards = getGame().getTradeRow().stream().sorted(scrapCardFromTradeRowScoreDescending).collect(toList());
 
-        if (!sortedCards.isEmpty()) {
-            Card cardToScrap = sortedCards.get(0);
+        List<Card> cardsToScrap = new ArrayList<>();
 
-            if (getScrapCardFromTradeRowScore(cardToScrap) > 0) {
-                return cardToScrap;
+        for (Card card : sortedCards) {
+            if (cardsToScrap.size() >= cards) {
+                break;
             }
+            cardsToScrap.add(card);
         }
 
-        return null;
+        return cardsToScrap;
     }
 
     @Override
@@ -401,5 +406,48 @@ public abstract class Bot extends Player {
         }
 
         return 0;
+    }
+
+    @Override
+    public Base chooseBaseToReturnToHand() {
+        //todo include opponent's bases
+
+        List<Base> sortedBases = getBases().stream().sorted(returnBaseToHandScoreDescending).collect(toList());
+
+        if (!sortedBases.isEmpty()) {
+            Base baseToReturnToHand = sortedBases.get(0);
+
+            if (getReturnBaseToHandScore(baseToReturnToHand) > 0) {
+                return baseToReturnToHand;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Faction chooseFactionForCard(Card card) {
+        //todo create rules
+
+        List<Card> cards = new ArrayList<>(getInPlay());
+        cards.addAll(getHand());
+
+        Map<Faction, Integer> factionCounts = new HashMap<>(4);
+
+        factionCounts.put(Faction.BLOB, countCardsByType(cards, Card::isBlob));
+        factionCounts.put(Faction.STAR_EMPIRE, countCardsByType(cards, Card::isStarEmpire));
+        factionCounts.put(Faction.TRADE_FEDERATION, countCardsByType(cards, Card::isTradeFederation));
+        factionCounts.put(Faction.MACHINE_CULT, countCardsByType(cards, Card::isMachineCult));
+
+        Faction factionWithMostCards = null;
+        int highestFactionCount = 0;
+
+        for (Faction faction : factionCounts.keySet()) {
+            if (factionCounts.get(faction) >= highestFactionCount) {
+                factionWithMostCards = faction;
+            }
+        }
+
+        return factionWithMostCards;
     }
 }

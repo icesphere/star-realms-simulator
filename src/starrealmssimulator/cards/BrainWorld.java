@@ -17,6 +17,6 @@ public class BrainWorld extends Outpost
     @Override
     public void baseUsed(Player player)
     {
-        player.scrapCards(2);
+        player.scrapToDrawCards(2);
     }
 }

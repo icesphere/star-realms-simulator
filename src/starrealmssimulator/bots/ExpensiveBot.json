@@ -171,6 +171,20 @@
             ]
         },
         {
+            "card": "The Ark",
+            "rules": [
+                {
+                    "opponent.outposts.inplay": "> 0",
+                    "opponent.authority": "<= combat",
+                    "score": 10
+                },
+                {
+                    "opponent.authority": "< 6",
+                    "score": 5
+                }
+            ]
+        },
+        {
             "card": "Explorer",
             "rules": [
                 {

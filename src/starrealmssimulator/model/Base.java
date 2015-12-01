@@ -16,10 +16,18 @@ public abstract class Base extends Card {
 
     }
 
-    public void useBase(Player player) {
-        this.used = true;
-        this.baseUsed(player);
+    public boolean useBase(Player player) {
+        if (baseCanBeUsed(player)) {
+            this.used = true;
+            this.baseUsed(player);
+            return true;
+        }
+        return false;
     }
 
     public abstract void baseUsed(Player player);
+
+    public boolean baseCanBeUsed(Player player) {
+        return true;
+    }
 }
