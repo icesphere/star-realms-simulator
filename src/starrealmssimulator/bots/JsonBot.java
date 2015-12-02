@@ -309,13 +309,13 @@ public class JsonBot extends Bot {
 
     @Override
     public int getCardToTopOfDeckScore(Card card) {
-        int defaultScore = card.getCost();
+        int defaultScore = getBuyCardScore(card);
         return getCardScore(card, cardToTopOfDeckRulesMap, defaultScore);
     }
 
     @Override
     public int getReturnBaseToHandScore(Base card) {
-        int defaultScore = card.getCost();
+        int defaultScore = getBuyCardScore(card);
         return getCardScore(card, returnBaseToHandRulesMap, defaultScore);
     }
 

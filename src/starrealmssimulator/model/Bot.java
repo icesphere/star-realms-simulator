@@ -439,15 +439,15 @@ public abstract class Bot extends Player {
         factionCounts.put(Faction.TRADE_FEDERATION, countCardsByType(cards, Card::isTradeFederation));
         factionCounts.put(Faction.MACHINE_CULT, countCardsByType(cards, Card::isMachineCult));
 
-        Faction factionWithMostCards = null;
-        int highestFactionCount = 0;
+        Faction factionWithLeastCards = null;
+        int lowestFactionCount = 100;
 
         for (Faction faction : factionCounts.keySet()) {
-            if (factionCounts.get(faction) >= highestFactionCount) {
-                factionWithMostCards = faction;
+            if (factionCounts.get(faction) <= lowestFactionCount) {
+                factionWithLeastCards = faction;
             }
         }
 
-        return factionWithMostCards;
+        return factionWithLeastCards;
     }
 }

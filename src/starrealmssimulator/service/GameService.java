@@ -367,11 +367,11 @@ public class GameService {
         botFiles.add("RedGreenBot.json");
         botFiles.add("YellowRedBot.json");*/
 
-        //service.simulateTwoBots("HareBot.json", "DefenseBot.json");
+        service.simulateTwoBots("VelocityBot.json", "SmartBot.json");
 
         //service.simulateAllAgainstAll(botFiles);
 
-        service.simulateOneAgainstAllBots("HareBot.json", botFiles);
+        //service.simulateOneAgainstAllBots("HareBot.json", botFiles);
     }
 
     private void simulateAllAgainstAll(List<String> botFiles) {

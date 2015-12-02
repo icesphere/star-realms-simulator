@@ -951,6 +951,14 @@
     ],
     "playRules": [
         {
+            "card": "Fleet HQ",
+            "score": 120
+        },
+        {
+            "card": "Blob World",
+            "score": 110
+        },
+        {
             "card": "Recycling Station",
             "score": 100,
             "useBaseAfterPlay": true
