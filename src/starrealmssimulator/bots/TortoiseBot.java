@@ -73,6 +73,14 @@ public class TortoiseBot extends Bot {
             return 15;
         } else if (card instanceof Mothership) {
             return 50;
+        } else if (card instanceof Obliterator) {
+            int opponentBases = getOpponent().getNumBases();
+            if (opponentBases > 3) {
+                return 60;
+            } else if (opponentBases > 2) {
+                return 50;
+            }
+            return 40;
         } else if (card instanceof Ram) {
             if (deck < 3) {
                 return 40;
@@ -88,6 +96,14 @@ public class TortoiseBot extends Bot {
                 return 60;
             } else if (deck == 2) {
                 return 20;
+            }
+        } else if (card instanceof TradeWheel) {
+            if (deck == 1) {
+                return 40;
+            } else if (deck == 2) {
+                return 30;
+            } else if (deck == 3) {
+                return 10;
             }
         }
 
@@ -108,6 +124,13 @@ public class TortoiseBot extends Bot {
             return 50;
         } else if (card instanceof CommandShip) {
             return 100;
+        } else if (card instanceof ConstructionHauler) {
+            if (deck < 3) {
+                return 80;
+            } else if (deck == 3) {
+                return 60;
+            }
+            return 40;
         } else if (card instanceof Cutter) {
             if (deck == 1) {
                 return 80;
@@ -189,6 +212,15 @@ public class TortoiseBot extends Bot {
                 return 30;
             }
             return 60;
+        } else if (card instanceof TradeRaft) {
+            if (deck == 1) {
+                return 45;
+            } else if (deck == 2) {
+                return 25;
+            } else if (deck == 3) {
+                return 10;
+            }
+            return 5;
         } else if (card instanceof TradingPost) {
             if (deck == 1) {
                 return 25;
@@ -215,6 +247,11 @@ public class TortoiseBot extends Bot {
             return 10;
         } else if (card instanceof Dreadnaught) {
             return 80;
+        } else if (card instanceof FighterBase) {
+            if (deck == 1) {
+                return 10;
+            }
+            return 20;
         } else if (card instanceof FleetHQ) {
             if (deck < 3) {
                 return 20;
@@ -230,6 +267,15 @@ public class TortoiseBot extends Bot {
                 return 10;
             }
             return 30;
+        } else if (card instanceof ImperialTrader) {
+            if (deck == 1) {
+                return 60;
+            } else if (deck == 2) {
+                return 40;
+            } else if (deck == 3) {
+                return 30;
+            }
+            return 20;
         } else if (card instanceof RecyclingStation) {
             if (deck == 1) {
                 return 15;
@@ -287,6 +333,19 @@ public class TortoiseBot extends Bot {
                 return 80;
             }
             return 70;
+        } else if (card instanceof DefenseBot) {
+            if (deck < 3 && bases > 0) {
+                return 40;
+            } else if (deck < 3) {
+                return 35;
+            } else if (deck == 3 && bases >= 2) {
+                return 45;
+            } else if (deck == 3 && bases > 0) {
+                return 30;
+            } else if (bases >= 2) {
+                return 35;
+            }
+            return 10;
         } else if (card instanceof FortressOblivion) {
             if (deck < 3 && bases > 0) {
                 return 40;
@@ -312,6 +371,13 @@ public class TortoiseBot extends Bot {
                 return 15;
             }
             return 40;
+        } else if (card instanceof MegaMech) {
+            if (bases >= 4) {
+                return 65;
+            } else if (bases >= 2) {
+                return 55;
+            }
+            return 45;
         } else if (card instanceof MissileBot) {
             if (deck == 1) {
                 return 50;

@@ -13,6 +13,7 @@ public class AttackBot extends Bot {
     @Override
     public int getBuyCardScore(Card card) {
         int deck = getCurrentDeckNumber();
+        int bases = getNumBases();
 
         //Blob
         if (card instanceof BattleBlob) {
@@ -59,7 +60,6 @@ public class AttackBot extends Bot {
         } else if (card instanceof BlobWorld) {
             return 80;
         } else if (card instanceof BreedingSite) {
-            int bases = getNumBases();
             if (deck < 3 && bases > 0) {
                 return 55;
             } else if (deck < 3 || bases >= 2) {
@@ -70,6 +70,14 @@ public class AttackBot extends Bot {
             return 40;
         } else if (card instanceof Mothership) {
             return 100;
+        } else if (card instanceof Obliterator) {
+            int opponentBases = getOpponent().getNumBases();
+            if (opponentBases > 3) {
+                return 95;
+            } else if (opponentBases > 2) {
+                return 85;
+            }
+            return 75;
         } else if (card instanceof Ram) {
             if (deck < 3) {
                 return 70;
@@ -90,6 +98,14 @@ public class AttackBot extends Bot {
             } else {
                 return 5;
             }
+        } else if (card instanceof TradeWheel) {
+            if (deck == 1) {
+                return 40;
+            } else if (deck == 2) {
+                return 30;
+            } else if (deck == 3) {
+                return 10;
+            }
         }
 
         //Trade Federation
@@ -102,6 +118,13 @@ public class AttackBot extends Bot {
             return 15;
         } else if (card instanceof CommandShip) {
             return 75;
+        } else if (card instanceof ConstructionHauler) {
+            if (deck < 3) {
+                return 30;
+            } else if (deck == 3) {
+                return 10;
+            }
+            return 5;
         } else if (card instanceof Cutter) {
             if (deck == 1) {
                 return 60;
@@ -133,6 +156,8 @@ public class AttackBot extends Bot {
             }
         } else if (card instanceof TradeEscort) {
             return 10;
+        } else if (card instanceof TradeRaft) {
+            return 0;
         } else if (card instanceof TradingPost) {
             if (deck == 1) {
                 return 15;
@@ -141,7 +166,6 @@ public class AttackBot extends Bot {
 
         //Star Empire
         else if (card instanceof BattleBarge) {
-            int bases = getNumBases();
             if (bases >= 4) {
                 return 60;
             } else if (bases >= 2) {
@@ -157,6 +181,11 @@ public class AttackBot extends Bot {
             return 20;
         } else if (card instanceof Dreadnaught) {
             return 95;
+        } else if (card instanceof FighterBase) {
+            if (deck == 1) {
+                return 10;
+            }
+            return 20;
         } else if (card instanceof FleetHQ) {
             if (deck < 3) {
                 return 20;
@@ -172,6 +201,15 @@ public class AttackBot extends Bot {
                 return 30;
             }
             return 40;
+        } else if (card instanceof ImperialTrader) {
+            if (deck == 1) {
+                return 80;
+            } else if (deck == 2) {
+                return 60;
+            } else if (deck == 3) {
+                return 50;
+            }
+            return 40;
         } else if (card instanceof RecyclingStation) {
             return 30;
         } else if (card instanceof RoyalRedoubt) {
@@ -182,12 +220,11 @@ public class AttackBot extends Bot {
             }
             return 10;
         } else if (card instanceof StarbaseOmega) {
-            int bases = getNumBases();
             if (deck < 3 && bases > 0) {
                 return 5;
             } else if (deck < 3) {
                 return 0;
-            }  else if (bases >= 2) {
+            } else if (bases >= 2) {
                 return 5;
             } else if (bases == 0) {
                 return 0;
@@ -215,8 +252,13 @@ public class AttackBot extends Bot {
                 return 30;
             }
             return 15;
+        } else if (card instanceof DefenseBot) {
+            if (deck < 3 && bases > 0) {
+                return 10;
+            } else if (deck < 3) {
+                return 5;
+            }
         } else if (card instanceof FortressOblivion) {
-            int bases = getNumBases();
             if (deck < 3 && bases > 0) {
                 return 10;
             } else if (deck < 3) {
@@ -233,6 +275,13 @@ public class AttackBot extends Bot {
             }
         } else if (card instanceof MechWorld) {
             return 5;
+        } else if (card instanceof MegaMech) {
+            if (bases >= 4) {
+                return 60;
+            } else if (bases >= 2) {
+                return 50;
+            }
+            return 35;
         } else if (card instanceof MissileBot) {
             if (deck == 1) {
                 return 30;
@@ -277,8 +326,7 @@ public class AttackBot extends Bot {
             if (deck <= 2) {
                 return 5;
             }
-        }
-        else if (card instanceof MercCruiser) {
+        } else if (card instanceof MercCruiser) {
             if (deck == 1) {
                 return 20;
             }

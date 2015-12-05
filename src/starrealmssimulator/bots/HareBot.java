@@ -58,6 +58,8 @@ public class HareBot extends AttackBot {
             return 15;
         } else if (card instanceof CommandShip) {
             return 80;
+        } else if (card instanceof ConstructionHauler) {
+
         } else if (card instanceof Cutter) {
             if (deck == 1) {
                 return 80;
@@ -102,6 +104,10 @@ public class HareBot extends AttackBot {
             return 0;
         } else if (card instanceof TradeEscort) {
             return 15;
+        } else if (card instanceof TradeRaft) {
+            if (deck == 1) {
+                return 15;
+            }
         } else if (card instanceof TradingPost) {
             if (deck == 1) {
                 return 20;

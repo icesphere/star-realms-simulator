@@ -28,6 +28,8 @@ public abstract class Player {
 
     private boolean nextShipToTop;
 
+    private boolean nextBaseToHand;
+
     private boolean allShipsAddOneCombat;
 
     private boolean allFactionsAllied;
@@ -194,6 +196,9 @@ public abstract class Player {
 
         combat = 0;
         trade = 0;
+
+        nextShipToTop = false;
+        nextBaseToHand = false;
 
         played.clear();
 
@@ -386,6 +391,9 @@ public abstract class Player {
         if (card.isShip() && nextShipToTop) {
             nextShipToTop = false;
             deck.add(0, card);
+        } else if (card.isBase() && nextBaseToHand) {
+            nextBaseToHand = false;
+            hand.add(card);
         } else {
             discard.add(card);
         }
@@ -397,6 +405,10 @@ public abstract class Player {
 
     public void nextShipToTop() {
         nextShipToTop = true;
+    }
+
+    public void nextBaseToHand() {
+        nextBaseToHand = true;
     }
 
     public void allShipsGet1Combat() {

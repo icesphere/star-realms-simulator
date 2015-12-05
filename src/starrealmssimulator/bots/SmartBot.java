@@ -35,11 +35,15 @@ public class SmartBot extends Bot {
 
         } else if (card instanceof Mothership) {
 
+        } else if (card instanceof Obliterator) {
+
         } else if (card instanceof Ram) {
 
         } else if (card instanceof TheHive) {
 
         } else if (card instanceof TradePod) {
+
+        } else if (card instanceof TradeWheel) {
 
         }
 
@@ -49,6 +53,8 @@ public class SmartBot extends Bot {
         } else if (card instanceof CentralOffice) {
 
         } else if (card instanceof CommandShip) {
+
+        } else if (card instanceof ConstructionHauler) {
 
         } else if (card instanceof Cutter) {
 
@@ -70,6 +76,8 @@ public class SmartBot extends Bot {
 
         } else if (card instanceof TradeEscort) {
 
+        } else if (card instanceof TradeRaft) {
+
         } else if (card instanceof TradingPost) {
 
         }
@@ -83,11 +91,15 @@ public class SmartBot extends Bot {
 
         } else if (card instanceof Dreadnaught) {
 
+        } else if (card instanceof FighterBase) {
+
         } else if (card instanceof FleetHQ) {
 
         } else if (card instanceof ImperialFighter) {
 
         } else if (card instanceof ImperialFrigate) {
+
+        } else if (card instanceof ImperialTrader) {
 
         } else if (card instanceof RecyclingStation) {
 
@@ -110,6 +122,8 @@ public class SmartBot extends Bot {
 
         } else if (card instanceof BrainWorld) {
 
+        } else if (card instanceof DefenseBot) {
+
         } else if (card instanceof FortressOblivion) {
 
         } else if (card instanceof Junkyard) {
@@ -117,6 +131,8 @@ public class SmartBot extends Bot {
         } else if (card instanceof MachineBase) {
 
         } else if (card instanceof MechWorld) {
+
+        } else if (card instanceof MegaMech) {
 
         } else if (card instanceof MissileBot) {
 

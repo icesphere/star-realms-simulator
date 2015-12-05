@@ -111,6 +111,7 @@ public class GameService {
         List<Card> deck = new ArrayList<>();
         deck.addAll(getBaseSetDeck());
         deck.addAll(getYear1PromoCards());
+        deck.addAll(getBasesAndBattleships());
 
         game.setDeck(deck);
 
@@ -359,6 +360,32 @@ public class GameService {
         return cards;
     }
 
+    public List<Card> getBasesAndBattleships() {
+        List<Card> cards = new ArrayList<>();
+
+        cards.add(new MegaMech());
+
+        cards.add(new DefenseBot());
+        cards.add(new DefenseBot());
+
+        cards.add(new ImperialTrader());
+
+        cards.add(new FighterBase());
+        cards.add(new FighterBase());
+
+        cards.add(new Obliterator());
+
+        cards.add(new TradeWheel());
+        cards.add(new TradeWheel());
+
+        cards.add(new ConstructionHauler());
+
+        cards.add(new TradeRaft());
+        cards.add(new TradeRaft());
+
+        return cards;
+    }
+
     public static void main(String[] args) {
         GameService service = new GameService();
 
@@ -366,7 +393,7 @@ public class GameService {
 
         bots.add(new HareBot());
         bots.add(new AttackBot());
-        bots.add(new DefenseBot());
+        bots.add(new DefenseAndBaseBot());
         bots.add(new VelocityBot());
         bots.add(new TortoiseBot());
         bots.add(new ExpensiveBot());
@@ -398,11 +425,13 @@ public class GameService {
 
         //service.simulateTwoBots(new VelocityBot(), new HareBot());
 
+        service.simulateAllAgainstAll(bots);
+
         //service.simulateAllAgainstAllJsonBots(botFiles);
 
         //service.simulateOneAgainstAllBotsJsonBots("HareBot.json", botFiles);
 
-        service.simulateOneAgainstAllBots(new HareBot(), bots);
+        //service.simulateOneAgainstAllBots(new HareBot(), bots);
     }
 
     private void simulateAllAgainstAllJsonBots(List<String> botFiles) {
