@@ -590,4 +590,8 @@ public abstract class Player {
     public abstract Base chooseBaseToReturnToHand();
 
     public abstract Faction chooseFactionForCard(Card card);
+
+    public int getCurrentDeckNumber() {
+        return getShuffles() + 1;
+    }
 }

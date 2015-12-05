@@ -1,5 +1,7 @@
 package starrealmssimulator.model;
 
+import starrealmssimulator.cards.*;
+
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -101,9 +103,25 @@ public abstract class Bot extends Player {
         applyCombatAndEndTurn();
     }
 
-    public abstract boolean useAllyAfterPlay(Card card);
+    public boolean useAllyAfterPlay(Card card) {
+        if (card instanceof PatrolMech) {
+            return true;
+        }
 
-    public abstract boolean useBaseAfterPlay(Base base);
+        return false;
+    }
+
+    public boolean useBaseAfterPlay(Base base) {
+        if (base instanceof RecyclingStation) {
+            return true;
+        }
+
+        if (base instanceof BrainWorld) {
+            return true;
+        }
+
+        return false;
+    }
 
     private boolean shouldScrapCard(Card card) {
         return getScrapForBenefitScore(card) > 0;
@@ -206,23 +224,250 @@ public abstract class Bot extends Player {
         return false;
     }
 
-    public abstract int getBuyCardScore(Card card);
+    public int getBuyCardScore(Card card) {
+        return card.getCost();
+    }
 
-    public abstract int getUseBaseScore(Base card);
+    public int getUseBaseScore(Base card) {
+        if (card instanceof RecyclingStation) {
+            return 100;
+        } else if (card instanceof MachineBase) {
+            return 90;
+        } else if (card instanceof Junkyard) {
+            return 80;
+        } else if (card instanceof BrainWorld) {
+            return 70;
+        } else if (card instanceof BlobWorld) {
+            return 10;
+        } else {
+            return 20;
+        }
+    }
 
-    public abstract int getPlayCardScore(Card card);
+    public int getPlayCardScore(Card card) {
+        if (card instanceof FleetHQ) {
+            return 100;
+        } else if (card instanceof RecyclingStation) {
+            return 90;
+        } else if (card instanceof SupplyBot) {
+            return 80;
+        } else if (card instanceof TradeBot) {
+            return 70;
+        } else if (card instanceof MissileBot) {
+            return 60;
+        } else if (card instanceof PatrolMech) {
+            return 50;
+        } else if (card instanceof BrainWorld) {
+            return 40;
+        } else if (card instanceof Explorer) {
+            return 10;
+        } else if (card instanceof StealthNeedle) {
+            return 8;
+        } else if (card instanceof Scout) {
+            return 6;
+        } else if (card instanceof Viper) {
+            return 4;
+        } else {
+            return 20;
+        }
+    }
 
-    public abstract int getDestroyBaseScore(Base card);
+    public int getDestroyBaseScore(Base card) {
+        int opponentStarterCards = getOpponent().countCardsByType(getOpponent().getAllCards(), Card::isStarterCard);
 
-    public abstract int getAttackBaseScore(Base card);
+        if (card instanceof BrainWorld) {
+            if (opponentStarterCards >= 8) {
+                return 12;
+            } else if (opponentStarterCards >= 6) {
+                return 11;
+            } else if (opponentStarterCards >= 4) {
+                return 10;
+            }
+        } else if (card instanceof MachineBase) {
+            if (opponentStarterCards >= 8) {
+                return 11;
+            } else if (opponentStarterCards >= 6) {
+                return 10;
+            } else if (opponentStarterCards >= 4) {
+                return 9;
+            }
+        } else if (card instanceof Junkyard) {
+            if (opponentStarterCards >= 8) {
+                return 8;
+            } else if (opponentStarterCards >= 6) {
+                return 7;
+            }
+        } else if (card instanceof BlobWorld) {
+            int opponentBlobCards = getOpponent().countCardsByType(getOpponent().getAllCards(), Card::isBlob);
+            if (opponentBlobCards >= 6) {
+                return 10;
+            } else if (opponentBlobCards >= 3) {
+                return 9;
+            }
+        } else if (card instanceof RecyclingStation) {
+            if (opponentStarterCards >= 8) {
+                return 6;
+            } else if (opponentStarterCards >= 5) {
+                return 5;
+            }
+        }
 
-    public abstract int getCopyShipScore(Ship card);
+        return card.getCost();
+    }
 
-    public abstract int getScrapCardFromTradeRowScore(Card card);
+    public int getAttackBaseScore(Base card) {
+        return getDestroyBaseScore(card);
+    }
 
-    public abstract int getCardToTopOfDeckScore(Card card);
+    public int getCopyShipScore(Ship card) {
+        if (card instanceof StealthNeedle) {
+            return 0;
+        }
+        return getBuyCardScore(card);
+    }
 
-    public abstract int getReturnBaseToHandScore(Base card);
+    public int getScrapCardFromTradeRowScore(Card card) {
+        return 0;
+    }
+
+    public int getCardToTopOfDeckScore(Card card) {
+        return getBuyCardScore(card);
+    }
+
+    public int getReturnBaseToHandScore(Base card) {
+        return getBuyCardScore(card);
+    }
+
+    public int getDiscardCardScore(Card card) {
+        if (card instanceof Viper) {
+            return 100;
+        } else if (card instanceof Scout) {
+            return 90;
+        } else if (card instanceof Explorer) {
+            return 80;
+        }
+
+        return 20 - card.getCost();
+    }
+
+    public int getScrapCardScore(Card card) {
+        if (card instanceof Viper) {
+            return 100;
+        } else if (card instanceof Scout) {
+            return 90;
+        } else if (card instanceof Explorer) {
+            return 80;
+        }
+
+        return 20 - card.getCost();
+    }
+
+    public int getScrapForBenefitScore(Card card) {
+        int authority = getAuthority();
+        int opponentAuthority = getOpponent().getAuthority();
+
+        int numOpponentOutposts = getOpponent().getOutposts().size();
+
+        int deck = getCurrentDeckNumber();
+
+        if (numOpponentOutposts == 0 && card.getCombatWhenScrapped() >= opponentAuthority) {
+            return 10;
+        }
+
+        if (card instanceof Battlecruiser || card instanceof TheArk) {
+            if (numOpponentOutposts > 0 && getCombat() >= opponentAuthority) {
+                return 10;
+            }
+        }
+
+        if (card instanceof ImperialFrigate) {
+            if (opponentAuthority <= 10 || authority <= 10) {
+                return 5;
+            }
+        }
+
+        if (card instanceof PortOfCall) {
+            if (numOpponentOutposts > 0 && getCombat() >= opponentAuthority) {
+                return 10;
+            } else if (authority >= 20 && opponentAuthority <= 10) {
+                return 5;
+            }
+        }
+
+        if (card instanceof SurveyShip) {
+            if (getOpponent().getHand().size() <= 4 || opponentAuthority <= 10 || authority <= 10) {
+                return 5;
+            }
+        }
+
+        if (card instanceof BlobWheel || card instanceof Ram || card instanceof SpaceStation) {
+            int buyScoreIncrease = getBuyScoreIncrease(card.getTradeWhenScrapped());
+            if ((deck < 3 && buyScoreIncrease >= 20) || buyScoreIncrease >= 40) {
+                return 5;
+            }
+        }
+
+        if (card instanceof Explorer) {
+            if (deck > 2) {
+                return 5;
+            }
+            if (getHand().isEmpty() && getUnusedBasesAndOutposts().isEmpty() && getCombat() < getSmallestOutpostShield() && (getCombat() + 2) >= getSmallestOutpostShield()) {
+                return 5;
+            }
+        }
+
+        return 0;
+    }
+
+    public int getChoice(Card card) {
+        int deck = getCurrentDeckNumber();
+        int opponentAuthority = getOpponent().getAuthority();
+
+        if (card instanceof BarterWorld) {
+            if (deck < 3) {
+                return 2;
+            }
+        } else if (card instanceof BlobWorld) {
+            int blobCardsPlayed = countCardsByType(getPlayed(), Card::isBlob);
+            if (blobCardsPlayed >= 2 && opponentAuthority > 5) {
+                return 2;
+            }
+        } else if (card instanceof DefenseCenter) {
+            if (opponentAuthority <= 2) {
+                return 2;
+            }
+            if (opponentAuthority < 10 && getAuthority() > 10) {
+                return 2;
+            }
+        } else if (card instanceof PatrolMech) {
+            if (deck > 2) {
+                return 2;
+            }
+        } else if (card instanceof RecyclingStation) {
+            int buyScoreIncrease = getBuyScoreIncrease(1);
+            if (deck <= 3 && buyScoreIncrease >= 20) {
+                return 1;
+            } else {
+                return 2;
+            }
+        } else if (card instanceof TradingPost) {
+            if (deck <= 2) {
+                return 1;
+            }
+            int buyScoreIncrease = getBuyScoreIncrease(1);
+            if (getAuthority() >= 20 && buyScoreIncrease >= 20) {
+                return 1;
+            } else {
+                return 2;
+            }
+        } else if (card instanceof Starmarket) {
+            if (deck <= 2) {
+                return 2;
+            }
+        }
+
+        return 1;
+    }
 
     @Override
     public int discardCards(int cards, boolean optional) {
@@ -254,8 +499,6 @@ public abstract class Bot extends Player {
         drawCards(cardsDiscarded);
     }
 
-    public abstract int getDiscardCardScore(Card card);
-
     @Override
     public Ship getShipToCopy() {
         List<Card> sortedCards = getInPlay().stream().filter(Card::isShip).sorted(copyShipScoreDescending).collect(toList());
@@ -274,12 +517,6 @@ public abstract class Bot extends Player {
         List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
         return sortedCards.get(0);
     }
-
-    public abstract int getScrapCardScore(Card card);
-
-    public abstract int getScrapForBenefitScore(Card card);
-
-    public abstract int getChoice(Card card);
 
     @Override
     public void makeChoice(Card card, Choice... choices) {
@@ -389,7 +626,7 @@ public abstract class Bot extends Player {
         return null;
     }
 
-    public int getBuyScoreIncrease(Card card) {
+    public int getBuyScoreIncrease(int extraTrade) {
         int cardToBuyScore = 0;
 
         List<Card> cardsToBuy = getCardsToBuy();
@@ -399,7 +636,7 @@ public abstract class Bot extends Player {
             }
         }
 
-        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> getTrade() + card.getTradeWhenScrapped() >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
+        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> getTrade() + extraTrade >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
         if (!sortedCards.isEmpty()) {
             int bestCardScore = getBuyCardScore(sortedCards.get(0));
             return bestCardScore - cardToBuyScore;

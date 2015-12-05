@@ -304,18 +304,6 @@
             "rules": [
                 {
                     "deck": 1,
-                    "score": 10
-                },
-                {
-                    "score": 0
-                }
-            ]
-        },
-        {
-            "card": "Starmarket",
-            "rules": [
-                {
-                    "deck": 1,
                     "bases": "> 0",
                     "score": 10
                 },

@@ -1,0 +1,290 @@
+package starrealmssimulator.bots;
+
+import starrealmssimulator.cards.*;
+import starrealmssimulator.model.Bot;
+import starrealmssimulator.model.Card;
+
+public class AttackBot extends Bot {
+    @Override
+    public String getPlayerName() {
+        return "AttackBot";
+    }
+
+    @Override
+    public int getBuyCardScore(Card card) {
+        int deck = getCurrentDeckNumber();
+
+        //Blob
+        if (card instanceof BattleBlob) {
+            return 85;
+        } else if (card instanceof BattlePod) {
+            if (deck < 3) {
+                return 40;
+            }
+            return 30;
+        } else if (card instanceof BattleScreecher) {
+            if (deck < 3) {
+                return 50;
+            }
+            return 40;
+        } else if (card instanceof BlobCarrier) {
+            if (deck < 3) {
+                return 90;
+            }
+            return 70;
+        } else if (card instanceof BlobDestroyer) {
+            int opponentBases = getOpponent().getNumBases();
+            if (opponentBases > 3) {
+                return 80;
+            } else if (opponentBases > 2) {
+                return 70;
+            }
+            return 60;
+        } else if (card instanceof BlobFighter) {
+            if (deck == 1) {
+                return 30;
+            } else if (deck == 2) {
+                return 50;
+            } else {
+                return 60;
+            }
+        } else if (card instanceof BlobWheel) {
+            if (deck == 1) {
+                return 50;
+            } else if (deck == 2) {
+                return 25;
+            } else if (deck == 3) {
+                return 5;
+            }
+        } else if (card instanceof BlobWorld) {
+            return 80;
+        } else if (card instanceof BreedingSite) {
+            int bases = getNumBases();
+            if (deck < 3 && bases > 0) {
+                return 55;
+            } else if (deck < 3 || bases >= 2) {
+                return 50;
+            } else if (bases == 0) {
+                return 30;
+            }
+            return 40;
+        } else if (card instanceof Mothership) {
+            return 100;
+        } else if (card instanceof Ram) {
+            if (deck < 3) {
+                return 70;
+            }
+            return 55;
+        } else if (card instanceof TheHive) {
+            if (deck <= 2) {
+                return 20;
+            }
+            return 50;
+        } else if (card instanceof TradePod) {
+            if (deck == 1) {
+                return 80;
+            } else if (deck == 2) {
+                return 40;
+            } else if (deck == 3) {
+                return 10;
+            } else {
+                return 5;
+            }
+        }
+
+        //Trade Federation
+        else if (card instanceof BarterWorld) {
+            if (deck == 1) {
+                return 25;
+            }
+            return 10;
+        } else if (card instanceof CentralOffice) {
+            return 15;
+        } else if (card instanceof CommandShip) {
+            return 75;
+        } else if (card instanceof Cutter) {
+            if (deck == 1) {
+                return 60;
+            } else if (deck == 2) {
+                return 20;
+            }
+        } else if (card instanceof DefenseCenter) {
+            return 5;
+        } else if (card instanceof EmbassyYacht) {
+            return 0;
+        } else if (card instanceof FederationShuttle) {
+            return 0;
+        } else if (card instanceof Flagship) {
+            return 50;
+        } else if (card instanceof Freighter) {
+            return 0;
+        } else if (card instanceof Megahauler) {
+            if (deck < 3) {
+                return 50;
+            } else if (deck == 3) {
+                return 30;
+            }
+            return 10;
+        } else if (card instanceof PortOfCall) {
+            return 10;
+        } else if (card instanceof Starmarket) {
+            if (deck == 1) {
+                return 10;
+            }
+        } else if (card instanceof TradeEscort) {
+            return 10;
+        } else if (card instanceof TradingPost) {
+            if (deck == 1) {
+                return 15;
+            }
+        }
+
+        //Star Empire
+        else if (card instanceof BattleBarge) {
+            int bases = getNumBases();
+            if (bases >= 4) {
+                return 60;
+            } else if (bases >= 2) {
+                return 50;
+            }
+            return 40;
+        } else if (card instanceof Battlecruiser) {
+            return 75;
+        } else if (card instanceof Corvette) {
+            if (deck < 3) {
+                return 10;
+            }
+            return 20;
+        } else if (card instanceof Dreadnaught) {
+            return 95;
+        } else if (card instanceof FleetHQ) {
+            if (deck < 3) {
+                return 20;
+            }
+            return 10;
+        } else if (card instanceof ImperialFighter) {
+            if (deck == 1) {
+                return 10;
+            }
+            return 15;
+        } else if (card instanceof ImperialFrigate) {
+            if (deck < 3) {
+                return 30;
+            }
+            return 40;
+        } else if (card instanceof RecyclingStation) {
+            return 30;
+        } else if (card instanceof RoyalRedoubt) {
+            return 30;
+        } else if (card instanceof SpaceStation) {
+            if (deck == 1) {
+                return 30;
+            }
+            return 10;
+        } else if (card instanceof StarbaseOmega) {
+            int bases = getNumBases();
+            if (deck < 3 && bases > 0) {
+                return 5;
+            } else if (deck < 3) {
+                return 0;
+            }  else if (bases >= 2) {
+                return 5;
+            } else if (bases == 0) {
+                return 0;
+            }
+            return 5;
+        } else if (card instanceof SurveyShip) {
+            return 5;
+        } else if (card instanceof WarWorld) {
+            return 30;
+        }
+
+        //Machine Cult
+        else if (card instanceof BattleMech) {
+            return 30;
+        } else if (card instanceof BattleStation) {
+            if (deck < 3) {
+                return 10;
+            }
+            return 20;
+        } else if (card instanceof BrainWorld) {
+            if (deck < 3) {
+                return 80;
+            }
+            if (deck == 3) {
+                return 30;
+            }
+            return 15;
+        } else if (card instanceof FortressOblivion) {
+            int bases = getNumBases();
+            if (deck < 3 && bases > 0) {
+                return 10;
+            } else if (deck < 3) {
+                return 5;
+            }
+        } else if (card instanceof Junkyard) {
+            return 0;
+        } else if (card instanceof MachineBase) {
+            if (deck < 3) {
+                return 30;
+            }
+            if (deck == 3) {
+                return 10;
+            }
+        } else if (card instanceof MechWorld) {
+            return 5;
+        } else if (card instanceof MissileBot) {
+            if (deck == 1) {
+                return 30;
+            } else if (deck == 2) {
+                return 10;
+            }
+        } else if (card instanceof MissileMech) {
+            if (getOpponent().getNumBases() > 3) {
+                return 70;
+            }
+            return 50;
+        } else if (card instanceof PatrolMech) {
+            if (deck == 1) {
+                return 40;
+            } else if (deck == 2) {
+                return 20;
+            }
+        } else if (card instanceof SupplyBot) {
+            if (deck == 1) {
+                return 20;
+            } else if (deck == 2) {
+                return 10;
+            }
+        } else if (card instanceof StealthNeedle) {
+            if (deck < 3) {
+                return 30;
+            }
+            return 50;
+        } else if (card instanceof TheArk) {
+            if (deck < 3) {
+                return 80;
+            }
+            return 75;
+        } else if (card instanceof TradeBot) {
+            if (deck == 1) {
+                return 10;
+            }
+        }
+
+        //Other
+        else if (card instanceof Explorer) {
+            if (deck <= 2) {
+                return 5;
+            }
+        }
+        else if (card instanceof MercCruiser) {
+            if (deck == 1) {
+                return 20;
+            }
+            return 40;
+        }
+
+        return 0;
+    }
+}

@@ -1,6 +1,7 @@
 package starrealmssimulator.service;
 
-import starrealmssimulator.bots.JsonBot;
+import starrealmssimulator.bots.*;
+import starrealmssimulator.bots.json.JsonBot;
 import starrealmssimulator.cards.*;
 import starrealmssimulator.model.*;
 
@@ -14,7 +15,15 @@ public class GameService {
 
     private static Map<String, JsonBotCache> botCache = new ConcurrentHashMap<>();
 
-    public SimulationInfo simulateGames(List<String> botFiles, int gamesToSimulate) {
+    public SimulationInfo simulateGamesWithJsonBots(List<String> botFiles, int gamesToSimulate) {
+        List<Bot> bots = new ArrayList<>();
+        for (String botFile : botFiles) {
+            bots.add(new JsonBot(botFile));
+        }
+        return simulateGames(bots, gamesToSimulate);
+    }
+
+    public SimulationInfo simulateGames(List<Bot> bots, int gamesToSimulate) {
         List<Game> games = new ArrayList<>(gamesToSimulate);
 
         int firstPlayerWins = 0;
@@ -24,7 +33,7 @@ public class GameService {
         int gamesSimulated = 0;
 
         for (int i = 0; i < gamesToSimulate; i++) {
-            games.add(simulateGame(botFiles));
+            games.add(simulateGame(bots));
             gamesSimulated++;
             if (gamesSimulated % 1000 == 0) {
                 if (EXTRA_LOGGING) {
@@ -56,9 +65,9 @@ public class GameService {
 
         DecimalFormat f = new DecimalFormat("##.00");
 
-        boolean playAgainstSelf = botFiles.get(0).equals(botFiles.get(1));
+        boolean playAgainstSelf = bots.get(0).getPlayerName().equals(bots.get(1).getPlayerName());
 
-        String botName = botFiles.get(0).substring(0, botFiles.get(0).length() - 5);
+        String botName = bots.get(0).getPlayerName();
         String botPercent = "";
         String opponentPercent = "";
         String opponentName = "";
@@ -96,7 +105,7 @@ public class GameService {
         return simulationInfo;
     }
 
-    public Game simulateGame(List<String> botFiles) {
+    public Game simulateGame(List<Bot> bots) {
         Game game = new Game();
 
         List<Card> deck = new ArrayList<>();
@@ -111,9 +120,17 @@ public class GameService {
 
         game.addCardsToTradeRow(5);
 
-        List<Player> players = new ArrayList<>(botFiles.size());
-        for (String botFile : botFiles) {
-            players.add(new JsonBot(botFile));
+        List<Player> players = new ArrayList<>(bots.size());
+        for (Bot bot : bots) {
+            try {
+                if (bot instanceof JsonBot) {
+                    players.add(new JsonBot(((JsonBot) bot).getBotFile()));
+                } else {
+                    players.add(bot.getClass().newInstance());
+                }
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
 
         Player player1 = players.get(0);
@@ -135,11 +152,11 @@ public class GameService {
                 if (EXTRA_LOGGING) {
                     System.out.println("-----Game stuck, trying again-----");
                 }
-                return simulateGame(botFiles);
+                return simulateGame(bots);
             } else {
                 game.gameLog("-------------------------");
                 game.gameLog(game.getCurrentPlayer().getPlayerName() + "'s turn: ");
-                game.gameLog("deck #: " + (game.getCurrentPlayer().getShuffles() + 1));
+                game.gameLog("deck #: " + (game.getCurrentPlayer().getCurrentDeckNumber()));
                 game.gameLog("");
                 game.gameLog("Trade Row: " + game.getCardsAsString(game.getTradeRow()));
                 game.gameLog("");
@@ -345,14 +362,24 @@ public class GameService {
     public static void main(String[] args) {
         GameService service = new GameService();
 
-        List<String> botFiles = new ArrayList<>();
+        List<Bot> bots = new ArrayList<>();
+
+        bots.add(new HareBot());
+        bots.add(new AttackBot());
+        bots.add(new DefenseBot());
+        bots.add(new VelocityBot());
+        bots.add(new TortoiseBot());
+        bots.add(new ExpensiveBot());
+        bots.add(new RandomBot());
+
+        /*List<String> botFiles = new ArrayList<>();
 
         botFiles.add("HareBot.json");
         botFiles.add("AttackBot.json");
         botFiles.add("DefenseBot.json");
         botFiles.add("VelocityBot.json");
         botFiles.add("TortoiseBot.json");
-        botFiles.add("ExpensiveBot.json");
+        botFiles.add("ExpensiveBot.json");*/
 
         //botFiles.add("SmartBot.json");
 
@@ -367,36 +394,47 @@ public class GameService {
         botFiles.add("RedGreenBot.json");
         botFiles.add("YellowRedBot.json");*/
 
-        service.simulateTwoBots("VelocityBot.json", "SmartBot.json");
+        //service.simulateTwoBots("VelocityBot.json", "SmartBot.json");
 
-        //service.simulateAllAgainstAll(botFiles);
+        //service.simulateTwoBots(new VelocityBot(), new HareBot());
 
-        //service.simulateOneAgainstAllBots("HareBot.json", botFiles);
+        //service.simulateAllAgainstAllJsonBots(botFiles);
+
+        //service.simulateOneAgainstAllBotsJsonBots("HareBot.json", botFiles);
+
+        service.simulateOneAgainstAllBots(new HareBot(), bots);
     }
 
-    private void simulateAllAgainstAll(List<String> botFiles) {
+    private void simulateAllAgainstAllJsonBots(List<String> botFiles) {
         for (String botFile : botFiles) {
-            simulateOneAgainstAllBots(botFile, botFiles);
+            simulateOneAgainstAllBotsJsonBots(botFile, botFiles);
             System.out.println("");
         }
     }
 
-    private void simulateOneAgainstAllBots(String botFile, List<String> opponentBotFiles) {
+    private void simulateAllAgainstAll(List<Bot> bots) {
+        for (Bot bot : bots) {
+            simulateOneAgainstAllBots(bot, bots);
+            System.out.println("");
+        }
+    }
+
+    private void simulateOneAgainstAllBots(Bot bot, List<Bot> opponentBots) {
         int gamesToSimulate = 10000;
 
         int totalGames = 0;
         int firstPlayerWins = 0;
         int mainBotWins = 0;
 
-        String botName = botFile.substring(0, botFile.length() - 5);
+        String botName = bot.getPlayerName();
 
         System.out.println("--" + botName + "--");
 
-        for (String opponentBotFile : opponentBotFiles) {
-            List<String> botFiles = new ArrayList<>(2);
-            botFiles.add(botFile);
-            botFiles.add(opponentBotFile);
-            SimulationInfo info = this.simulateGames(botFiles, gamesToSimulate);
+        for (Bot opponentBot : opponentBots) {
+            List<Bot> bots = new ArrayList<>(2);
+            bots.add(bot);
+            bots.add(opponentBot);
+            SimulationInfo info = this.simulateGames(bots, gamesToSimulate);
             for (String playerName : info.getSimulationStats().keySet()) {
                 SimulationStats stats = info.getSimulationStats().get(playerName);
                 firstPlayerWins += stats.getFirstPlayerWins();
@@ -416,6 +454,18 @@ public class GameService {
         //System.out.println("Overall 1st player wins: " + f.format(((float) firstPlayerWins / totalGames) * 100) + "%");
     }
 
+    private void simulateOneAgainstAllBotsJsonBots(String botFile, List<String> opponentBotFiles) {
+        Bot bot = new JsonBot(botFile);
+
+        List<Bot> opponentBots = new ArrayList<>();
+
+        for (String opponentBotFile : opponentBotFiles) {
+            opponentBots.add(new JsonBot(opponentBotFile));
+        }
+
+        simulateOneAgainstAllBots(bot, opponentBots);
+    }
+
     private void simulateTwoBots(String botFile1, String botFile2) {
         int gamesToSimulate = 10000;
 
@@ -424,7 +474,18 @@ public class GameService {
         botFiles.add(botFile1);
         botFiles.add(botFile2);
 
-        this.simulateGames(botFiles, gamesToSimulate);
+        this.simulateGamesWithJsonBots(botFiles, gamesToSimulate);
+    }
+
+    private void simulateTwoBots(Bot bot1, Bot bot2) {
+        int gamesToSimulate = 10000;
+
+        List<Bot> bots = new ArrayList<>();
+
+        bots.add(bot1);
+        bots.add(bot2);
+
+        this.simulateGames(bots, gamesToSimulate);
     }
 
     public static JsonBotCache getBotCache(String botFile) {

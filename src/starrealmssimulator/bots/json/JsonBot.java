@@ -1,4 +1,4 @@
-package starrealmssimulator.bots;
+package starrealmssimulator.bots.json;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +16,8 @@ import java.util.Map;
 public class JsonBot extends Bot {
     private String botName;
     private String author;
+    private String botFile;
+
     private Map<String, CardRules> buyRulesMap;
     private Map<String, CardRules> discardRulesMap;
     private Map<String, CardRules> scrapRulesMap;
@@ -32,6 +34,8 @@ public class JsonBot extends Bot {
     private Map<String, CardInfo> cardInfoMap;
 
     public JsonBot(String botFile) {
+        this.botFile = botFile;
+
         JsonBotCache jsonBotCache = GameService.getBotCache(botFile);
 
         if (jsonBotCache != null) {
@@ -481,7 +485,7 @@ public class JsonBot extends Bot {
                     return getOpponent().getHand().size();
 
                 case "deck":
-                    return getShuffles() + 1;
+                    return getCurrentDeckNumber();
 
                 case "ships":
                     return getNumShips();
@@ -524,7 +528,7 @@ public class JsonBot extends Bot {
                     return getCombat() + card.getCombatWhenScrapped();
 
                 case "buy.score.increase":
-                    return getBuyScoreIncrease(card);
+                    return getBuyScoreIncrease(card.getTradeWhenScrapped());
 
                 case "trade_row.blob":
                     return countCardsByType(getGame().getTradeRow(), Card::isBlob);
@@ -708,5 +712,9 @@ public class JsonBot extends Bot {
             default:
                 return value == ruleValue;
         }
+    }
+
+    public String getBotFile() {
+        return botFile;
     }
 }
