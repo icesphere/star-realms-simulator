@@ -607,3 +607,50 @@ RandomBot v TortoiseBot - 6.50% - 93.50% (Avg # turns: 27.21)
 RandomBot v ExpensiveBot - 12.19% - 87.81% (Avg # turns: 29.18)
 RandomBot v RandomBot - 1st player wins: 55.23% (Avg # turns: 30.56)
 RandomBot Overall wins: 8.91%
+
+
+**************************************
+
+Java bots - compare overall results for different sets
+
+--HareBot--
+Base set - 63.89%
+Base set + Year 1 Promos - 56.98%
+Base set + Bases & Battleships - 62.02%
+Base set + Year 1 Promos + Bases & Battleships - 56.27%
+
+--AttackBot--
+Base set - 53.74%
+Base set + Year 1 Promos - 49.27%
+Base set + Bases & Battleships - 53.44%
+Base set + Year 1 Promos + Bases & Battleships - 50.01%
+
+--DefenseBot--
+Base set - 51.45%
+Base set + Year 1 Promos - 54.25%
+Base set + Bases & Battleships - 52.07%
+Base set + Year 1 Promos + Bases & Battleships - 54.82%
+
+--VelocityBot--
+Base set - 67.95%
+Base set + Year 1 Promos - 64.65%
+Base set + Bases & Battleships - 67.77%
+Base set + Year 1 Promos + Bases & Battleships - 64.71%
+
+--TortoiseBot--
+Base set - 63.12%
+Base set + Year 1 Promos - 63.10%
+Base set + Bases & Battleships - 63.08%
+Base set + Year 1 Promos + Bases & Battleships - 62.63%
+
+--ExpensiveBot--
+Base set - 40.00%
+Base set + Year 1 Promos - 48.13%
+Base set + Bases & Battleships - 42.10%
+Base set + Year 1 Promos + Bases & Battleships - 48.53%
+
+--RandomBot--
+Base set - 9.59%
+Base set + Year 1 Promos - 13.52%
+Base set + Bases & Battleships - 8.91%
+Base set + Year 1 Promos + Bases & Battleships - 12.74%
