@@ -19,6 +19,7 @@ public abstract class Player {
     private List<Card> played = new ArrayList<>();
     private List<Card> inPlay = new ArrayList<>();
     private List<Base> bases = new ArrayList<>();
+    private List<Gambit> gambits = new ArrayList<>();
 
     private int combat;
     private int trade;
@@ -33,6 +34,8 @@ public abstract class Player {
     private boolean allShipsAddOneCombat;
 
     private boolean allFactionsAllied;
+
+    private boolean preventFirstDamage;
 
     private int shuffles;
 
@@ -478,7 +481,12 @@ public abstract class Player {
 
     public void attackOpponentWithRemainingCombat() {
         getGame().gameLog("Applied " + combat + " combat to opponent");
-        opponent.reduceAuthority(combat);
+        if (opponent.isPreventFirstDamage() && combat > 0) {
+            opponent.reduceAuthority(combat - 1);
+            opponent.setPreventFirstDamage(false);
+        } else {
+            opponent.reduceAuthority(combat);
+        }
         combat = 0;
     }
 
@@ -605,5 +613,53 @@ public abstract class Player {
 
     public int getCurrentDeckNumber() {
         return getShuffles() + 1;
+    }
+
+    public void addCardFromDiscardToTopOfDeck() {
+        Card card = chooseCardFromDiscardToAddToTopOfDeck();
+        if (card != null) {
+            discard.remove(card);
+            deck.add(0, card);
+        }
+    }
+
+    public abstract Card chooseCardFromDiscardToAddToTopOfDeck();
+
+    public boolean isPreventFirstDamage() {
+        return preventFirstDamage;
+    }
+
+    public void setPreventFirstDamage(boolean preventFirstDamage) {
+        this.preventFirstDamage = preventFirstDamage;
+    }
+
+    public void acquireFreeCard(int maxCost) {
+        Card card = chooseFreeCardToAcquire(maxCost);
+        if (card != null) {
+            discard.add(card);
+        }
+    }
+
+    public abstract Card chooseFreeCardToAcquire(int maxCost);
+
+    public List<Gambit> getGambits() {
+        return gambits;
+    }
+
+    public List<Gambit> getScrappableGambits() {
+        return gambits.stream().filter(g -> g instanceof ScrappableGambit).collect(toList());
+    }
+
+    public List<Gambit> getEveryTurnGambits() {
+        return gambits.stream().filter(g -> g instanceof EveryTurnGambit).collect(toList());
+    }
+
+    public void setGambits(List<Gambit> gambits) {
+        this.gambits = gambits;
+    }
+
+    public void gambitScrapped(Gambit gambit) {
+        getGame().gameLog("Scrapped gambit " + gambit.getName());
+        this.getGambits().remove(gambit);
     }
 }

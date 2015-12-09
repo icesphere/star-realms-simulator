@@ -1,6 +1,7 @@
 package starrealmssimulator.model;
 
 import starrealmssimulator.cards.*;
+import starrealmssimulator.gambits.*;
 
 import java.util.*;
 
@@ -28,9 +29,17 @@ public abstract class Bot extends Player {
     protected Comparator<Card> scrapCardFromTradeRowScoreDescending = (c1, c2) -> Integer.compare(getScrapCardFromTradeRowScore(c2), getScrapCardFromTradeRowScore(c1));
     protected Comparator<Card> cardToTopOfDeckScoreDescending = (c1, c2) -> Integer.compare(getCardToTopOfDeckScore(c2), getCardToTopOfDeckScore(c1));
     protected Comparator<Base> returnBaseToHandScoreDescending = (c1, c2) -> Integer.compare(getReturnBaseToHandScore(c2), getReturnBaseToHandScore(c1));
+    protected Comparator<Gambit> useGambitScoreDescending = (g1, g2) -> Integer.compare(getUseGambitScore(g2), getUseGambitScore(g1));
 
     @Override
     public void takeTurn() {
+
+        List<Gambit> everyTurnGambits = getEveryTurnGambits();
+        for (Gambit gambit : everyTurnGambits) {
+            getGame().gameLog("Active gambit " + gambit.getName());
+            ((EveryTurnGambit) gambit).everyTurnAbility(this);
+        }
+
         boolean endTurn = false;
 
         while (!endTurn) {
@@ -57,10 +66,21 @@ public abstract class Bot extends Player {
             List<Base> unusedBasesAndOutposts = getUnusedBasesAndOutposts();
 
             if (!unusedBasesAndOutposts.isEmpty()) {
-                List<Base> sortedBases = getUnusedBasesAndOutposts().stream().sorted(useBaseScoreDescending).collect(toList());
+                List<Base> sortedBases = unusedBasesAndOutposts.stream().sorted(useBaseScoreDescending).collect(toList());
                 for (Base sortedBase : sortedBases) {
                     if (sortedBase.useBase(this)) {
                         endTurn = false;
+                    }
+                }
+            }
+
+            List<Gambit> scrappableGambits = getScrappableGambits();
+            if (!scrappableGambits.isEmpty()) {
+                List<Gambit> sortedGambits = scrappableGambits.stream().sorted(useGambitScoreDescending).collect(toList());
+                for (Gambit gambit : sortedGambits) {
+                    if (getUseGambitScore(gambit) > 0) {
+                        ((ScrappableGambit) gambit).scrapGambit(this);
+                        gambitScrapped(gambit);
                     }
                 }
             }
@@ -686,5 +706,87 @@ public abstract class Bot extends Player {
         }
 
         return factionWithLeastCards;
+    }
+
+    @Override
+    public Card chooseCardFromDiscardToAddToTopOfDeck() {
+        List<Card> sortedCards = getDiscard().stream().sorted(cardToBuyScoreDescending).collect(toList());
+
+        Card card = sortedCards.get(0);
+        if (getBuyCardScore(card) > 0) {
+            return card;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Card chooseFreeCardToAcquire(int maxCost) {
+        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> c.getCost() <= maxCost).sorted(cardToBuyScoreDescending).collect(toList());
+
+        Card card = sortedCards.get(0);
+        if (getBuyCardScore(card) > 0) {
+            return card;
+        }
+
+        return null;
+    }
+
+    private int getUseGambitScore(Gambit gambit) {
+        int starterCardsInPlay = countCardsByType(getInPlay(), Card::isStarterCard);
+
+        if (gambit instanceof BoldRaid) {
+            if (!getOpponent().getBases().isEmpty()) {
+                return 12;
+            } else if (starterCardsInPlay >= 3 && getHand().size() == 0 && getDeck().size() == 0) {
+                return 4;
+            }
+        } else if (gambit instanceof EnergyShield) {
+            if (starterCardsInPlay >= 3 && getHand().size() == 0 && getDeck().size() == 0) {
+                return 6;
+            }
+        } else if (gambit instanceof PoliticalManeuver) {
+            if (getHand().isEmpty() && getBuyScoreIncrease(2) >= 30) {
+                return 2;
+            }
+        } else if (gambit instanceof RiseToPower) {
+            if (starterCardsInPlay >= 3 && getHand().size() == 0 && getDeck().size() == 0) {
+                return 18;
+            } else if (getBuyScoreIncrease(1) >= 20) {
+                return 14;
+            }
+        } else if (gambit instanceof SalvageOperation) {
+            if (!getDiscard().isEmpty()) {
+                List<Card> sortedCards = getDiscard().stream().sorted(cardToBuyScoreDescending).collect(toList());
+                if (getBuyCardScore(sortedCards.get(0)) >= 30) {
+                    return 24;
+                }
+            }
+        } else if (gambit instanceof SmugglingRun) {
+            List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> c.getCost() <= 4).sorted(cardToBuyScoreDescending).collect(toList());
+            if (!sortedCards.isEmpty()) {
+                if (getBuyCardScore(sortedCards.get(0)) >= 30) {
+                    return 22;
+                }
+            }
+        } else if (gambit instanceof SurpriseAssault) {
+            if (getHand().isEmpty()) {
+                if (getOpponent().getAuthority() <= 8) {
+                    return 16;
+                } else if (getCombat() < getOpponent().getBiggestOutpostShield()) {
+                    return 1;
+                } else if (getCombat() < getOpponent().getBiggestBaseShield()) {
+                    return 1;
+                }
+            }
+        } else if (gambit instanceof UnlikelyAlliance) {
+            if (starterCardsInPlay >= 3 && getHand().size() == 0 && getDeck().size() <= 1) {
+                return 20;
+            } else if (getGame().getTurn() >= 5) {
+                return 8;
+            }
+        }
+
+        return 0;
     }
 }

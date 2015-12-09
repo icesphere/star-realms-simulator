@@ -3,6 +3,7 @@ package starrealmssimulator.service;
 import starrealmssimulator.bots.*;
 import starrealmssimulator.bots.json.JsonBot;
 import starrealmssimulator.cards.*;
+import starrealmssimulator.gambits.*;
 import starrealmssimulator.model.*;
 
 import java.text.DecimalFormat;
@@ -111,7 +112,7 @@ public class GameService {
         List<Card> deck = new ArrayList<>();
         deck.addAll(getBaseSetDeck());
         deck.addAll(getYear1PromoCards());
-        deck.addAll(getBasesAndBattleships());
+        //deck.addAll(getBasesAndBattleships());
 
         game.setDeck(deck);
 
@@ -145,6 +146,8 @@ public class GameService {
         setupPlayer(player2, game, player1);
 
         game.setPlayers(players);
+
+        addGambits(game);
 
         game.startGame();
 
@@ -384,6 +387,46 @@ public class GameService {
         cards.add(new TradeRaft());
 
         return cards;
+    }
+
+    public List<Gambit> getGambits() {
+        List<Gambit> gambits = new ArrayList<>();
+
+        gambits.add(new BoldRaid());
+
+        gambits.add(new EnergyShield());
+
+        gambits.add(new FrontierFleet());
+
+        gambits.add(new PoliticalManeuver());
+
+        gambits.add(new RiseToPower());
+
+        gambits.add(new SalvageOperation());
+
+        gambits.add(new SmugglingRun());
+
+        gambits.add(new SurpriseAssault());
+
+        gambits.add(new UnlikelyAlliance());
+
+        return gambits;
+    }
+
+    private void addGambits(Game game) {
+        List<Gambit> gambits = getGambits();
+        Collections.shuffle(gambits);
+
+        int i = 0;
+
+        for (Player player : game.getPlayers()) {
+            player.getGambits().add(gambits.get(i));
+            game.gameLog(player.getPlayerName() + " starts with gambit " + gambits.get(i).getName());
+            i++;
+            player.getGambits().add(gambits.get(i));
+            game.gameLog(player.getPlayerName() + " starts with gambit " + gambits.get(i).getName());
+            i++;
+        }
     }
 
     public static void main(String[] args) {
