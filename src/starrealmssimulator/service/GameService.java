@@ -27,10 +27,6 @@ public class GameService {
     public SimulationInfo simulateGames(List<Bot> bots, int gamesToSimulate) {
         List<Game> games = new ArrayList<>(gamesToSimulate);
 
-        int firstPlayerWins = 0;
-
-        int turns = 0;
-
         int gamesSimulated = 0;
 
         for (int i = 0; i < gamesToSimulate; i++) {
@@ -42,6 +38,16 @@ public class GameService {
                 }
             }
         }
+
+        return getSimulationInfo(games, bots.get(0).getPlayerName(), bots.get(1).getPlayerName());
+    }
+
+    private SimulationInfo getSimulationInfo(List<Game> games, String player1Name, String player2Name) {
+        int firstPlayerWins = 0;
+
+        int turns = 0;
+
+        int gamesSimulated = games.size();
 
         SimulationInfo simulationInfo = new SimulationInfo();
 
@@ -66,16 +72,16 @@ public class GameService {
 
         DecimalFormat f = new DecimalFormat("##.00");
 
-        boolean playAgainstSelf = bots.get(0).getPlayerName().equals(bots.get(1).getPlayerName());
+        boolean playAgainstSelf = player1Name.equals(player2Name);
 
-        String botName = bots.get(0).getPlayerName();
+        String botName = player1Name;
         String botPercent = "";
         String opponentPercent = "";
         String opponentName = "";
 
         for (String playerName : simulationStatsMap.keySet()) {
             SimulationStats simulationStats = simulationStatsMap.get(playerName);
-            String winPercent = f.format(((float) simulationStats.getWins() / gamesToSimulate) * 100) + "%";
+            String winPercent = f.format(((float) simulationStats.getWins() / gamesSimulated) * 100) + "%";
             if (playerName.equals(botName)) {
                 botPercent = winPercent;
             } else {
@@ -94,10 +100,10 @@ public class GameService {
 
         simulationInfo.setSimulationStats(simulationStatsMap);
 
-        String avgTurns = f.format((float) turns / gamesToSimulate);
+        String avgTurns = f.format((float) turns / gamesSimulated);
 
         if (playAgainstSelf) {
-            String winPercent = f.format(((float) firstPlayerWins / gamesToSimulate) * 100) + "%";
+            String winPercent = f.format(((float) firstPlayerWins / gamesSimulated) * 100) + "%";
             System.out.println(botName + " v " + botName + " - 1st player wins: " + winPercent + " (Avg # turns: " + avgTurns + ")");
         } else {
             System.out.println(botName + " v " + opponentName + " - " + botPercent + " - " + opponentPercent + " (Avg # turns: " + avgTurns + ")");
@@ -112,7 +118,7 @@ public class GameService {
         List<Card> deck = new ArrayList<>();
         deck.addAll(getBaseSetDeck());
         deck.addAll(getYear1PromoCards());
-        //deck.addAll(getBasesAndBattleships());
+        deck.addAll(getBasesAndBattleships());
 
         game.setDeck(deck);
 
@@ -468,13 +474,34 @@ public class GameService {
 
         //service.simulateTwoBots(new VelocityBot(), new HareBot());
 
-        service.simulateAllAgainstAll(bots);
+        //service.simulateAllAgainstAll(bots);
 
         //service.simulateAllAgainstAllJsonBots(botFiles);
 
         //service.simulateOneAgainstAllBotsJsonBots("HareBot.json", botFiles);
 
         //service.simulateOneAgainstAllBots(new HareBot(), bots);
+
+        service.simulateGameToEnd(service.getGameState(), 1000);
+    }
+
+    private GameState getGameState() {
+        GameState gameState = new GameState();
+
+        gameState.includeBasesAndBattleships = true;
+        gameState.includeYearOnePromos = true;
+        gameState.turn = 20;
+
+        gameState.tradeRow = "junkyard, supplybot, federationshuttle, portofcall, blobworld";
+
+        gameState.hand = "scout, scout, merccruiser, viper, viper";
+        gameState.deck = "starmarket, missilemech, supplybot, scout, scout, scout";
+        gameState.discard = "scout, scout, centraloffice, tradepod, blobfighter, tradepod, scout, battlepod, recyclingstation";
+        gameState.basesInPlay = "fleethq";
+
+        gameState.opponentHandAndDeck = "battleblob, ram, tradewheel, embassyyacht, federationshuttle, tradeescort, tradingpost, missilebot, missilebot, stealthneedle, spacestation, scout, scout, scout, scout, scout, scout, scout, viper, viper";
+
+        return gameState;
     }
 
     private void simulateAllAgainstAllJsonBots(List<String> botFiles) {
@@ -566,5 +593,345 @@ public class GameService {
 
     public static void addBotToCache(String botFile, JsonBotCache jsonBotCache) {
         botCache.put(botFile, jsonBotCache);
+    }
+
+    public void simulateGameToEnd(GameState gameState, int timesToSimulate) {
+        List<Game> games = new ArrayList<>(timesToSimulate);
+
+        for (int i = 0; i < timesToSimulate; i++) {
+            games.add(simulateGameToEnd(gameState));
+        }
+
+        int wins = 0;
+
+        SimulationInfo info = getSimulationInfo(games, "Player", "Opponent");
+        for (String playerName : info.getSimulationStats().keySet()) {
+            SimulationStats stats = info.getSimulationStats().get(playerName);
+            if (playerName.equals("Player")) {
+                wins += stats.getWins();
+            }
+        }
+
+        DecimalFormat f = new DecimalFormat("##.00");
+
+        System.out.println("Player wins: " + f.format(((float) wins / timesToSimulate) * 100) + "%");
+    }
+
+    public Game simulateGameToEnd(GameState gameState) {
+        SimulateToEndBot player = new SimulateToEndBot();
+        player.setPlayerName("Player");
+
+        SimulateToEndBot opponent = new SimulateToEndBot();
+        opponent.setPlayerName("Opponent");
+
+        Game game = new Game();
+
+        List<Card> deck = new ArrayList<>();
+        deck.addAll(getBaseSetDeck());
+        if (gameState.includeYearOnePromos) {
+            deck.addAll(getYear1PromoCards());
+        }
+        if (gameState.includeBasesAndBattleships) {
+            deck.addAll(getBasesAndBattleships());
+        }
+
+        game.setDeck(deck);
+
+        game.setExplorer(new Explorer());
+
+        player.setGame(game);
+        player.setOpponent(opponent);
+        player.setShuffles(4);
+        player.getHand().addAll(getCardsFromCardNames(gameState.hand));
+        player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
+        player.getDiscard().addAll(getCardsFromCardNames(gameState.discard));
+        player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
+
+        opponent.setGame(game);
+        opponent.setOpponent(player);
+        opponent.setShuffles(4);
+        opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
+        opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
+        opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
+        opponent.drawCards(5);
+
+        if (gameState.includeGambits) {
+            player.getGambits().addAll(getGambitsFromGambitNames(gameState.gambits));
+            opponent.getGambits().addAll(getGambitsFromGambitNames(gameState.opponentGambits));
+        }
+
+        game.getDeck().removeAll(player.getAllCards());
+        game.getDeck().removeAll(opponent.getAllCards());
+
+        List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
+        game.getTradeRow().addAll(tradeRowCards);
+        game.getDeck().removeAll(tradeRowCards);
+
+        Collections.shuffle(game.getDeck());
+
+        List<Player> players = new ArrayList<>(2);
+        players.add(player);
+        players.add(opponent);
+
+        game.setPlayers(players);
+
+        game.setTurn(gameState.turn);
+
+        if (!gameState.currentPlayer) {
+            game.setCurrentPlayerIndex(1);
+        }
+
+        while (!game.isGameOver()) {
+            if (game.getTurn() > 200) {
+                if (EXTRA_LOGGING) {
+                    System.out.println("-----Game stuck, trying again-----");
+                }
+                return simulateGameToEnd(gameState);
+            } else {
+                game.gameLog("-------------------------");
+                game.gameLog(game.getCurrentPlayer().getPlayerName() + "'s turn: ");
+                game.gameLog("deck #: " + (game.getCurrentPlayer().getCurrentDeckNumber()));
+                game.gameLog("");
+                game.gameLog("Trade Row: " + game.getCardsAsString(game.getTradeRow()));
+                game.gameLog("");
+                game.gameLog("Hand: " + game.getCardsAsString(game.getCurrentPlayer().getHand()));
+                game.gameLog("Discard: " + game.getCardsAsString(game.getCurrentPlayer().getDiscard()));
+                game.gameLog("Deck: " + game.getCardsAsString(game.getCurrentPlayer().getDeck()));
+                game.gameLog("Bases in play: " + game.getCardsAsString(game.getCurrentPlayer().getBases()));
+                game.gameLog("");
+                game.getCurrentPlayer().takeTurn();
+            }
+        }
+
+        return game;
+    }
+
+    private List<Gambit> getGambitsFromGambitNames(String gambitNames) {
+        List<Gambit> gambits = new ArrayList<>();
+
+        String[] gambitNameArray = gambitNames.split(",");
+
+        for (String gambitName : gambitNameArray) {
+            Gambit gambit = getGambitFromName(gambitName);
+            if (gambit == null) {
+                System.out.println("Gambit not found for: " + gambitName);
+            } else {
+                gambits.add(gambit);
+            }
+        }
+
+        return gambits;
+    }
+
+    private Gambit getGambitFromName(String gambitName) {
+        gambitName = gambitName.replaceAll("\\s", "").toLowerCase();
+
+        switch (gambitName) {
+            case "boldraid":
+                return new BoldRaid();
+            case "energyshield":
+                return new EnergyShield();
+            case "frontierfleet":
+                return new FrontierFleet();
+            case "politicalmaneuver":
+                return new PoliticalManeuver();
+            case "risetopower":
+                return new RiseToPower();
+            case "salvageoperation":
+                return new SalvageOperation();
+            case "smugglingrun":
+                return new SmugglingRun();
+            case "surpriseassault":
+                return new SurpriseAssault();
+            case "unlikelyalliance":
+                return new UnlikelyAlliance();
+            default:
+                return null;
+        }
+    }
+
+    private List<Card> getCardsFromCardNames(String cardNames) {
+        List<Card> cards = new ArrayList<>();
+
+        if (cardNames == null || cardNames.isEmpty()) {
+            return cards;
+        }
+
+        String[] cardNameArray = cardNames.split(",");
+
+        for (String cardName : cardNameArray) {
+            Card card = getCardFromName(cardName);
+            if (card == null) {
+                System.out.println("Card not found for: " + cardName);
+            } else {
+                cards.add(card);
+            }
+        }
+
+        return cards;
+    }
+
+    private List<Base> getBasesFromCardNames(String cardNames) {
+        List<Base> bases = new ArrayList<>();
+
+        if (cardNames == null || cardNames.isEmpty()) {
+            return bases;
+        }
+
+        String[] cardNameArray = cardNames.split(",");
+
+        for (String cardName : cardNameArray) {
+            Card card = getCardFromName(cardName);
+            if (card == null) {
+                System.out.println("Base not found for: " + cardName);
+            } else {
+                bases.add((Base) card);
+            }
+        }
+
+        return bases;
+    }
+
+    private Card getCardFromName(String cardName) {
+        cardName = cardName.replaceAll("\\s", "").toLowerCase();
+
+        switch (cardName) {
+            case "barterworld":
+                return new BarterWorld();
+            case "battlebarge":
+                return new BattleBarge();
+            case "battleblob":
+                return new BattleBlob();
+            case "battlecruiser":
+                return new Battlecruiser();
+            case "battlemech":
+                return new BattleMech();
+            case "battlepod":
+                return new BattlePod();
+            case "battlescreecher":
+                return new BattleScreecher();
+            case "battlestation":
+                return new BattleStation();
+            case "blobcarrier":
+                return new BlobCarrier();
+            case "blobdestroyer":
+                return new BlobDestroyer();
+            case "blobfighter":
+                return new BlobFighter();
+            case "blobwheel":
+                return new BlobWheel();
+            case "blobworld":
+                return new BlobWorld();
+            case "brainworld":
+                return new BrainWorld();
+            case "breedingsite":
+                return new BreedingSite();
+            case "centraloffice":
+                return new CentralOffice();
+            case "commandship":
+                return new CommandShip();
+            case "constructionhauler":
+                return new ConstructionHauler();
+            case "corvette":
+                return new Corvette();
+            case "cutter":
+                return new Cutter();
+            case "defensebot":
+                return new DefenseBot();
+            case "defensecenter":
+                return new DefenseCenter();
+            case "dreadnaught":
+                return new Dreadnaught();
+            case "embassyyacht":
+                return new EmbassyYacht();
+            case "explorer":
+                return new Explorer();
+            case "federationshuttle":
+                return new FederationShuttle();
+            case "fighterbase":
+                return new FighterBase();
+            case "flagship":
+                return new Flagship();
+            case "fleethq":
+                return new FleetHQ();
+            case "fortressoblivion":
+                return new FortressOblivion();
+            case "freighter":
+                return new Freighter();
+            case "imperialfighter":
+                return new ImperialFighter();
+            case "imperialfrigate":
+                return new ImperialFrigate();
+            case "imperialtrader":
+                return new ImperialTrader();
+            case "junkyard":
+                return new Junkyard();
+            case "machinebase":
+                return new MachineBase();
+            case "mechworld":
+                return new MechWorld();
+            case "megahauler":
+                return new Megahauler();
+            case "megamech":
+                return new MegaMech();
+            case "merccruiser":
+                return new MercCruiser();
+            case "missilebot":
+                return new MissileBot();
+            case "missilemech":
+                return new MissileMech();
+            case "mothership":
+                return new Mothership();
+            case "obliterator":
+                return new Obliterator();
+            case "patrolmech":
+                return new PatrolMech();
+            case "portofcall":
+                return new PortOfCall();
+            case "ram":
+                return new Ram();
+            case "recyclingstation":
+                return new RecyclingStation();
+            case "royalredoubt":
+                return new RoyalRedoubt();
+            case "scout":
+                return new Scout();
+            case "spacestation":
+                return new SpaceStation();
+            case "starbaseomega":
+                return new StarbaseOmega();
+            case "starmarket":
+                return new Starmarket();
+            case "stealthneedle":
+                return new StealthNeedle();
+            case "supplybot":
+                return new SupplyBot();
+            case "surveyship":
+                return new SurveyShip();
+            case "theark":
+            case "ark":
+                return new TheArk();
+            case "thehive":
+            case "hive":
+                return new TheHive();
+            case "tradebot":
+                return new TradeBot();
+            case "tradeescort":
+                return new TradeEscort();
+            case "tradepod":
+                return new TradePod();
+            case "traderaft":
+                return new TradeRaft();
+            case "tradewheel":
+                return new TradeWheel();
+            case "tradingpost":
+                return new TradingPost();
+            case "viper":
+                return new Viper();
+            case "warworld":
+                return new WarWorld();
+            default:
+                return null;
+        }
     }
 }

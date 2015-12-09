@@ -732,7 +732,7 @@ public abstract class Bot extends Player {
         return null;
     }
 
-    private int getUseGambitScore(Gambit gambit) {
+    public int getUseGambitScore(Gambit gambit) {
         int starterCardsInPlay = countCardsByType(getInPlay(), Card::isStarterCard);
 
         if (gambit instanceof BoldRaid) {

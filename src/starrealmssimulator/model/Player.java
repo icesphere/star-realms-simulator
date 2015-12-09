@@ -662,4 +662,8 @@ public abstract class Player {
         getGame().gameLog("Scrapped gambit " + gambit.getName());
         this.getGambits().remove(gambit);
     }
+
+    public void setShuffles(int shuffles) {
+        this.shuffles = shuffles;
+    }
 }

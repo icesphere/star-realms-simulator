@@ -163,4 +163,12 @@ public class Game
     public Player getCurrentPlayer() {
         return players.get(currentPlayerIndex);
     }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+        this.currentPlayerIndex = currentPlayerIndex;
+    }
 }
