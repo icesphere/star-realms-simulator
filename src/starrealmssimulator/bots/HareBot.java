@@ -1,14 +1,9 @@
 package starrealmssimulator.bots;
 
 import starrealmssimulator.cards.*;
-import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.Card;
 
 public class HareBot extends AttackBot {
-    @Override
-    public String getPlayerName() {
-        return "HareBot";
-    }
 
     @Override
     public int getBuyCardScore(Card card) {

@@ -5,10 +5,6 @@ import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.Card;
 
 public class VelocityBot extends Bot {
-    @Override
-    public String getPlayerName() {
-        return "VelocityBot";
-    }
 
     @Override
     public int getBuyCardScore(Card card) {

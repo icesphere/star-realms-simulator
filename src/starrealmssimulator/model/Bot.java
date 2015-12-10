@@ -9,12 +9,7 @@ import static java.util.stream.Collectors.toList;
 
 public abstract class Bot extends Player {
     public Bot() {
-        super();
-    }
-
-    @Override
-    public String getPlayerName() {
-        return "Bot";
+        playerName = getClass().getSimpleName();
     }
 
     protected Comparator<Card> discardScoreDescending = (c1, c2) -> Integer.compare(getDiscardCardScore(c2), getDiscardCardScore(c1));

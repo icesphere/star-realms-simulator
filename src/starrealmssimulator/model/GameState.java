@@ -1,6 +1,9 @@
 package starrealmssimulator.model;
 
 public class GameState {
+
+    //game info
+
     public int turn;
 
     public boolean currentPlayer = true;
@@ -13,6 +16,11 @@ public class GameState {
 
     public String tradeRow;
 
+
+    //player info
+
+    public String bot;
+
     public String hand;
 
     public String deck;
@@ -22,6 +30,11 @@ public class GameState {
     public String basesInPlay;
 
     public String gambits;
+
+
+    //opponent info
+
+    public String opponentBot;
 
     public String opponentHandAndDeck;
 

@@ -5,10 +5,6 @@ import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.Card;
 
 public class TortoiseBot extends Bot {
-    @Override
-    public String getPlayerName() {
-        return "TortoiseBot";
-    }
 
     @Override
     public int getBuyCardScore(Card card) {

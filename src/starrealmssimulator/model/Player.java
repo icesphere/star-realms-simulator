@@ -41,6 +41,8 @@ public abstract class Player {
 
     private boolean firstPlayer;
 
+    protected String playerName;
+
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
 
@@ -110,8 +112,6 @@ public abstract class Player {
     public List<Base> getBases() {
         return bases;
     }
-
-    public abstract String getPlayerName();
 
     public List<Outpost> getOutposts() {
         return bases.stream().filter(Card::isOutpost).map(base -> (Outpost) base).collect(Collectors.toList());
@@ -665,5 +665,13 @@ public abstract class Player {
 
     public void setShuffles(int shuffles) {
         this.shuffles = shuffles;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 }

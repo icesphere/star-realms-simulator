@@ -4,17 +4,7 @@ import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.Card;
 import starrealmssimulator.model.Gambit;
 
-public class SimulateToEndBot extends Bot {
-    private String playerName;
-
-    @Override
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
+public class EndGameBot extends Bot {
 
     @Override
     public int getBuyCardScore(Card card) {

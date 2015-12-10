@@ -104,9 +104,9 @@ public class GameService {
 
         if (playAgainstSelf) {
             String winPercent = f.format(((float) firstPlayerWins / gamesSimulated) * 100) + "%";
-            System.out.println(botName + " v " + botName + " - 1st player wins: " + winPercent + " (Avg # turns: " + avgTurns + ")");
+            System.out.println(botName + " v " + botName + ": 1st player wins: " + winPercent + " (Avg # turns: " + avgTurns + ")");
         } else {
-            System.out.println(botName + " v " + opponentName + " - " + botPercent + " - " + opponentPercent + " (Avg # turns: " + avgTurns + ")");
+            System.out.println(botName + " v " + opponentName + ": " + botPercent + " - " + opponentPercent + " (Avg # turns: " + avgTurns + ")");
         }
 
         return simulationInfo;
@@ -494,11 +494,13 @@ public class GameService {
 
         gameState.tradeRow = "junkyard, supplybot, federationshuttle, portofcall, blobworld";
 
+        gameState.bot = "";
         gameState.hand = "scout, scout, merccruiser, viper, viper";
         gameState.deck = "starmarket, missilemech, supplybot, scout, scout, scout";
         gameState.discard = "scout, scout, centraloffice, tradepod, blobfighter, tradepod, scout, battlepod, recyclingstation";
         gameState.basesInPlay = "fleethq";
 
+        gameState.opponentBot = "defense";
         gameState.opponentHandAndDeck = "battleblob, ram, tradewheel, embassyyacht, federationshuttle, tradeescort, tradingpost, missilebot, missilebot, stealthneedle, spacestation, scout, scout, scout, scout, scout, scout, scout, viper, viper";
 
         return gameState;
@@ -604,10 +606,16 @@ public class GameService {
 
         int wins = 0;
 
-        SimulationInfo info = getSimulationInfo(games, "Player", "Opponent");
+        Bot player = getBotFromBotName(gameState.bot);
+        player.setPlayerName(player.getPlayerName() + "(Player)");
+
+        Bot opponent = getBotFromBotName(gameState.opponentBot);
+        opponent.setPlayerName(opponent.getPlayerName() + "(Opponent)");
+
+        SimulationInfo info = getSimulationInfo(games, player.getPlayerName(), opponent.getPlayerName());
         for (String playerName : info.getSimulationStats().keySet()) {
             SimulationStats stats = info.getSimulationStats().get(playerName);
-            if (playerName.equals("Player")) {
+            if (playerName.equals(player.getPlayerName())) {
                 wins += stats.getWins();
             }
         }
@@ -618,11 +626,11 @@ public class GameService {
     }
 
     public Game simulateGameToEnd(GameState gameState) {
-        SimulateToEndBot player = new SimulateToEndBot();
-        player.setPlayerName("Player");
+        Bot player = getBotFromBotName(gameState.bot);
+        player.setPlayerName(player.getPlayerName() + "(Player)");
 
-        SimulateToEndBot opponent = new SimulateToEndBot();
-        opponent.setPlayerName("Opponent");
+        Bot opponent = getBotFromBotName(gameState.opponentBot);
+        opponent.setPlayerName(opponent.getPlayerName() + "(Opponent)");
 
         Game game = new Game();
 
@@ -704,6 +712,41 @@ public class GameService {
         }
 
         return game;
+    }
+
+    public Bot getBotFromBotName(String botName) {
+        if (botName == null || botName.isEmpty()) {
+            return new EndGameBot();
+        }
+
+        botName = botName.replaceAll("\\s", "").toLowerCase();
+
+        switch (botName) {
+            case "attack":
+            case "attackbot":
+                return new AttackBot();
+            case "defense":
+            case "defensebot":
+            case "defenseandbasebot":
+                return new DefenseAndBaseBot();
+            case "expensive":
+            case "expensivebot":
+                return new ExpensiveBot();
+            case "hare":
+            case "harebot":
+                return new HareBot();
+            case "random":
+            case "randombot":
+                return new RandomBot();
+            case "tortoise":
+            case "tortoisebot":
+                return new TortoiseBot();
+            case "velocity":
+            case "velocitybot":
+                return new VelocityBot();
+            default:
+                return new EndGameBot();
+        }
     }
 
     private List<Gambit> getGambitsFromGambitNames(String gambitNames) {

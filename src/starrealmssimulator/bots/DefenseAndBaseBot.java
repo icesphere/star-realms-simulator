@@ -5,10 +5,6 @@ import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.Card;
 
 public class DefenseAndBaseBot extends Bot {
-    @Override
-    public String getPlayerName() {
-        return "DefenseBot";
-    }
 
     @Override
     public int getBuyCardScore(Card card) {
