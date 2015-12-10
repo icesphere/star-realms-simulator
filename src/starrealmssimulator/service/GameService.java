@@ -492,16 +492,19 @@ public class GameService {
         gameState.includeYearOnePromos = true;
         gameState.turn = 20;
 
-        gameState.tradeRow = "junkyard, supplybot, federationshuttle, portofcall, blobworld";
+        gameState.tradeRow = "junkyard, supplybot, flagship, portofcall, blobwheel";
 
         gameState.bot = "";
-        gameState.hand = "scout, scout, merccruiser, viper, viper";
-        gameState.deck = "starmarket, missilemech, supplybot, scout, scout, scout";
-        gameState.discard = "scout, scout, centraloffice, tradepod, blobfighter, tradepod, scout, battlepod, recyclingstation";
-        gameState.basesInPlay = "fleethq";
+        gameState.authority = 41;
+        gameState.hand = "missilemech, scout, scout, merccruiser, tradepod";
+        gameState.deck = "battlepod, blobfighter, tradepod, centraloffice, federationshuttle, tradingpost, supplybot, recyclingstation, scout, scout, scout, scout, scout, viper, viper";
+        gameState.discard = "";
+        gameState.basesInPlay = "fleethq, starmarket";
 
         gameState.opponentBot = "defense";
-        gameState.opponentHandAndDeck = "battleblob, ram, tradewheel, embassyyacht, federationshuttle, tradeescort, tradingpost, missilebot, missilebot, stealthneedle, spacestation, scout, scout, scout, scout, scout, scout, scout, viper, viper";
+        gameState.opponentAuthority = 14;
+        gameState.opponentDiscard = "tradeescort, missilebot, viper, scout, tradingpost";
+        gameState.opponentHandAndDeck = "battleblob, ram, tradewheel, embassyyacht, federationshuttle, missilebot, stealthneedle, spacestation, scout, scout, scout, scout, scout, viper";
 
         return gameState;
     }
@@ -598,6 +601,8 @@ public class GameService {
     }
 
     public void simulateGameToEnd(GameState gameState, int timesToSimulate) {
+        System.out.println("Game State: \n\n" + gameState.toString() + "\n\n");
+
         List<Game> games = new ArrayList<>(timesToSimulate);
 
         for (int i = 0; i < timesToSimulate; i++) {
@@ -650,6 +655,7 @@ public class GameService {
         player.setGame(game);
         player.setOpponent(opponent);
         player.setShuffles(4);
+        player.setAuthority(gameState.authority);
         player.getHand().addAll(getCardsFromCardNames(gameState.hand));
         player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
         player.getDiscard().addAll(getCardsFromCardNames(gameState.discard));
@@ -658,9 +664,12 @@ public class GameService {
         opponent.setGame(game);
         opponent.setOpponent(player);
         opponent.setShuffles(4);
+        opponent.setAuthority(gameState.opponentAuthority);
         opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
         opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
         opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
+
+        game.gameLog("Drawing cards to setup opponent's hand");
         opponent.drawCards(5);
 
         if (gameState.includeGambits) {

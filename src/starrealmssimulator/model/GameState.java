@@ -19,28 +19,61 @@ public class GameState {
 
     //player info
 
-    public String bot;
+    public String bot = "";
 
-    public String hand;
+    public int authority;
 
-    public String deck;
+    public String hand = "";
 
-    public String discard;
+    public String deck = "";
 
-    public String basesInPlay;
+    public String discard = "";
 
-    public String gambits;
+    public String basesInPlay = "";
+
+    public String gambits = "";
 
 
     //opponent info
 
-    public String opponentBot;
+    public String opponentBot = "";
 
-    public String opponentHandAndDeck;
+    public int opponentAuthority;
 
-    public String opponentDiscard;
+    public String opponentHandAndDeck = "";
 
-    public String opponentBasesInPlay;
+    public String opponentDiscard = "";
 
-    public String opponentGambits;
+    public String opponentBasesInPlay = "";
+
+    public String opponentGambits = "";
+
+    @Override
+    public String toString() {
+        return
+                "--game info--" +
+                "\nturn: " + turn +
+                "\ncurrentPlayer: " + currentPlayer +
+                "\nincludeYearOnePromos: " + includeYearOnePromos +
+                "\nincludeBasesAndBattleships: " + includeBasesAndBattleships +
+                "\nincludeGambits: " + includeGambits +
+                "\ntradeRow: '" + tradeRow + '\'' +
+
+                "\n\n--player info--" +
+                "\nbot: '" + bot + '\'' +
+                "\nauthority: '" + authority + '\'' +
+                "\nhand: '" + hand + '\'' +
+                "\ndeck: '" + deck + '\'' +
+                "\ndiscard: '" + discard + '\'' +
+                "\nbasesInPlay: '" + basesInPlay + '\'' +
+                "\ngambits: '" + gambits + '\'' +
+
+                "\n\n--opponent info--" +
+                "\nopponentBot: '" + opponentBot + '\'' +
+                "\nopponentAuthority: '" + opponentAuthority + '\'' +
+                "\nopponentHandAndDeck: '" + opponentHandAndDeck + '\'' +
+                "\nopponentDiscard: '" + opponentDiscard + '\'' +
+                "\nopponentBasesInPlay: '" + opponentBasesInPlay + '\'' +
+                "\nopponentGambits: '" + opponentGambits + '\'';
+    }
 }

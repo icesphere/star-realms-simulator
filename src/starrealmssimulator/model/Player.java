@@ -674,4 +674,8 @@ public abstract class Player {
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
+
+    public void setAuthority(int authority) {
+        this.authority = authority;
+    }
 }
