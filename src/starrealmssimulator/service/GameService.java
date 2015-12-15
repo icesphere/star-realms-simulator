@@ -600,7 +600,7 @@ public class GameService {
         botCache.put(botFile, jsonBotCache);
     }
 
-    public void simulateGameToEnd(GameState gameState, int timesToSimulate) {
+    public SimulationInfo simulateGameToEnd(GameState gameState, int timesToSimulate) {
         System.out.println("Game State: \n\n" + gameState.toString() + "\n\n");
 
         List<Game> games = new ArrayList<>(timesToSimulate);
@@ -628,6 +628,8 @@ public class GameService {
         DecimalFormat f = new DecimalFormat("##.00");
 
         System.out.println("Player wins: " + f.format(((float) wins / timesToSimulate) * 100) + "%");
+
+        return info;
     }
 
     public Game simulateGameToEnd(GameState gameState) {
@@ -670,7 +672,11 @@ public class GameService {
         opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
 
         game.gameLog("Drawing cards to setup opponent's hand");
-        opponent.drawCards(5);
+        if (gameState.turn == 0 && !gameState.currentPlayer) {
+            opponent.drawCards(3);
+        } else {
+            opponent.drawCards(5);
+        }
 
         if (gameState.includeGambits) {
             player.getGambits().addAll(getGambitsFromGambitNames(gameState.gambits));
@@ -896,6 +902,7 @@ public class GameService {
                 return new Dreadnaught();
             case "embassyyacht":
                 return new EmbassyYacht();
+            case "e":
             case "explorer":
                 return new Explorer();
             case "federationshuttle":
@@ -946,6 +953,7 @@ public class GameService {
                 return new RecyclingStation();
             case "royalredoubt":
                 return new RoyalRedoubt();
+            case "s":
             case "scout":
                 return new Scout();
             case "spacestation":
@@ -978,6 +986,7 @@ public class GameService {
                 return new TradeWheel();
             case "tradingpost":
                 return new TradingPost();
+            case "v":
             case "viper":
                 return new Viper();
             case "warworld":
