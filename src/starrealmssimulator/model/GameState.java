@@ -1,18 +1,20 @@
 package starrealmssimulator.model;
 
+import java.util.Random;
+
 public class GameState {
 
     //game info
 
     public int turn;
 
-    public boolean currentPlayer;
+    public String currentPlayer = "N";
 
-    public boolean includeYearOnePromos;
+    public String includeYearOnePromos = "N";
 
-    public boolean includeBasesAndBattleships;
+    public String includeBasesAndBattleships = "N";
 
-    public boolean includeGambits;
+    public String includeGambits = "N";
 
     public String tradeRow;
 
@@ -85,35 +87,35 @@ public class GameState {
         this.turn = turn;
     }
 
-    public boolean isCurrentPlayer() {
+    public String getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(boolean currentPlayer) {
+    public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
-    public boolean isIncludeYearOnePromos() {
+    public String getIncludeYearOnePromos() {
         return includeYearOnePromos;
     }
 
-    public void setIncludeYearOnePromos(boolean includeYearOnePromos) {
+    public void setIncludeYearOnePromos(String includeYearOnePromos) {
         this.includeYearOnePromos = includeYearOnePromos;
     }
 
-    public boolean isIncludeBasesAndBattleships() {
+    public String getIncludeBasesAndBattleships() {
         return includeBasesAndBattleships;
     }
 
-    public void setIncludeBasesAndBattleships(boolean includeBasesAndBattleships) {
+    public void setIncludeBasesAndBattleships(String includeBasesAndBattleships) {
         this.includeBasesAndBattleships = includeBasesAndBattleships;
     }
 
-    public boolean isIncludeGambits() {
+    public String getIncludeGambits() {
         return includeGambits;
     }
 
-    public void setIncludeGambits(boolean includeGambits) {
+    public void setIncludeGambits(String includeGambits) {
         this.includeGambits = includeGambits;
     }
 
@@ -227,5 +229,26 @@ public class GameState {
 
     public void setOpponentGambits(String opponentGambits) {
         this.opponentGambits = opponentGambits;
+    }
+
+    public boolean getRandomBoolean() {
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
+    public boolean determineCurrentPlayer() {
+        return currentPlayer.equals("R") && getRandomBoolean();
+    }
+
+    public boolean determineIncludeYearOnePromos() {
+        return includeYearOnePromos.equals("R") && getRandomBoolean();
+    }
+
+    public boolean determineIncludeBasesAndBattleships() {
+        return includeBasesAndBattleships.equals("R") && getRandomBoolean();
+    }
+
+    public boolean determineIncludeGambits() {
+        return includeGambits.equals("R") && getRandomBoolean();
     }
 }

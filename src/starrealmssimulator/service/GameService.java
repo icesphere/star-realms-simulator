@@ -488,8 +488,8 @@ public class GameService {
     private GameState getGameState() {
         GameState gameState = new GameState();
 
-        gameState.includeBasesAndBattleships = true;
-        gameState.includeYearOnePromos = true;
+        gameState.includeBasesAndBattleships = "Y";
+        gameState.includeYearOnePromos = "Y";
         gameState.turn = 20;
 
         gameState.tradeRow = "junkyard, supplybot, flagship, portofcall, blobwheel";
@@ -643,10 +643,10 @@ public class GameService {
 
         List<Card> deck = new ArrayList<>();
         deck.addAll(getBaseSetDeck());
-        if (gameState.includeYearOnePromos) {
+        if (gameState.determineIncludeYearOnePromos()) {
             deck.addAll(getYear1PromoCards());
         }
-        if (gameState.includeBasesAndBattleships) {
+        if (gameState.determineIncludeBasesAndBattleships()) {
             deck.addAll(getBasesAndBattleships());
         }
 
@@ -654,31 +654,56 @@ public class GameService {
 
         game.setExplorer(new Explorer());
 
+        boolean currentPlayer = gameState.determineCurrentPlayer();
+
         player.setGame(game);
         player.setOpponent(opponent);
-        player.setShuffles(4);
+        if (player instanceof EndGameBot) {
+            player.setShuffles(4);
+        }
         player.setAuthority(gameState.authority);
-        player.getHand().addAll(getCardsFromCardNames(gameState.hand));
-        player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
-        player.getDiscard().addAll(getCardsFromCardNames(gameState.discard));
-        player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
+        if (gameState.hand.isEmpty() && gameState.deck.isEmpty() && gameState.discard.isEmpty()) {
+            player.getDeck().addAll(getStartingCards());
+            if (currentPlayer) {
+                player.drawCards(3);
+            } else {
+                player.drawCards(5);
+            }
+        } else {
+            player.getHand().addAll(getCardsFromCardNames(gameState.hand));
+            player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
+            player.getDiscard().addAll(getCardsFromCardNames(gameState.discard));
+            player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
+        }
 
         opponent.setGame(game);
         opponent.setOpponent(player);
         opponent.setShuffles(4);
+        if (opponent instanceof EndGameBot) {
+            opponent.setShuffles(4);
+        }
         opponent.setAuthority(gameState.opponentAuthority);
-        opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
-        opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
-        opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
+        if (gameState.opponentHandAndDeck.isEmpty() && gameState.opponentDiscard.isEmpty()) {
+            opponent.getDeck().addAll(getStartingCards());
+            if (currentPlayer) {
+                opponent.drawCards(5);
+            } else {
+                opponent.drawCards(3);
+            }
+        } else {
+            opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
+            opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
+            opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
+        }
 
         game.gameLog("Drawing cards to setup opponent's hand");
-        if (gameState.turn == 0 && !gameState.currentPlayer) {
+        if (gameState.turn == 0 && !currentPlayer) {
             opponent.drawCards(3);
         } else {
             opponent.drawCards(5);
         }
 
-        if (gameState.includeGambits) {
+        if (gameState.determineIncludeGambits()) {
             player.getGambits().addAll(getGambitsFromGambitNames(gameState.gambits));
             opponent.getGambits().addAll(getGambitsFromGambitNames(gameState.opponentGambits));
         }
@@ -686,11 +711,15 @@ public class GameService {
         game.getDeck().removeAll(player.getAllCards());
         game.getDeck().removeAll(opponent.getAllCards());
 
-        List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
-        game.getTradeRow().addAll(tradeRowCards);
-        game.getDeck().removeAll(tradeRowCards);
-
         Collections.shuffle(game.getDeck());
+
+        if (gameState.tradeRow == null || gameState.tradeRow.isEmpty()) {
+            game.addCardsToTradeRow(5);
+        } else {
+            List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
+            game.getTradeRow().addAll(tradeRowCards);
+            game.getDeck().removeAll(tradeRowCards);
+        }
 
         List<Player> players = new ArrayList<>(2);
         players.add(player);
@@ -700,7 +729,7 @@ public class GameService {
 
         game.setTurn(gameState.turn);
 
-        if (!gameState.currentPlayer) {
+        if (!currentPlayer) {
             game.setCurrentPlayerIndex(1);
         }
 
