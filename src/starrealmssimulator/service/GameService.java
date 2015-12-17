@@ -600,13 +600,17 @@ public class GameService {
         botCache.put(botFile, jsonBotCache);
     }
 
-    public SimulationInfo simulateGameToEnd(GameState gameState, int timesToSimulate) {
+    public SimulationResults simulateGameToEnd(GameState gameState, int timesToSimulate) {
         System.out.println("Game State: \n\n" + gameState.toString() + "\n\n");
 
         List<Game> games = new ArrayList<>(timesToSimulate);
 
+        float turnTotal = 0;
+
         for (int i = 0; i < timesToSimulate; i++) {
-            games.add(simulateGameToEnd(gameState));
+            Game game = simulateGameToEnd(gameState);
+            games.add(game);
+            turnTotal += game.getTurn();
         }
 
         int wins = 0;
@@ -627,9 +631,15 @@ public class GameService {
 
         DecimalFormat f = new DecimalFormat("##.00");
 
-        System.out.println("Player wins: " + f.format(((float) wins / timesToSimulate) * 100) + "%");
+        float winPercentage = ((float) wins / timesToSimulate) * 100;
 
-        return info;
+        System.out.println("Player wins: " + f.format(winPercentage) + "%");
+
+        SimulationResults results = new SimulationResults();
+        results.setWinPercentage(winPercentage);
+        results.setAverageNumTurns(turnTotal / timesToSimulate);
+
+        return results;
     }
 
     public Game simulateGameToEnd(GameState gameState) {
@@ -673,8 +683,8 @@ public class GameService {
             player.getHand().addAll(getCardsFromCardNames(gameState.hand));
             player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
             player.getDiscard().addAll(getCardsFromCardNames(gameState.discard));
-            player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
         }
+        player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
 
         opponent.setGame(game);
         opponent.setOpponent(player);
@@ -693,8 +703,8 @@ public class GameService {
         } else {
             opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
             opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
-            opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
         }
+        opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
 
         game.gameLog("Drawing cards to setup opponent's hand");
         if (gameState.turn == 0 && !currentPlayer) {
@@ -810,7 +820,7 @@ public class GameService {
         return gambits;
     }
 
-    private Gambit getGambitFromName(String gambitName) {
+    public Gambit getGambitFromName(String gambitName) {
         gambitName = gambitName.replaceAll("\\s", "").toLowerCase();
 
         switch (gambitName) {
@@ -879,7 +889,7 @@ public class GameService {
         return bases;
     }
 
-    private Card getCardFromName(String cardName) {
+    public Card getCardFromName(String cardName) {
         cardName = cardName.replaceAll("\\s", "").toLowerCase();
 
         switch (cardName) {
