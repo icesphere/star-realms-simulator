@@ -492,19 +492,19 @@ public class GameService {
         gameState.includeYearOnePromos = "Y";
         gameState.turn = 20;
 
-        gameState.tradeRow = "junkyard, supplybot, flagship, portofcall, blobwheel";
+        gameState.tradeRow = "junkyard, supplyb, flags, poc, bwheel";
 
         gameState.bot = "";
         gameState.authority = 41;
-        gameState.hand = "missilemech, scout, scout, merccruiser, tradepod";
-        gameState.deck = "battlepod, blobfighter, tradepod, centraloffice, federationshuttle, tradingpost, supplybot, recyclingstation, scout, scout, scout, scout, scout, viper, viper";
+        gameState.hand = "missilem, s*2, mc, tpod";
+        gameState.deck = "bpod, bf, tpod, co, fshuttle, tpost, supplyb, rs, s*5, v*2";
         gameState.discard = "";
-        gameState.basesInPlay = "fleethq, starmarket";
+        gameState.basesInPlay = "fleethq, smarket";
 
         gameState.opponentBot = "defense";
-        gameState.opponentAuthority = 14;
-        gameState.opponentDiscard = "tradeescort, missilebot, viper, scout, tradingpost";
-        gameState.opponentHandAndDeck = "battleblob, ram, tradewheel, embassyyacht, federationshuttle, missilebot, stealthneedle, spacestation, scout, scout, scout, scout, scout, viper";
+        gameState.opponentAuthority = 20;
+        gameState.opponentDiscard = "tescort, missileb, v, s, tpost";
+        gameState.opponentHandAndDeck = "bb, ram, twheel, ey, fshuttle, missileb, sn, spaces, s*5, v";
 
         return gameState;
     }
@@ -857,11 +857,27 @@ public class GameService {
         String[] cardNameArray = cardNames.split(",");
 
         for (String cardName : cardNameArray) {
-            Card card = getCardFromName(cardName);
+            int multiplier = 1;
+            String cardNameWithoutMultiplier = cardName;
+            if (cardName.contains("*")) {
+                cardNameWithoutMultiplier = cardName.substring(0, cardName.indexOf("*"));
+                multiplier = Integer.parseInt(cardName.substring(cardName.indexOf("*") + 1).trim());
+            }
+            Card card = getCardFromName(cardNameWithoutMultiplier);
             if (card == null) {
                 System.out.println("Card not found for: " + cardName);
             } else {
-                cards.add(card);
+                if (multiplier == 1) {
+                    cards.add(card);
+                } else {
+                    for (int i = 1; i <= multiplier; i++) {
+                        try {
+                            cards.add(card.getClass().newInstance());
+                        } catch (InstantiationException | IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
 
@@ -893,118 +909,178 @@ public class GameService {
         cardName = cardName.replaceAll("\\s", "").toLowerCase();
 
         switch (cardName) {
+            case "barterw":
             case "barterworld":
                 return new BarterWorld();
+            case "bbarge":
             case "battlebarge":
                 return new BattleBarge();
+            case "bb":
+            case "bblob":
+            case "battleb":
             case "battleblob":
                 return new BattleBlob();
+            case "bcruiser":
             case "battlecruiser":
                 return new Battlecruiser();
+            case "bm":
+            case "bmech":
+            case "battlem":
             case "battlemech":
                 return new BattleMech();
+            case "bpod":
             case "battlepod":
                 return new BattlePod();
+            case "bscreecher":
             case "battlescreecher":
                 return new BattleScreecher();
+            case "bs":
+            case "bstation":
+            case "battles":
             case "battlestation":
                 return new BattleStation();
+            case "bcarrier":
             case "blobcarrier":
                 return new BlobCarrier();
+            case "bdestroyer":
             case "blobdestroyer":
                 return new BlobDestroyer();
+            case "bf":
+            case "bfighter":
+            case "blobf":
             case "blobfighter":
                 return new BlobFighter();
+            case "bwheel":
             case "blobwheel":
                 return new BlobWheel();
+            case "bw":
+            case "bworld":
+            case "blobw":
             case "blobworld":
                 return new BlobWorld();
+            case "brainw":
             case "brainworld":
                 return new BrainWorld();
             case "breedingsite":
                 return new BreedingSite();
+            case "co":
             case "centraloffice":
                 return new CentralOffice();
             case "commandship":
                 return new CommandShip();
+            case "ch":
             case "constructionhauler":
                 return new ConstructionHauler();
             case "corvette":
                 return new Corvette();
             case "cutter":
                 return new Cutter();
+            case "db":
+            case "dbot":
+            case "defenseb":
             case "defensebot":
                 return new DefenseBot();
+            case "dcenter":
             case "defensecenter":
                 return new DefenseCenter();
             case "dreadnaught":
                 return new Dreadnaught();
+            case "ey":
             case "embassyyacht":
                 return new EmbassyYacht();
             case "e":
             case "explorer":
                 return new Explorer();
+            case "fshuttle":
             case "federationshuttle":
                 return new FederationShuttle();
+            case "fbase":
             case "fighterbase":
                 return new FighterBase();
+            case "flags":
             case "flagship":
                 return new Flagship();
             case "fleethq":
                 return new FleetHQ();
+            case "fo":
             case "fortressoblivion":
                 return new FortressOblivion();
             case "freighter":
                 return new Freighter();
+            case "if":
+            case "ifighter":
+            case "imperialf":
             case "imperialfighter":
                 return new ImperialFighter();
+            case "ifrigate":
             case "imperialfrigate":
                 return new ImperialFrigate();
+            case "it":
+            case "itrader":
             case "imperialtrader":
+            case "imperialt":
                 return new ImperialTrader();
+            case "jy":
             case "junkyard":
                 return new Junkyard();
             case "machinebase":
                 return new MachineBase();
+            case "mworld":
             case "mechworld":
                 return new MechWorld();
             case "megahauler":
                 return new Megahauler();
+            case "megam":
             case "megamech":
                 return new MegaMech();
+            case "mc":
             case "merccruiser":
                 return new MercCruiser();
+            case "missileb":
             case "missilebot":
                 return new MissileBot();
+            case "missilem":
             case "missilemech":
                 return new MissileMech();
+            case "mothers":
             case "mothership":
                 return new Mothership();
             case "obliterator":
                 return new Obliterator();
+            case "patrolm":
             case "patrolmech":
                 return new PatrolMech();
+            case "poc":
             case "portofcall":
                 return new PortOfCall();
             case "ram":
                 return new Ram();
+            case "rs":
+            case "recyclings":
             case "recyclingstation":
                 return new RecyclingStation();
+            case "rr":
             case "royalredoubt":
                 return new RoyalRedoubt();
             case "s":
             case "scout":
                 return new Scout();
+            case "spaces":
             case "spacestation":
                 return new SpaceStation();
+            case "somega":
             case "starbaseomega":
                 return new StarbaseOmega();
+            case "smarket":
             case "starmarket":
                 return new Starmarket();
+            case "sn":
             case "stealthneedle":
                 return new StealthNeedle();
+            case "supplyb":
             case "supplybot":
                 return new SupplyBot();
+            case "surveys":
             case "surveyship":
                 return new SurveyShip();
             case "theark":
@@ -1013,21 +1089,30 @@ public class GameService {
             case "thehive":
             case "hive":
                 return new TheHive();
+            case "tb":
+            case "tbot":
             case "tradebot":
                 return new TradeBot();
+            case "tescort":
             case "tradeescort":
                 return new TradeEscort();
+            case "tpod":
             case "tradepod":
                 return new TradePod();
+            case "traft":
             case "traderaft":
                 return new TradeRaft();
+            case "twheel":
             case "tradewheel":
                 return new TradeWheel();
+            case "tpost":
             case "tradingpost":
                 return new TradingPost();
             case "v":
             case "viper":
                 return new Viper();
+            case "ww":
+            case "warw":
             case "warworld":
                 return new WarWorld();
             default:
