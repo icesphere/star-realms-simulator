@@ -1,7 +1,6 @@
 package starrealmssimulator.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Game
 {
@@ -22,6 +21,8 @@ public class Game
     private int currentPlayerIndex;
 
     private boolean gameOver;
+
+    private Map<String, TreeMap<Integer, Integer>> authorityByPlayerByTurn = new HashMap<>();
 
     public int getTurn()
     {
@@ -90,6 +91,15 @@ public class Game
         players.get(1).drawCards(5);
         gameLog("Player 1: " + players.get(0).getPlayerName());
         gameLog("Player 2: " + players.get(1).getPlayerName());
+        setupPlayerAuthorityMap();
+    }
+
+    public void setupPlayerAuthorityMap() {
+        for (Player player : players) {
+            TreeMap<Integer, Integer> playerAuthority = new TreeMap<>();
+            authorityByPlayerByTurn.put(player.getPlayerName(), playerAuthority);
+            playerAuthority.put(player.getTurns(), player.getAuthority());
+        }
     }
 
     public String getCardsAsString(List cards) {
@@ -110,6 +120,9 @@ public class Game
         gameLog("End of turn " + turn);
         for (Player player : players) {
             gameLog(player.getPlayerName() + "'s authority: " + player.getAuthority());
+
+            TreeMap<Integer, Integer> playerAuthority = authorityByPlayerByTurn.get(player.getPlayerName());
+            playerAuthority.put(player.getTurns(), player.getAuthority());
         }
         gameLog("---");
 
@@ -170,5 +183,9 @@ public class Game
 
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
+    }
+
+    public Map<String, TreeMap<Integer, Integer>> getAuthorityByPlayerByTurn() {
+        return authorityByPlayerByTurn;
     }
 }

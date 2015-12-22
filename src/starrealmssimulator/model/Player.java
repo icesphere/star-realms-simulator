@@ -43,6 +43,8 @@ public abstract class Player {
 
     protected String playerName;
 
+    private int turns;
+
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
 
@@ -196,6 +198,8 @@ public abstract class Player {
 
     public void endTurn() {
         getGame().gameLog("Ending turn");
+
+        turns++;
 
         combat = 0;
         trade = 0;
@@ -677,5 +681,13 @@ public abstract class Player {
 
     public void setAuthority(int authority) {
         this.authority = authority;
+    }
+
+    public int getTurns() {
+        return turns;
+    }
+
+    public void setTurns(int turns) {
+        this.turns = turns;
     }
 }

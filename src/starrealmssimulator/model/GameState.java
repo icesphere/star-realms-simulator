@@ -236,19 +236,27 @@ public class GameState {
         return random.nextBoolean();
     }
 
+    public boolean determineBoolean(String stringValue) {
+        if ("Y".equalsIgnoreCase(stringValue)) {
+            return true;
+        } else {
+            return stringValue.equals("R") && getRandomBoolean();
+        }
+    }
+
     public boolean determineCurrentPlayer() {
-        return currentPlayer.equals("R") && getRandomBoolean();
+        return determineBoolean(currentPlayer);
     }
 
     public boolean determineIncludeYearOnePromos() {
-        return includeYearOnePromos.equals("R") && getRandomBoolean();
+        return determineBoolean(includeYearOnePromos);
     }
 
     public boolean determineIncludeBasesAndBattleships() {
-        return includeBasesAndBattleships.equals("R") && getRandomBoolean();
+        return determineBoolean(includeBasesAndBattleships);
     }
 
     public boolean determineIncludeGambits() {
-        return includeGambits.equals("R") && getRandomBoolean();
+        return determineBoolean(includeGambits);
     }
 }

@@ -605,6 +605,8 @@ public class GameService {
 
         List<Game> games = new ArrayList<>(timesToSimulate);
 
+        Map<String, Map<Integer, Integer>> averageAuthorityByPlayerByTurn = new HashMap<>();
+
         float turnTotal = 0;
 
         for (int i = 0; i < timesToSimulate; i++) {
@@ -617,9 +619,39 @@ public class GameService {
 
         Bot player = getBotFromBotName(gameState.bot);
         player.setPlayerName(player.getPlayerName() + "(Player)");
+        averageAuthorityByPlayerByTurn.put(player.getPlayerName(), new HashMap<>());
 
         Bot opponent = getBotFromBotName(gameState.opponentBot);
         opponent.setPlayerName(opponent.getPlayerName() + "(Opponent)");
+        averageAuthorityByPlayerByTurn.put(opponent.getPlayerName(), new HashMap<>());
+
+        for (Game game : games) {
+            Map<String, TreeMap<Integer, Integer>> authorityByPlayerByTurn = game.getAuthorityByPlayerByTurn();
+            for (String playerName : authorityByPlayerByTurn.keySet()) {
+                Map<Integer, Integer> authorityByTurn = authorityByPlayerByTurn.get(playerName);
+                Map<Integer, Integer> averageAuthorityByTurn = averageAuthorityByPlayerByTurn.get(playerName);
+
+                for (Integer turn : authorityByTurn.keySet()) {
+                    Integer authority = averageAuthorityByTurn.get(turn);
+                    if (authority == null) {
+                        authority = 0;
+                    }
+
+                    authority += authorityByTurn.get(turn);
+
+                    averageAuthorityByTurn.put(turn, authority);
+                }
+            }
+        }
+
+        for (String playerName : averageAuthorityByPlayerByTurn.keySet()) {
+            Map<Integer, Integer> averageAuthorityByTurn = averageAuthorityByPlayerByTurn.get(playerName);
+            for (Integer turn : averageAuthorityByTurn.keySet()) {
+                Integer authority = averageAuthorityByTurn.get(turn);
+                authority = authority / games.size();
+                averageAuthorityByTurn.put(turn, authority);
+            }
+        }
 
         SimulationInfo info = getSimulationInfo(games, player.getPlayerName(), opponent.getPlayerName());
         for (String playerName : info.getSimulationStats().keySet()) {
@@ -638,6 +670,15 @@ public class GameService {
         SimulationResults results = new SimulationResults();
         results.setWinPercentage(winPercentage);
         results.setAverageNumTurns(turnTotal / timesToSimulate);
+
+        for (String playerName : averageAuthorityByPlayerByTurn.keySet()) {
+            Map<Integer, Integer> averageAuthorityByTurn = averageAuthorityByPlayerByTurn.get(playerName);
+            if (playerName.equals(player.getPlayerName())) {
+                results.setPlayerAverageAuthorityByTurn(averageAuthorityByTurn);
+            } else {
+                results.setOpponentAverageAuthorityByTurn(averageAuthorityByTurn);
+            }
+        }
 
         return results;
     }
@@ -664,7 +705,7 @@ public class GameService {
 
         game.setExplorer(new Explorer());
 
-        boolean currentPlayer = gameState.determineCurrentPlayer();
+        boolean playerGoesFirst = gameState.determineCurrentPlayer();
 
         player.setGame(game);
         player.setOpponent(opponent);
@@ -674,7 +715,7 @@ public class GameService {
         player.setAuthority(gameState.authority);
         if (gameState.hand.isEmpty() && gameState.deck.isEmpty() && gameState.discard.isEmpty()) {
             player.getDeck().addAll(getStartingCards());
-            if (currentPlayer) {
+            if (playerGoesFirst) {
                 player.drawCards(3);
             } else {
                 player.drawCards(5);
@@ -688,14 +729,13 @@ public class GameService {
 
         opponent.setGame(game);
         opponent.setOpponent(player);
-        opponent.setShuffles(4);
         if (opponent instanceof EndGameBot) {
             opponent.setShuffles(4);
         }
         opponent.setAuthority(gameState.opponentAuthority);
         if (gameState.opponentHandAndDeck.isEmpty() && gameState.opponentDiscard.isEmpty()) {
             opponent.getDeck().addAll(getStartingCards());
-            if (currentPlayer) {
+            if (playerGoesFirst) {
                 opponent.drawCards(5);
             } else {
                 opponent.drawCards(3);
@@ -703,15 +743,13 @@ public class GameService {
         } else {
             opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
             opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
+            if (!playerGoesFirst && gameState.turn == 0) {
+                opponent.drawCards(3);
+            } else {
+                opponent.drawCards(5);
+            }
         }
         opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
-
-        game.gameLog("Drawing cards to setup opponent's hand");
-        if (gameState.turn == 0 && !currentPlayer) {
-            opponent.drawCards(3);
-        } else {
-            opponent.drawCards(5);
-        }
 
         if (gameState.determineIncludeGambits()) {
             player.getGambits().addAll(getGambitsFromGambitNames(gameState.gambits));
@@ -739,7 +777,9 @@ public class GameService {
 
         game.setTurn(gameState.turn);
 
-        if (!currentPlayer) {
+        game.setupPlayerAuthorityMap();
+
+        if (!playerGoesFirst) {
             game.setCurrentPlayerIndex(1);
         }
 
