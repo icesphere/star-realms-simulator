@@ -715,6 +715,7 @@ public class GameService {
         player.setAuthority(gameState.authority);
         if (gameState.hand.isEmpty() && gameState.deck.isEmpty() && gameState.discard.isEmpty()) {
             player.getDeck().addAll(getStartingCards());
+            Collections.shuffle(player.getDeck());
             if (playerGoesFirst) {
                 player.drawCards(3);
             } else {
@@ -723,6 +724,7 @@ public class GameService {
         } else {
             player.getHand().addAll(getCardsFromCardNames(gameState.hand));
             player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
+            Collections.shuffle(player.getDeck());
             player.getDiscard().addAll(getCardsFromCardNames(gameState.discard));
         }
         player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
@@ -735,6 +737,7 @@ public class GameService {
         opponent.setAuthority(gameState.opponentAuthority);
         if (gameState.opponentHandAndDeck.isEmpty() && gameState.opponentDiscard.isEmpty()) {
             opponent.getDeck().addAll(getStartingCards());
+            Collections.shuffle(opponent.getDeck());
             if (playerGoesFirst) {
                 opponent.drawCards(5);
             } else {
@@ -742,6 +745,7 @@ public class GameService {
             }
         } else {
             opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
+            Collections.shuffle(opponent.getDeck());
             opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
             if (!playerGoesFirst && gameState.turn == 0) {
                 opponent.drawCards(3);
