@@ -716,15 +716,23 @@ public class GameService {
         if (gameState.hand.isEmpty() && gameState.deck.isEmpty() && gameState.discard.isEmpty()) {
             player.getDeck().addAll(getStartingCards());
             Collections.shuffle(player.getDeck());
-            if (playerGoesFirst) {
+            if (playerGoesFirst && gameState.turn == 0) {
                 player.drawCards(3);
             } else {
                 player.drawCards(5);
             }
         } else {
-            player.getHand().addAll(getCardsFromCardNames(gameState.hand));
             player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
             Collections.shuffle(player.getDeck());
+            if (gameState.hand.isEmpty()) {
+                if (playerGoesFirst && gameState.turn == 0) {
+                    player.drawCards(3);
+                } else {
+                    player.drawCards(5);
+                }
+            } else {
+                player.getHand().addAll(getCardsFromCardNames(gameState.hand));
+            }
             player.getDiscard().addAll(getCardsFromCardNames(gameState.discard));
         }
         player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
@@ -737,21 +745,15 @@ public class GameService {
         opponent.setAuthority(gameState.opponentAuthority);
         if (gameState.opponentHandAndDeck.isEmpty() && gameState.opponentDiscard.isEmpty()) {
             opponent.getDeck().addAll(getStartingCards());
-            Collections.shuffle(opponent.getDeck());
-            if (playerGoesFirst) {
-                opponent.drawCards(5);
-            } else {
-                opponent.drawCards(3);
-            }
         } else {
             opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
-            Collections.shuffle(opponent.getDeck());
             opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
-            if (!playerGoesFirst && gameState.turn == 0) {
-                opponent.drawCards(3);
-            } else {
-                opponent.drawCards(5);
-            }
+        }
+        Collections.shuffle(opponent.getDeck());
+        if (!playerGoesFirst && gameState.turn == 0) {
+            opponent.drawCards(3);
+        } else {
+            opponent.drawCards(5);
         }
         opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
 
