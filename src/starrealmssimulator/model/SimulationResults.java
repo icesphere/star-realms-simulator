@@ -10,6 +10,9 @@ public class SimulationResults {
     private Map<Integer, Integer> playerAverageAuthorityByTurn;
     private Map<Integer, Integer> opponentAverageAuthorityByTurn;
 
+    private String winGameLog;
+    private String lossGameLog;
+
     public float getWinPercentage() {
         return winPercentage;
     }
@@ -40,5 +43,21 @@ public class SimulationResults {
 
     public void setOpponentAverageAuthorityByTurn(Map<Integer, Integer> opponentAverageAuthorityByTurn) {
         this.opponentAverageAuthorityByTurn = opponentAverageAuthorityByTurn;
+    }
+
+    public String getWinGameLog() {
+        return winGameLog;
+    }
+
+    public void setWinGameLog(String winGameLog) {
+        this.winGameLog = winGameLog;
+    }
+
+    public String getLossGameLog() {
+        return lossGameLog;
+    }
+
+    public void setLossGameLog(String lossGameLog) {
+        this.lossGameLog = lossGameLog;
     }
 }

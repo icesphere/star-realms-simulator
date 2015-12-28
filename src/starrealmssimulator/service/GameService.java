@@ -601,6 +601,11 @@ public class GameService {
     }
 
     public SimulationResults simulateGameToEnd(GameState gameState, int timesToSimulate) {
+        SimulationResults results = new SimulationResults();
+
+        boolean createdWinGameLog = false;
+        boolean createdLossGameLog = false;
+
         System.out.println("Game State: \n\n" + gameState.toString() + "\n\n");
 
         List<Game> games = new ArrayList<>(timesToSimulate);
@@ -608,12 +613,6 @@ public class GameService {
         Map<String, Map<Integer, Integer>> averageAuthorityByPlayerByTurn = new HashMap<>();
 
         float turnTotal = 0;
-
-        for (int i = 0; i < timesToSimulate; i++) {
-            Game game = simulateGameToEnd(gameState);
-            games.add(game);
-            turnTotal += game.getTurn();
-        }
 
         int wins = 0;
 
@@ -624,6 +623,29 @@ public class GameService {
         Bot opponent = getBotFromBotName(gameState.opponentBot);
         opponent.setPlayerName(opponent.getPlayerName() + "(Opponent)");
         averageAuthorityByPlayerByTurn.put(opponent.getPlayerName(), new HashMap<>());
+
+        for (int i = 0; i < timesToSimulate; i++) {
+            boolean createGameLog = !createdWinGameLog || !createdLossGameLog;
+            Game game = simulateGameToEnd(gameState, createGameLog);
+            if (game.getWinner().getPlayerName().equals(player.getPlayerName())) {
+                wins++;
+                if (createGameLog) {
+                    if (!createdWinGameLog) {
+                        results.setWinGameLog(game.getGameLog().toString());
+                        createdWinGameLog = true;
+                    }
+                    game.setGameLog(null);
+                }
+            } else {
+                if (!createdLossGameLog) {
+                    results.setLossGameLog(game.getGameLog().toString());
+                    createdLossGameLog = true;
+                }
+                game.setGameLog(null);
+            }
+            games.add(game);
+            turnTotal += game.getTurn();
+        }
 
         for (Game game : games) {
             Map<String, TreeMap<Integer, Integer>> authorityByPlayerByTurn = game.getAuthorityByPlayerByTurn();
@@ -653,21 +675,12 @@ public class GameService {
             }
         }
 
-        SimulationInfo info = getSimulationInfo(games, player.getPlayerName(), opponent.getPlayerName());
-        for (String playerName : info.getSimulationStats().keySet()) {
-            SimulationStats stats = info.getSimulationStats().get(playerName);
-            if (playerName.equals(player.getPlayerName())) {
-                wins += stats.getWins();
-            }
-        }
-
         DecimalFormat f = new DecimalFormat("##.00");
 
         float winPercentage = ((float) wins / timesToSimulate) * 100;
 
         System.out.println("Player wins: " + f.format(winPercentage) + "%");
 
-        SimulationResults results = new SimulationResults();
         results.setWinPercentage(winPercentage);
         results.setAverageNumTurns(turnTotal / timesToSimulate);
 
@@ -683,7 +696,7 @@ public class GameService {
         return results;
     }
 
-    public Game simulateGameToEnd(GameState gameState) {
+    public Game simulateGameToEnd(GameState gameState, boolean createGameLog) {
         Bot player = getBotFromBotName(gameState.bot);
         player.setPlayerName(player.getPlayerName() + "(Player)");
 
@@ -691,6 +704,7 @@ public class GameService {
         opponent.setPlayerName(opponent.getPlayerName() + "(Opponent)");
 
         Game game = new Game();
+        game.setCreateGameLog(createGameLog);
 
         List<Card> deck = new ArrayList<>();
         deck.addAll(getBaseSetDeck());
@@ -707,6 +721,7 @@ public class GameService {
 
         boolean playerGoesFirst = gameState.determineCurrentPlayer();
 
+        game.gameLog("Setting up cards for Player");
         player.setGame(game);
         player.setOpponent(opponent);
         if (player instanceof EndGameBot) {
@@ -737,6 +752,8 @@ public class GameService {
         }
         player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
 
+        game.gameLog("-------------------------");
+        game.gameLog("Setting up cards for Opponent");
         opponent.setGame(game);
         opponent.setOpponent(player);
         if (opponent instanceof EndGameBot) {
@@ -768,6 +785,7 @@ public class GameService {
         Collections.shuffle(game.getDeck());
 
         if (gameState.tradeRow == null || gameState.tradeRow.isEmpty()) {
+            game.gameLog("-------------------------");
             game.addCardsToTradeRow(5);
         } else {
             List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
@@ -794,7 +812,7 @@ public class GameService {
                 if (EXTRA_LOGGING) {
                     System.out.println("-----Game stuck, trying again-----");
                 }
-                return simulateGameToEnd(gameState);
+                return simulateGameToEnd(gameState, createGameLog);
             } else {
                 game.gameLog("-------------------------");
                 game.gameLog(game.getCurrentPlayer().getPlayerName() + "'s turn: ");

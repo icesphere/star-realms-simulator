@@ -22,6 +22,10 @@ public class Game
 
     private boolean gameOver;
 
+    private boolean createGameLog;
+
+    private StringBuilder gameLog = new StringBuilder();
+
     private Map<String, TreeMap<Integer, Integer>> authorityByPlayerByTurn = new HashMap<>();
 
     public int getTurn()
@@ -124,7 +128,6 @@ public class Game
             TreeMap<Integer, Integer> playerAuthority = authorityByPlayerByTurn.get(player.getPlayerName());
             playerAuthority.put(player.getTurns(), player.getAuthority());
         }
-        gameLog("---");
 
         for (Player player : players) {
             if (player.getAuthority() <= 0) {
@@ -171,6 +174,9 @@ public class Game
         if (SHOW_GAME_LOG) {
             System.out.println(log);
         }
+        if (createGameLog) {
+            gameLog.append(log).append("<br/>");
+        }
     }
 
     public Player getCurrentPlayer() {
@@ -187,5 +193,21 @@ public class Game
 
     public Map<String, TreeMap<Integer, Integer>> getAuthorityByPlayerByTurn() {
         return authorityByPlayerByTurn;
+    }
+
+    public boolean isCreateGameLog() {
+        return createGameLog;
+    }
+
+    public void setCreateGameLog(boolean createGameLog) {
+        this.createGameLog = createGameLog;
+    }
+
+    public StringBuilder getGameLog() {
+        return gameLog;
+    }
+
+    public void setGameLog(StringBuilder gameLog) {
+        this.gameLog = gameLog;
     }
 }
