@@ -164,17 +164,7 @@ public class GameService {
                 }
                 return simulateGame(bots);
             } else {
-                game.gameLog("-------------------------");
-                game.gameLog(game.getCurrentPlayer().getPlayerName() + "'s turn: ");
-                game.gameLog("deck #: " + (game.getCurrentPlayer().getCurrentDeckNumber()));
-                game.gameLog("");
-                game.gameLog("Trade Row: " + game.getCardsAsString(game.getTradeRow()));
-                game.gameLog("");
-                game.gameLog("Hand: " + game.getCardsAsString(game.getCurrentPlayer().getHand()));
-                game.gameLog("Discard: " + game.getCardsAsString(game.getCurrentPlayer().getDiscard()));
-                game.gameLog("Deck: " + game.getCardsAsString(game.getCurrentPlayer().getDeck()));
-                game.gameLog("Bases in play: " + game.getCardsAsString(game.getCurrentPlayer().getBases()));
-                game.gameLog("");
+                game.getCurrentPlayer().setupTurn();
                 game.getCurrentPlayer().takeTurn();
             }
         }
@@ -814,17 +804,7 @@ public class GameService {
                 }
                 return simulateGameToEnd(gameState, createGameLog);
             } else {
-                game.gameLog("-------------------------");
-                game.gameLog(game.getCurrentPlayer().getPlayerName() + "'s turn: ");
-                game.gameLog("deck #: " + (game.getCurrentPlayer().getCurrentDeckNumber()));
-                game.gameLog("");
-                game.gameLog("Trade Row: " + game.getCardsAsString(game.getTradeRow()));
-                game.gameLog("");
-                game.gameLog("Hand: " + game.getCardsAsString(game.getCurrentPlayer().getHand()));
-                game.gameLog("Discard: " + game.getCardsAsString(game.getCurrentPlayer().getDiscard()));
-                game.gameLog("Deck: " + game.getCardsAsString(game.getCurrentPlayer().getDeck()));
-                game.gameLog("Bases in play: " + game.getCardsAsString(game.getCurrentPlayer().getBases()));
-                game.gameLog("");
+                game.getCurrentPlayer().setupTurn();
                 game.getCurrentPlayer().takeTurn();
             }
         }

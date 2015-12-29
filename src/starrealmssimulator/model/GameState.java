@@ -6,7 +6,7 @@ public class GameState {
 
     //game info
 
-    public int turn;
+    public int turn = 1;
 
     public String currentPlayer = "N";
 

@@ -2,10 +2,7 @@ package starrealmssimulator.model;
 
 import starrealmssimulator.cards.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -457,6 +454,23 @@ public abstract class Player {
 
     public abstract Ship getShipToCopy();
 
+    public void setupTurn() {
+        Game game = getGame();
+        game.gameLog("-------------------------");
+        game.gameLog(playerName + "'s turn: ");
+        game.gameLog("deck #: " + (getCurrentDeckNumber()));
+        game.gameLog("");
+        game.gameLog("Trade Row: " + game.getCardsAsString(game.getTradeRow()));
+        game.gameLog("");
+        game.gameLog("Hand: " + game.getCardsAsString(hand));
+        game.gameLog("Discard: " + game.getCardsAsString(discard));
+        game.gameLog("Deck: " + game.getCardsAsString(deck));
+        game.gameLog("Bases in play: " + game.getCardsAsString(bases));
+        game.gameLog("");
+
+        inPlay.addAll(bases);
+    }
+
     public abstract void takeTurn();
 
     public void buyCard(Card card) {
@@ -499,7 +513,11 @@ public abstract class Player {
         cards.addAll(hand);
         cards.addAll(deck);
         cards.addAll(discard);
-        cards.addAll(inPlay);
+        if (inPlay.isEmpty()) {
+            cards.addAll(bases);
+        } else {
+            cards.addAll(inPlay);
+        }
 
         return cards;
     }
@@ -689,5 +707,27 @@ public abstract class Player {
 
     public void setTurns(int turns) {
         this.turns = turns;
+    }
+
+    public Faction getFactionWithMostCards() {
+        List<Card> cards = getAllCards();
+
+        Map<Faction, Integer> factionCounts = new HashMap<>(4);
+
+        factionCounts.put(Faction.BLOB, countCardsByType(cards, Card::isBlob));
+        factionCounts.put(Faction.STAR_EMPIRE, countCardsByType(cards, Card::isStarEmpire));
+        factionCounts.put(Faction.TRADE_FEDERATION, countCardsByType(cards, Card::isTradeFederation));
+        factionCounts.put(Faction.MACHINE_CULT, countCardsByType(cards, Card::isMachineCult));
+
+        Faction factionWithMostCards = null;
+        int highestFactionCount = 0;
+
+        for (Faction faction : factionCounts.keySet()) {
+            if (factionCounts.get(faction) >= highestFactionCount) {
+                factionWithMostCards = faction;
+            }
+        }
+
+        return factionWithMostCards;
     }
 }

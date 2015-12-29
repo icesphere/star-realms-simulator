@@ -342,6 +342,18 @@ public abstract class Bot extends Player {
     }
 
     public int getScrapCardFromTradeRowScore(Card card) {
+        Faction factionWithMostCards = getFactionWithMostCards();
+        Faction opponentFactionWithMostCards = getOpponent().getFactionWithMostCards();
+
+        if (opponentFactionWithMostCards != null) {
+            if (factionWithMostCards != null && factionWithMostCards == opponentFactionWithMostCards && getTrade() >= card.getCost()) {
+                return 0;
+            }
+            if (card.getFaction() == opponentFactionWithMostCards) {
+                return card.getCost();
+            }
+        }
+
         return 0;
     }
 
@@ -560,7 +572,7 @@ public abstract class Bot extends Player {
         List<Card> cardsToScrap = new ArrayList<>();
 
         for (Card card : sortedCards) {
-            if (cardsToScrap.size() >= cards) {
+            if (cardsToScrap.size() >= cards || getScrapCardFromTradeRowScore(card) <= 0) {
                 break;
             }
             cardsToScrap.add(card);
