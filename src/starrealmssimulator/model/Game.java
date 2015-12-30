@@ -82,10 +82,17 @@ public class Game
     public void addCardsToTradeRow(int cards) {
         for (int i = 0; i < cards; i++) {
             if (!deck.isEmpty()) {
-                tradeRow.add(deck.remove(0));
+                addCardToTradeRow(deck.remove(0));
             }
         }
         gameLog("Trade Row: " + getCardsAsString(tradeRow));
+    }
+
+    public void addCardToTradeRow(Card card) {
+        tradeRow.add(card);
+        if (card instanceof Event) {
+            ((Event) card).eventTriggered(getCurrentPlayer());
+        }
     }
 
     public void startGame() {
@@ -209,5 +216,19 @@ public class Game
 
     public void setGameLog(StringBuilder gameLog) {
         this.gameLog = gameLog;
+    }
+
+    public void scrapCardFromTradeRow(Card card) {
+        gameLog("Scrapped " + card.getName() + " from trade row");
+        tradeRow.remove(card);
+        scrapped.add(card);
+        addCardToTradeRow();
+    }
+
+    public void scrapAllCardsFromTradeRow() {
+        List<Card> cardsInTradeRow = new ArrayList<>(tradeRow);
+        for (Card card : cardsInTradeRow) {
+            scrapCardFromTradeRow(card);
+        }
     }
 }

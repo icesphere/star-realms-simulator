@@ -19,12 +19,14 @@ public abstract class Bot extends Player {
     protected Comparator<Card> playCardScoreDescending = (c1, c2) -> Integer.compare(getPlayCardScore(c2), getPlayCardScore(c1));
     protected Comparator<Card> cardToBuyScoreDescending = (c1, c2) -> Integer.compare(getBuyCardScore(c2), getBuyCardScore(c1));
     protected Comparator<Base> destroyBaseScoreDescending = (c1, c2) -> Integer.compare(getDestroyBaseScore(c2), getDestroyBaseScore(c1));
+    protected Comparator<Base> destroyBaseScoreAscending = destroyBaseScoreDescending.reversed();
     protected Comparator<Base> attackBaseScoreDescending = (c1, c2) -> Integer.compare(getAttackBaseScore(c2), getAttackBaseScore(c1));
     protected Comparator<Card> copyShipScoreDescending = (c1, c2) -> Integer.compare(getCopyShipScore((Ship) c2), getCopyShipScore((Ship) c1));
     protected Comparator<Card> scrapCardFromTradeRowScoreDescending = (c1, c2) -> Integer.compare(getScrapCardFromTradeRowScore(c2), getScrapCardFromTradeRowScore(c1));
     protected Comparator<Card> cardToTopOfDeckScoreDescending = (c1, c2) -> Integer.compare(getCardToTopOfDeckScore(c2), getCardToTopOfDeckScore(c1));
     protected Comparator<Base> returnBaseToHandScoreDescending = (c1, c2) -> Integer.compare(getReturnBaseToHandScore(c2), getReturnBaseToHandScore(c1));
     protected Comparator<Gambit> useGambitScoreDescending = (g1, g2) -> Integer.compare(getUseGambitScore(g2), getUseGambitScore(g1));
+    protected Comparator<Card> returnCardToTopOfDeckScoreDescending = (c1, c2) -> Integer.compare(getReturnCardToTopOfDeckScore(c2), getReturnCardToTopOfDeckScore(c1));
 
     @Override
     public void takeTurn() {
@@ -446,6 +448,10 @@ public abstract class Bot extends Player {
         return 0;
     }
 
+    public int getReturnCardToTopOfDeckScore(Card card) {
+        return 1000 - getBuyCardScore(card);
+    }
+
     public int getChoice(Card card) {
         int deck = getCurrentDeckNumber();
         int opponentAuthority = getOpponent().getAuthority();
@@ -795,5 +801,46 @@ public abstract class Bot extends Player {
         }
 
         return 0;
+    }
+
+    @Override
+    public void handleBlackHole() {
+        boolean optionalDiscard = getAuthority() >= 10;
+        int cardsDiscarded = discardCards(2, optionalDiscard);
+        getGame().gameLog(playerName + " chose to discard " + cardsDiscarded + " cards for Black Hole");
+        if (cardsDiscarded < 2) {
+            int authorityLost = (2 - cardsDiscarded) * 4;
+            reduceAuthority(authorityLost);
+            getGame().gameLog(playerName + " lost " + authorityLost + " from Black Hole");
+        }
+    }
+
+    @Override
+    public void handleBombardment() {
+        if (!getBases().isEmpty()) {
+            List<Base> sortedBases = getBases().stream().sorted(destroyBaseScoreAscending).collect(toList());
+            baseDestroyed(sortedBases.get(0));
+        } else {
+            reduceAuthority(6);
+        }
+    }
+
+    @Override
+    public void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack) {
+        List<Card> cards = drawCards(cardsToDraw);
+
+        if (!cards.isEmpty()) {
+            int cardsPutBack = 0;
+
+            List<Card> sortedCards = cards.stream().sorted(returnCardToTopOfDeckScoreDescending).collect(toList());
+
+            for (Card card : sortedCards) {
+                if (cardsPutBack <= cardsToPutBack) {
+                    getHand().remove(card);
+                    addCardToTopOfDeck(card);
+                    cardsToPutBack++;
+                }
+            }
+        }
     }
 }

@@ -132,8 +132,9 @@ public abstract class Player {
         this.firstPlayer = firstPlayer;
     }
 
-    public void drawCards(int cards) {
-        getGame().gameLog("Drawing " + cards + " cards");
+    public List<Card> drawCards(int cards) {
+        List<Card> cardsDrawn = new ArrayList<>();
+        getGame().gameLog(playerName + " drawing " + cards + " cards");
         for (int i = 0; i < cards; i++) {
             if (deck.isEmpty()) {
                 deck.addAll(discard);
@@ -145,10 +146,13 @@ public abstract class Player {
 
             if (!deck.isEmpty()) {
                 Card cardToDraw = deck.remove(0);
+                cardsDrawn.add(cardToDraw);
                 hand.add(cardToDraw);
                 getGame().gameLog("Added " + cardToDraw.getName() + " to hand");
             }
         }
+
+        return cardsDrawn;
     }
 
     public void discardCard(Card card) {
@@ -245,12 +249,6 @@ public abstract class Player {
 
     public void baseDestroyed(Base base) {
         getGame().gameLog("Destroyed base: " + base.getName());
-        if (base instanceof FleetHQ) {
-            allShipsAddOneCombat = false;
-        }
-        if (base instanceof MechWorld) {
-            allFactionsAllied = false;
-        }
         bases.remove(base);
         discard.add(base);
         cardRemovedFromPlay(base);
@@ -373,9 +371,7 @@ public abstract class Player {
     public void scrapCardsInTradeRow(int cards) {
         List<Card> cardsToScrap = chooseCardsToScrapInTradeRow(cards);
         for (Card card : cardsToScrap) {
-            getGame().gameLog("Scrapped " + card.getName() + " from trade row");
-            game.getTradeRow().remove(card);
-            game.getScrapped().add(card);
+            game.scrapCardFromTradeRow(card);
         }
     }
 
@@ -386,15 +382,20 @@ public abstract class Player {
             Card card = chooseFreeShipToPutOnTopOfDeck();
             if (card != null) {
                 getGame().gameLog("Acquired free ship on top of deck: " + card.getName());
-                deck.add(0, card);
+                addCardToTopOfDeck(card);
             }
         }
+    }
+
+    public void addCardToTopOfDeck(Card card) {
+        deck.add(0, card);
+        getGame().gameLog(card.getName() + " added to top of deck");
     }
 
     private void cardAcquired(Card card) {
         if (card.isShip() && nextShipToTop) {
             nextShipToTop = false;
-            deck.add(0, card);
+            addCardToTopOfDeck(card);
         } else if (card.isBase() && nextBaseToHand) {
             nextBaseToHand = false;
             hand.add(card);
@@ -493,8 +494,8 @@ public abstract class Player {
         opponent.baseDestroyed(base);
     }
 
-    public void reduceAuthority(int combat) {
-        authority -= combat;
+    public void reduceAuthority(int amount) {
+        authority -= amount;
     }
 
     public void attackOpponentWithRemainingCombat() {
@@ -641,7 +642,7 @@ public abstract class Player {
         Card card = chooseCardFromDiscardToAddToTopOfDeck();
         if (card != null) {
             discard.remove(card);
-            deck.add(0, card);
+            addCardToTopOfDeck(card);
         }
     }
 
@@ -730,4 +731,10 @@ public abstract class Player {
 
         return factionWithMostCards;
     }
+
+    public abstract void handleBlackHole();
+
+    public abstract void handleBombardment();
+
+    public abstract void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack);
 }

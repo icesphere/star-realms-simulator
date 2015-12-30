@@ -119,6 +119,7 @@ public class GameService {
         deck.addAll(getBaseSetDeck());
         deck.addAll(getYear1PromoCards());
         deck.addAll(getBasesAndBattleships());
+        deck.addAll(getEvents());
 
         game.setDeck(deck);
 
@@ -381,6 +382,32 @@ public class GameService {
 
         cards.add(new TradeRaft());
         cards.add(new TradeRaft());
+
+        return cards;
+    }
+
+    public List<Card> getEvents() {
+        List<Card> cards = new ArrayList<>();
+
+        cards.add(new BlackHole());
+
+        cards.add(new Bombardment());
+
+        cards.add(new Comet());
+        cards.add(new Comet());
+
+        cards.add(new GalacticSummit());
+
+        cards.add(new Quasar());
+        cards.add(new Quasar());
+
+        cards.add(new Supernova());
+
+        cards.add(new TradeMission());
+        cards.add(new TradeMission());
+
+        cards.add(new WarpJump());
+        cards.add(new WarpJump());
 
         return cards;
     }
@@ -779,8 +806,10 @@ public class GameService {
             game.addCardsToTradeRow(5);
         } else {
             List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
-            game.getTradeRow().addAll(tradeRowCards);
             game.getDeck().removeAll(tradeRowCards);
+            for (Card card : tradeRowCards) {
+                game.addCardToTradeRow(card);
+            }
         }
 
         List<Player> players = new ArrayList<>(2);
