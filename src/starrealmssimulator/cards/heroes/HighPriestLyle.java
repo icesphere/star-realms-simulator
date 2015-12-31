@@ -13,7 +13,7 @@ public class HighPriestLyle extends Hero {
     }
 
     @Override
-    public void cardScraped(Player player) {
+    public void cardScrapped(Player player) {
         player.scrapCard();
         player.machineCultAlliedUntilEndOfTurn();
     }

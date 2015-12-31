@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class BattleBlob extends Ship implements ScrapableCard, AlliableCard
+public class BattleBlob extends Ship implements ScrappableCard, AlliableCard
 {
     public BattleBlob()
     {
@@ -26,7 +26,7 @@ public class BattleBlob extends Ship implements ScrapableCard, AlliableCard
     }
 
     @Override
-    public void cardScraped(Player player)
+    public void cardScrapped(Player player)
     {
         player.addCombat(4);
     }

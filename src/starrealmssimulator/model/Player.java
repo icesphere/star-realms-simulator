@@ -362,14 +362,14 @@ public abstract class Player {
     }
 
     public void scrapCardInPlayForBenefit(Card card) {
-        if (card.isScrapable()) {
+        if (card.isScrappable()) {
             getGame().gameLog("Scrapped " + card.getName() + " from in play for benefit");
             inPlay.remove(card);
             if (card.isBase()) {
                 bases.remove(card);
             }
             playerCardScrapped(card);
-            ((ScrapableCard) card).cardScraped(this);
+            ((ScrappableCard) card).cardScrapped(this);
         }
     }
 

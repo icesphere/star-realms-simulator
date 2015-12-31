@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class PortOfCall extends Outpost implements ScrapableCard
+public class PortOfCall extends Outpost implements ScrappableCard
 {
     public PortOfCall()
     {
@@ -25,7 +25,7 @@ public class PortOfCall extends Outpost implements ScrapableCard
     }
 
     @Override
-    public void cardScraped(Player player) {
+    public void cardScrapped(Player player) {
         player.drawCard();
         player.destroyTargetBase();
     }

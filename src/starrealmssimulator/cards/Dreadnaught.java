@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class Dreadnaught extends Ship implements ScrapableCard
+public class Dreadnaught extends Ship implements ScrappableCard
 {
     public Dreadnaught()
     {
@@ -21,7 +21,7 @@ public class Dreadnaught extends Ship implements ScrapableCard
     }
 
     @Override
-    public void cardScraped(Player player)
+    public void cardScrapped(Player player)
     {
         player.addCombat(5);
     }

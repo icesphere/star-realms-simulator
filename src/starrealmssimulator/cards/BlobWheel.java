@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class BlobWheel extends Base implements ScrapableCard
+public class BlobWheel extends Base implements ScrappableCard
 {
     public BlobWheel()
     {
@@ -26,7 +26,7 @@ public class BlobWheel extends Base implements ScrapableCard
     }
 
     @Override
-    public void cardScraped(Player player)
+    public void cardScrapped(Player player)
     {
         player.addTrade(3);
     }

@@ -13,7 +13,7 @@ public class WarElder extends Hero {
     }
 
     @Override
-    public void cardScraped(Player player) {
+    public void cardScrapped(Player player) {
         player.scrapCardFromHand(true);
         player.machineCultAlliedUntilEndOfTurn();
     }

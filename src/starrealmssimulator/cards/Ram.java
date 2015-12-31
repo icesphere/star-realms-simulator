@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class Ram extends Ship implements ScrapableCard, AlliableCard
+public class Ram extends Ship implements ScrappableCard, AlliableCard
 {
     public Ram()
     {
@@ -25,7 +25,7 @@ public class Ram extends Ship implements ScrapableCard, AlliableCard
     }
 
     @Override
-    public void cardScraped(Player player) {
+    public void cardScrapped(Player player) {
         player.addTrade(3);
     }
 

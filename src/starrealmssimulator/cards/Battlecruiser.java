@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class Battlecruiser extends Ship implements ScrapableCard, AlliableCard
+public class Battlecruiser extends Ship implements ScrappableCard, AlliableCard
 {
     public Battlecruiser()
     {
@@ -27,7 +27,7 @@ public class Battlecruiser extends Ship implements ScrapableCard, AlliableCard
     }
 
     @Override
-    public void cardScraped(Player player)
+    public void cardScrapped(Player player)
     {
         player.drawCard();
         player.destroyTargetBase();

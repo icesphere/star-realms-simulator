@@ -1,6 +1,6 @@
 package starrealmssimulator.model;
 
-public abstract class Hero extends Card implements ScrapableCard {
+public abstract class Hero extends Card implements ScrappableCard {
     protected Hero() {
         faction = Faction.UNALIGNED;
     }

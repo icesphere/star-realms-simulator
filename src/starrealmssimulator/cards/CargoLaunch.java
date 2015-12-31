@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class CargoLaunch extends Ship implements ScrapableCard
+public class CargoLaunch extends Ship implements ScrappableCard
 {
     public CargoLaunch()
     {
@@ -19,7 +19,7 @@ public class CargoLaunch extends Ship implements ScrapableCard
     }
 
     @Override
-    public void cardScraped(Player player) {
+    public void cardScrapped(Player player) {
         player.addTrade(1);
     }
 

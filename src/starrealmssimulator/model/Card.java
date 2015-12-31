@@ -62,8 +62,8 @@ public abstract class Card {
         this.shield = shield;
     }
 
-    public boolean isScrapable() {
-        return this instanceof ScrapableCard;
+    public boolean isScrappable() {
+        return this instanceof ScrappableCard;
     }
 
     public boolean isBase() {

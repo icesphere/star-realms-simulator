@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class BarterWorld extends Base implements ScrapableCard
+public class BarterWorld extends Base implements ScrappableCard
 {
     public BarterWorld()
     {
@@ -34,7 +34,7 @@ public class BarterWorld extends Base implements ScrapableCard
     }
 
     @Override
-    public void cardScraped(Player player)
+    public void cardScrapped(Player player)
     {
         player.addCombat(5);
     }

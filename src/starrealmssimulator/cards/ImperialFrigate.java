@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class ImperialFrigate extends Ship implements ScrapableCard, AlliableCard
+public class ImperialFrigate extends Ship implements ScrappableCard, AlliableCard
 {
     public ImperialFrigate()
     {
@@ -25,7 +25,7 @@ public class ImperialFrigate extends Ship implements ScrapableCard, AlliableCard
     }
 
     @Override
-    public void cardScraped(Player player) {
+    public void cardScrapped(Player player) {
         player.drawCard();
     }
 }

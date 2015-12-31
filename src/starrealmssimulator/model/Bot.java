@@ -46,7 +46,7 @@ public abstract class Bot extends Player {
             List<Card> cardsToScrapForBenefit = new ArrayList<>();
 
             for (Card card : getInPlay()) {
-                if (card.isScrapable()) {
+                if (card.isScrappable()) {
                     if (shouldScrapCard(card)) {
                         cardsToScrapForBenefit.add(card);
                     }

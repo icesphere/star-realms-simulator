@@ -2,7 +2,7 @@ package starrealmssimulator.cards;
 
 import starrealmssimulator.model.*;
 
-public class TradingPost extends Outpost implements ScrapableCard
+public class TradingPost extends Outpost implements ScrappableCard
 {
     public TradingPost()
     {
@@ -34,7 +34,7 @@ public class TradingPost extends Outpost implements ScrapableCard
     }
 
     @Override
-    public void cardScraped(Player player)
+    public void cardScrapped(Player player)
     {
         player.addCombat(3);
     }
