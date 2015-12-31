@@ -3,6 +3,7 @@ package starrealmssimulator.service;
 import starrealmssimulator.bots.*;
 import starrealmssimulator.bots.json.JsonBot;
 import starrealmssimulator.cards.*;
+import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.gambits.*;
 import starrealmssimulator.model.*;
 
@@ -828,6 +829,11 @@ public class GameService {
             opponent.getGambits().addAll(getGambitsFromGambitNames(gameState.opponentGambits));
         }
 
+        if (gameState.determineIncludeCrisisHeroes()) {
+            player.getHeroes().addAll(getHeroesFromHeroNames(gameState.heroes));
+            opponent.getHeroes().addAll(getHeroesFromHeroNames(gameState.opponentHeroes));
+        }
+
         game.getDeck().removeAll(player.getAllCards());
         game.getDeck().removeAll(opponent.getAllCards());
 
@@ -1254,6 +1260,57 @@ public class GameService {
             case "warw":
             case "warworld":
                 return new WarWorld();
+            default:
+                return null;
+        }
+    }
+
+    private List<Hero> getHeroesFromHeroNames(String heroNames) {
+        List<Hero> heroes = new ArrayList<>();
+
+        String[] heroNameArray = heroNames.split(",");
+
+        for (String heroName : heroNameArray) {
+            Hero hero = getHeroFromName(heroName);
+            if (hero == null) {
+                System.out.println("Hero not found for: " + heroName);
+            } else {
+                heroes.add(hero);
+            }
+        }
+
+        return heroes;
+    }
+
+    public Hero getHeroFromName(String heroName) {
+        heroName = heroName.replaceAll("\\s", "").toLowerCase();
+
+        switch (heroName) {
+            case "ar":
+            case "admiralrasmussen":
+                return new AdmiralRasmussen();
+            case "bo":
+            case "boverlord":
+            case "bloboverlord":
+                return new BlobOverlord();
+            case "ct":
+            case "ceotorres":
+                return new CeoTorres();
+            case "cc":
+            case "cunningcaptain":
+                return new CunningCaptain();
+            case "hpl":
+            case "highpriestlyle":
+                return new HighPriestLyle();
+            case "rp":
+            case "rampilot":
+                return new RamPilot();
+            case "sod":
+            case "specialopsdirector":
+                return new SpecialOpsDirector();
+            case "we":
+            case "warelder":
+                return new WarElder();
             default:
                 return null;
         }

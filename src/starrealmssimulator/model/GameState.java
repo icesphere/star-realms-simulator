@@ -18,6 +18,8 @@ public class GameState {
 
     public String includeCrisisFleetsAndFortresses = "N";
 
+    public String includeCrisisHeroes = "N";
+
     public String includeGambits = "N";
 
     public String tradeRow;
@@ -39,6 +41,8 @@ public class GameState {
 
     public String gambits = "";
 
+    public String heroes = "";
+
 
     //opponent info
 
@@ -53,6 +57,8 @@ public class GameState {
     public String opponentBasesInPlay = "";
 
     public String opponentGambits = "";
+
+    public String opponentHeroes = "";
 
     @Override
     public String toString() {
@@ -75,6 +81,7 @@ public class GameState {
                 "\ndiscard: '" + discard + '\'' +
                 "\nbasesInPlay: '" + basesInPlay + '\'' +
                 "\ngambits: '" + gambits + '\'' +
+                "\nheroes: '" + heroes + '\'' +
 
                 "\n\n--opponent info--" +
                 "\nopponentBot: '" + opponentBot + '\'' +
@@ -131,6 +138,14 @@ public class GameState {
 
     public void setIncludeCrisisFleetsAndFortresses(String includeCrisisFleetsAndFortresses) {
         this.includeCrisisFleetsAndFortresses = includeCrisisFleetsAndFortresses;
+    }
+
+    public String getIncludeCrisisHeroes() {
+        return includeCrisisHeroes;
+    }
+
+    public void setIncludeCrisisHeroes(String includeCrisisHeroes) {
+        this.includeCrisisHeroes = includeCrisisHeroes;
     }
 
     public String getIncludeGambits() {
@@ -203,6 +218,14 @@ public class GameState {
 
     public void setGambits(String gambits) {
         this.gambits = gambits;
+    }
+
+    public String getHeroes() {
+        return heroes;
+    }
+
+    public void setHeroes(String heroes) {
+        this.heroes = heroes;
     }
 
     public String getOpponentBot() {
@@ -284,6 +307,10 @@ public class GameState {
 
     public boolean determineIncludeCrisisFleetsAndFortresses() {
         return determineBoolean(includeCrisisFleetsAndFortresses);
+    }
+
+    public boolean determineIncludeCrisisHeroes() {
+        return determineBoolean(includeCrisisHeroes);
     }
 
     public boolean determineIncludeGambits() {

@@ -17,6 +17,7 @@ public abstract class Player {
     private List<Card> inPlay = new ArrayList<>();
     private List<Base> bases = new ArrayList<>();
     private List<Gambit> gambits = new ArrayList<>();
+    private List<Hero> heroes = new ArrayList<>();
 
     private int combat;
     private int trade;
@@ -41,6 +42,11 @@ public abstract class Player {
     protected String playerName;
 
     private int turns;
+
+    private boolean blobAlliedUntilEndOfTurn;
+    private boolean starEmpireAlliedUntilEndOfTurn;
+    private boolean tradeFederationAlliedUntilEndOfTurn;
+    private boolean machineCultAlliedUntilEndOfTurn;
 
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
@@ -207,6 +213,11 @@ public abstract class Player {
 
         nextShipToTop = false;
         nextBaseToHand = false;
+
+        blobAlliedUntilEndOfTurn = false;
+        starEmpireAlliedUntilEndOfTurn = false;
+        tradeFederationAlliedUntilEndOfTurn = false;
+        machineCultAlliedUntilEndOfTurn = false;
 
         played.clear();
 
@@ -388,12 +399,18 @@ public abstract class Player {
     }
 
     public void addCardToTopOfDeck(Card card) {
-        deck.add(0, card);
-        getGame().gameLog(card.getName() + " added to top of deck");
+        if (card instanceof Hero) {
+            heroes.add((Hero) card);
+        } else {
+            deck.add(0, card);
+            getGame().gameLog(card.getName() + " added to top of deck");
+        }
     }
 
     private void cardAcquired(Card card) {
-        if (card.isShip() && nextShipToTop) {
+        if (card instanceof Hero) {
+            heroes.add((Hero) card);
+        } else if (card.isShip() && nextShipToTop) {
             nextShipToTop = false;
             addCardToTopOfDeck(card);
         } else if (card.isBase() && nextBaseToHand) {
@@ -420,16 +437,16 @@ public abstract class Player {
         allShipsAddOneCombat = true;
     }
 
-    public void scrapCardFromHand() {
+    public void scrapCardFromHand(boolean optional) {
         if (!hand.isEmpty()) {
-            Card card = getCardToScrapFromHand();
+            Card card = getCardToScrapFromHand(optional);
             if (card != null) {
                 scrapCardFromHand(card);
             }
         }
     }
 
-    public abstract Card getCardToScrapFromHand();
+    public abstract Card getCardToScrapFromHand(boolean optional);
 
     public void allFactionsAllied() {
         allFactionsAllied = true;
@@ -581,6 +598,22 @@ public abstract class Player {
             return true;
         }
 
+        if (card.isBlob() && blobAlliedUntilEndOfTurn) {
+            return true;
+        }
+
+        if (card.isStarEmpire() && starEmpireAlliedUntilEndOfTurn) {
+            return true;
+        }
+
+        if (card.isTradeFederation() && tradeFederationAlliedUntilEndOfTurn) {
+            return true;
+        }
+
+        if (card.isMachineCult() && machineCultAlliedUntilEndOfTurn) {
+            return true;
+        }
+
         for (Card c : inPlay) {
             if (c != card && c.isAlly(card)) {
                 return true;
@@ -660,7 +693,7 @@ public abstract class Player {
         Card card = chooseFreeCardToAcquire(maxCost);
         if (card != null) {
             getGame().gameLog("Acquired free card: " + card.getName());
-            discard.add(card);
+            cardAcquired(card);
         }
     }
 
@@ -748,4 +781,24 @@ public abstract class Player {
     public abstract void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack);
 
     public abstract void handleDeathWorld();
+
+    public void blobAlliedUntilEndOfTurn() {
+        blobAlliedUntilEndOfTurn = true;
+    }
+
+    public void starEmpireAlliedUntilEndOfTurn() {
+        starEmpireAlliedUntilEndOfTurn = true;
+    }
+
+    public void tradeFederationAlliedUntilEndOfTurn() {
+        tradeFederationAlliedUntilEndOfTurn = true;
+    }
+
+    public void machineCultAlliedUntilEndOfTurn() {
+        machineCultAlliedUntilEndOfTurn = true;
+    }
+
+    public List<Hero> getHeroes() {
+        return heroes;
+    }
 }

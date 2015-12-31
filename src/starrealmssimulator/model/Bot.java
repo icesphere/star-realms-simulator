@@ -547,9 +547,16 @@ public abstract class Bot extends Player {
     }
 
     @Override
-    public Card getCardToScrapFromHand() {
-        List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
-        return sortedCards.get(0);
+    public Card getCardToScrapFromHand(boolean optional) {
+        if (!getHand().isEmpty()) {
+            List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
+            Card card = sortedCards.get(0);
+            if (optional && getScrapCardScore(card) < 20) {
+                return null;
+            }
+            return card;
+        }
+        return null;
     }
 
     @Override

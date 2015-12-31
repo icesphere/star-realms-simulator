@@ -17,6 +17,6 @@ public class MachineBase extends Outpost
     @Override
     public void baseUsed(Player player) {
         player.drawCard();
-        player.scrapCardFromHand();
+        player.scrapCardFromHand(false);
     }
 }
