@@ -1015,6 +1015,8 @@ public class GameService {
             case "battles":
             case "battlestation":
                 return new BattleStation();
+            case "blackhole":
+                return new BlackHole();
             case "bcarrier":
             case "blobcarrier":
                 return new BlobCarrier();
@@ -1034,6 +1036,8 @@ public class GameService {
             case "blobw":
             case "blobworld":
                 return new BlobWorld();
+            case "bombardment":
+                return new Bombardment();
             case "brainw":
             case "brainworld":
                 return new BrainWorld();
@@ -1042,6 +1046,8 @@ public class GameService {
             case "co":
             case "centraloffice":
                 return new CentralOffice();
+            case "comet":
+                return new Comet();
             case "commandship":
                 return new CommandShip();
             case "ch":
@@ -1083,6 +1089,8 @@ public class GameService {
                 return new FortressOblivion();
             case "freighter":
                 return new Freighter();
+            case "galacticsummit":
+                return new GalacticSummit();
             case "if":
             case "ifighter":
             case "imperialf":
@@ -1129,6 +1137,8 @@ public class GameService {
             case "poc":
             case "portofcall":
                 return new PortOfCall();
+            case "quasaar":
+                return new Quasar();
             case "ram":
                 return new Ram();
             case "rs":
@@ -1153,6 +1163,8 @@ public class GameService {
             case "sn":
             case "stealthneedle":
                 return new StealthNeedle();
+            case "supernova":
+                return new Supernova();
             case "supplyb":
             case "supplybot":
                 return new SupplyBot();
@@ -1172,6 +1184,9 @@ public class GameService {
             case "tescort":
             case "tradeescort":
                 return new TradeEscort();
+            case "tmission":
+            case "trademission":
+                return new TradeMission();
             case "tpod":
             case "tradepod":
                 return new TradePod();
@@ -1187,6 +1202,8 @@ public class GameService {
             case "v":
             case "viper":
                 return new Viper();
+            case "warpjump":
+                return new WarpJump();
             case "ww":
             case "warw":
             case "warworld":
