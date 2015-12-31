@@ -4,7 +4,7 @@ import starrealmssimulator.bots.*;
 import starrealmssimulator.bots.json.JsonBot;
 import starrealmssimulator.cards.*;
 import starrealmssimulator.cards.heroes.*;
-import starrealmssimulator.gambits.*;
+import starrealmssimulator.cards.gambits.*;
 import starrealmssimulator.model.*;
 
 import java.text.DecimalFormat;

@@ -1,4 +1,4 @@
-package starrealmssimulator.gambits;
+package starrealmssimulator.cards.gambits;
 
 import starrealmssimulator.model.Gambit;
 import starrealmssimulator.model.Player;

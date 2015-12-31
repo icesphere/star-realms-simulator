@@ -1,7 +1,7 @@
 package starrealmssimulator.model;
 
 import starrealmssimulator.cards.*;
-import starrealmssimulator.gambits.*;
+import starrealmssimulator.cards.gambits.*;
 
 import java.util.*;
 

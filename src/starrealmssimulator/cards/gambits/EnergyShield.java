@@ -1,4 +1,4 @@
-package starrealmssimulator.gambits;
+package starrealmssimulator.cards.gambits;
 
 import starrealmssimulator.model.EveryTurnGambit;
 import starrealmssimulator.model.Gambit;
