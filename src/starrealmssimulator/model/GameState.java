@@ -12,7 +12,9 @@ public class GameState {
 
     public String includeYearOnePromos = "N";
 
-    public String includeBasesAndBattleships = "N";
+    public String includeCrisisBasesAndBattleships = "N";
+
+    public String includeCrisisEvents = "N";
 
     public String includeGambits = "N";
 
@@ -57,7 +59,8 @@ public class GameState {
                 "\nturn: " + turn +
                 "\ncurrentPlayer: " + currentPlayer +
                 "\nincludeYearOnePromos: " + includeYearOnePromos +
-                "\nincludeBasesAndBattleships: " + includeBasesAndBattleships +
+                "\nincludeCrisisBasesAndBattleships: " + includeCrisisBasesAndBattleships +
+                "\nincludeCrisisEvents: " + includeCrisisEvents +
                 "\nincludeGambits: " + includeGambits +
                 "\ntradeRow: '" + tradeRow + '\'' +
 
@@ -103,12 +106,20 @@ public class GameState {
         this.includeYearOnePromos = includeYearOnePromos;
     }
 
-    public String getIncludeBasesAndBattleships() {
-        return includeBasesAndBattleships;
+    public String getIncludeCrisisBasesAndBattleships() {
+        return includeCrisisBasesAndBattleships;
     }
 
-    public void setIncludeBasesAndBattleships(String includeBasesAndBattleships) {
-        this.includeBasesAndBattleships = includeBasesAndBattleships;
+    public void setIncludeCrisisBasesAndBattleships(String includeCrisisBasesAndBattleships) {
+        this.includeCrisisBasesAndBattleships = includeCrisisBasesAndBattleships;
+    }
+
+    public String getIncludeCrisisEvents() {
+        return includeCrisisEvents;
+    }
+
+    public void setIncludeCrisisEvents(String includeCrisisEvents) {
+        this.includeCrisisEvents = includeCrisisEvents;
     }
 
     public String getIncludeGambits() {
@@ -252,8 +263,12 @@ public class GameState {
         return determineBoolean(includeYearOnePromos);
     }
 
-    public boolean determineIncludeBasesAndBattleships() {
-        return determineBoolean(includeBasesAndBattleships);
+    public boolean determineIncludeCrisisBasesAndBattleships() {
+        return determineBoolean(includeCrisisBasesAndBattleships);
+    }
+
+    public boolean determineIncludeCrisisEvents() {
+        return determineBoolean(includeCrisisEvents);
     }
 
     public boolean determineIncludeGambits() {

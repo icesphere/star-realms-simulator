@@ -118,8 +118,8 @@ public class GameService {
         List<Card> deck = new ArrayList<>();
         deck.addAll(getBaseSetDeck());
         deck.addAll(getYear1PromoCards());
-        deck.addAll(getBasesAndBattleships());
-        deck.addAll(getEvents());
+        deck.addAll(getCrisisBasesAndBattleships());
+        deck.addAll(getCrisisEvents());
 
         game.setDeck(deck);
 
@@ -360,7 +360,7 @@ public class GameService {
         return cards;
     }
 
-    public List<Card> getBasesAndBattleships() {
+    public List<Card> getCrisisBasesAndBattleships() {
         List<Card> cards = new ArrayList<>();
 
         cards.add(new MegaMech());
@@ -386,7 +386,7 @@ public class GameService {
         return cards;
     }
 
-    public List<Card> getEvents() {
+    public List<Card> getCrisisEvents() {
         List<Card> cards = new ArrayList<>();
 
         cards.add(new BlackHole());
@@ -505,7 +505,7 @@ public class GameService {
     private GameState getGameState() {
         GameState gameState = new GameState();
 
-        gameState.includeBasesAndBattleships = "Y";
+        gameState.includeCrisisBasesAndBattleships = "Y";
         gameState.includeYearOnePromos = "Y";
         gameState.turn = 20;
 
@@ -728,8 +728,11 @@ public class GameService {
         if (gameState.determineIncludeYearOnePromos()) {
             deck.addAll(getYear1PromoCards());
         }
-        if (gameState.determineIncludeBasesAndBattleships()) {
-            deck.addAll(getBasesAndBattleships());
+        if (gameState.determineIncludeCrisisBasesAndBattleships()) {
+            deck.addAll(getCrisisBasesAndBattleships());
+        }
+        if (gameState.determineIncludeCrisisEvents()) {
+            deck.addAll(getCrisisEvents());
         }
 
         game.setDeck(deck);
@@ -801,17 +804,6 @@ public class GameService {
 
         Collections.shuffle(game.getDeck());
 
-        if (gameState.tradeRow == null || gameState.tradeRow.isEmpty()) {
-            game.gameLog("-------------------------");
-            game.addCardsToTradeRow(5);
-        } else {
-            List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
-            game.getDeck().removeAll(tradeRowCards);
-            for (Card card : tradeRowCards) {
-                game.addCardToTradeRow(card);
-            }
-        }
-
         List<Player> players = new ArrayList<>(2);
         players.add(player);
         players.add(opponent);
@@ -824,6 +816,17 @@ public class GameService {
 
         if (!playerGoesFirst) {
             game.setCurrentPlayerIndex(1);
+        }
+
+        if (gameState.tradeRow == null || gameState.tradeRow.isEmpty()) {
+            game.gameLog("-------------------------");
+            game.addCardsToTradeRow(5);
+        } else {
+            List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
+            game.getDeck().removeAll(tradeRowCards);
+            for (Card card : tradeRowCards) {
+                game.addCardToTradeRow(card);
+            }
         }
 
         while (!game.isGameOver()) {
