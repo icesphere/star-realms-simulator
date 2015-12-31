@@ -16,12 +16,12 @@ public class SpaceStation extends Outpost implements ScrapableCard, AlliableCard
 
     @Override
     public void cardPlayed(Player player) {
-        player.addCombat(2);
+        this.useBase(player);
     }
 
     @Override
     public void baseUsed(Player player) {
-
+        player.addCombat(2);
     }
 
     @Override

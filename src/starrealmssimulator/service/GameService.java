@@ -412,6 +412,32 @@ public class GameService {
         return cards;
     }
 
+    public List<Card> getCrisisFleetsAndFortresses() {
+        List<Card> cards = new ArrayList<>();
+
+        cards.add(new BorderFort());
+
+        cards.add(new PatrolBot());
+        cards.add(new PatrolBot());
+
+        cards.add(new StarFortress());
+
+        cards.add(new CargoLaunch());
+        cards.add(new CargoLaunch());
+
+        cards.add(new DeathWorld());
+
+        cards.add(new SpikePod());
+        cards.add(new SpikePod());
+
+        cards.add(new CapitolWorld());
+
+        cards.add(new CustomsFrigate());
+        cards.add(new CustomsFrigate());
+
+        return cards;
+    }
+
     public List<Gambit> getGambits() {
         List<Gambit> gambits = new ArrayList<>();
 
@@ -734,6 +760,9 @@ public class GameService {
         if (gameState.determineIncludeCrisisEvents()) {
             deck.addAll(getCrisisEvents());
         }
+        if (gameState.determineIncludeCrisisFleetsAndFortresses()) {
+            deck.addAll(getCrisisFleetsAndFortresses());
+        }
 
         game.setDeck(deck);
 
@@ -1038,11 +1067,18 @@ public class GameService {
                 return new BlobWorld();
             case "bombardment":
                 return new Bombardment();
+            case "borderfort":
+                return new BorderFort();
             case "brainw":
             case "brainworld":
                 return new BrainWorld();
             case "breedingsite":
                 return new BreedingSite();
+            case "capitolw":
+            case "capitolworld":
+                return new CapitolWorld();
+            case "cargolaunch":
+                return new CargoLaunch();
             case "co":
             case "centraloffice":
                 return new CentralOffice();
@@ -1055,8 +1091,13 @@ public class GameService {
                 return new ConstructionHauler();
             case "corvette":
                 return new Corvette();
+            case "customsfrigate":
+                return new CustomsFrigate();
             case "cutter":
                 return new Cutter();
+            case "deathw":
+            case "deathworld":
+                return new DeathWorld();
             case "db":
             case "dbot":
             case "defenseb":
@@ -1154,9 +1195,14 @@ public class GameService {
             case "spaces":
             case "spacestation":
                 return new SpaceStation();
+            case "spikepod":
+                return new SpikePod();
             case "somega":
             case "starbaseomega":
                 return new StarbaseOmega();
+            case "sfortress":
+            case "starfortress":
+                return new StarFortress();
             case "smarket":
             case "starmarket":
                 return new Starmarket();

@@ -26,6 +26,14 @@ public class HareBot extends AttackBot {
 
         } else if (card instanceof BlobWorld) {
             return 100;
+        } else if (card instanceof DeathWorld) {
+            if (deck < 3) {
+                return 95;
+            }
+            if (deck == 3) {
+                return 85;
+            }
+            return 75;
         } else if (card instanceof BreedingSite) {
 
         } else if (card instanceof Mothership) {
@@ -115,6 +123,8 @@ public class HareBot extends AttackBot {
 
         } else if (card instanceof Battlecruiser) {
             return 70;
+        } else if (card instanceof CargoLaunch) {
+            return 10;
         } else if (card instanceof Corvette) {
 
         } else if (card instanceof Dreadnaught) {
@@ -134,6 +144,11 @@ public class HareBot extends AttackBot {
                 return 40;
             }
             return 30;
+        } else if (card instanceof StarFortress) {
+            if (deck <= 3) {
+                return 90;
+            }
+            return 80;
         } else if (card instanceof StarbaseOmega) {
 
         } else if (card instanceof SurveyShip) {
@@ -150,6 +165,14 @@ public class HareBot extends AttackBot {
                 return 15;
             }
             return 30;
+        } else if (card instanceof BorderFort) {
+            if (deck == 1) {
+                return 40;
+            } else if (deck == 2) {
+                return 25;
+            } else if (deck == 3) {
+                return 15;
+            }
         } else if (card instanceof BrainWorld) {
             if (deck < 3) {
                 return 80;
@@ -175,6 +198,13 @@ public class HareBot extends AttackBot {
             return 5;
         } else if (card instanceof MissileMech) {
 
+        } else if (card instanceof PatrolBot) {
+            if (deck == 1) {
+                return 40;
+            } else if (deck == 2) {
+                return 20;
+            }
+            return 10;
         } else if (card instanceof PatrolMech) {
             if (deck == 1) {
                 return 60;

@@ -64,6 +64,14 @@ public class AttackBot extends Bot {
                 return 30;
             }
             return 40;
+        } else if (card instanceof DeathWorld) {
+            if (deck < 3) {
+                return 90;
+            }
+            if (deck == 3) {
+                return 80;
+            }
+            return 70;
         } else if (card instanceof Mothership) {
             return 100;
         } else if (card instanceof Obliterator) {
@@ -79,6 +87,11 @@ public class AttackBot extends Bot {
                 return 70;
             }
             return 55;
+        } else if (card instanceof SpikePod) {
+            if (deck < 3) {
+                return 35;
+            }
+            return 25;
         } else if (card instanceof TheHive) {
             if (deck <= 2) {
                 return 20;
@@ -110,6 +123,11 @@ public class AttackBot extends Bot {
                 return 25;
             }
             return 10;
+        } else if (card instanceof CapitolWorld) {
+            if (deck <= 3) {
+                return 60;
+            }
+            return 40;
         } else if (card instanceof CentralOffice) {
             return 15;
         } else if (card instanceof CommandShip) {
@@ -118,6 +136,11 @@ public class AttackBot extends Bot {
             if (deck < 3) {
                 return 30;
             } else if (deck == 3) {
+                return 10;
+            }
+            return 5;
+        } else if (card instanceof CustomsFrigate) {
+            if (deck < 3) {
                 return 10;
             }
             return 5;
@@ -170,6 +193,8 @@ public class AttackBot extends Bot {
             return 40;
         } else if (card instanceof Battlecruiser) {
             return 75;
+        } else if (card instanceof CargoLaunch) {
+            return 10;
         } else if (card instanceof Corvette) {
             if (deck < 3) {
                 return 10;
@@ -215,6 +240,11 @@ public class AttackBot extends Bot {
                 return 30;
             }
             return 10;
+        } else if (card instanceof StarFortress) {
+            if (deck <= 3) {
+                return 85;
+            }
+            return 75;
         } else if (card instanceof StarbaseOmega) {
             if (deck < 3 && bases > 0) {
                 return 5;
@@ -240,6 +270,12 @@ public class AttackBot extends Bot {
                 return 10;
             }
             return 20;
+        } else if (card instanceof BorderFort) {
+            if (deck == 1) {
+                return 35;
+            } else if (deck == 2) {
+                return 15;
+            }
         } else if (card instanceof BrainWorld) {
             if (deck < 3) {
                 return 80;
@@ -289,6 +325,12 @@ public class AttackBot extends Bot {
                 return 70;
             }
             return 50;
+        } else if (card instanceof PatrolBot) {
+            if (deck == 1) {
+                return 30;
+            } else if (deck == 2) {
+                return 10;
+            }
         } else if (card instanceof PatrolMech) {
             if (deck == 1) {
                 return 40;

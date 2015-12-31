@@ -17,12 +17,12 @@ public class BlobWheel extends Base implements ScrapableCard
     @Override
     public void cardPlayed(Player player)
     {
-        player.addCombat(1);
+        this.useBase(player);
     }
 
     @Override
     public void baseUsed(Player player) {
-
+        player.addCombat(1);
     }
 
     @Override

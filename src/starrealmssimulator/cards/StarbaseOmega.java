@@ -18,10 +18,6 @@ public class StarbaseOmega extends Base
     }
 
     @Override
-    public void cardPlayed(Player player) {
-    }
-
-    @Override
     public void baseUsed(Player player) {
         player.drawCard();
     }

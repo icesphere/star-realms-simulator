@@ -16,12 +16,12 @@ public class PortOfCall extends Outpost implements ScrapableCard
 
     @Override
     public void cardPlayed(Player player) {
-        player.addTrade(3);
+        this.useBase(player);
     }
 
     @Override
     public void baseUsed(Player player) {
-
+        player.addTrade(3);
     }
 
     @Override

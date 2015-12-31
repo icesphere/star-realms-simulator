@@ -60,6 +60,14 @@ public class VelocityBot extends Bot {
                 return 80;
             }
             return 60;
+        } else if (card instanceof DeathWorld) {
+            if (deck < 3) {
+                return 80;
+            }
+            if (deck == 3) {
+                return 70;
+            }
+            return 60;
         } else if (card instanceof BreedingSite) {
             if (deck < 3 && bases > 0) {
                 return 55;
@@ -84,6 +92,11 @@ public class VelocityBot extends Bot {
                 return 60;
             }
             return 30;
+        } else if (card instanceof SpikePod) {
+            if (deck < 3) {
+                return 15;
+            }
+            return 10;
         } else if (card instanceof TheHive) {
             if (bases > 3) {
                 return 30;
@@ -109,6 +122,11 @@ public class VelocityBot extends Bot {
                 return 30;
             }
             return 20;
+        } else if (card instanceof CapitolWorld) {
+            if (deck <= 3) {
+                return 85;
+            }
+            return 60;
         } else if (card instanceof CentralOffice) {
             if (deck < 3) {
                 return 80;
@@ -125,6 +143,13 @@ public class VelocityBot extends Bot {
                 return 60;
             }
             return 40;
+        } else if (card instanceof CustomsFrigate) {
+            if (deck < 3) {
+                return 30;
+            } else if (deck == 3) {
+                return 20;
+            }
+            return 10;
         } else if (card instanceof Cutter) {
             if (deck == 1) {
                 return 80;
@@ -227,6 +252,8 @@ public class VelocityBot extends Bot {
             return 30;
         } else if (card instanceof Battlecruiser) {
             return 80;
+        } else if (card instanceof CargoLaunch) {
+            return 5;
         } else if (card instanceof Corvette) {
             if (deck < 3) {
                 return 5;
@@ -277,6 +304,11 @@ public class VelocityBot extends Bot {
                 return 40;
             }
             return 25;
+        } else if (card instanceof StarFortress) {
+            if (deck <= 3) {
+                return 70;
+            }
+            return 60;
         } else if (card instanceof StarbaseOmega) {
             if (deck < 3 && bases > 0) {
                 return 20;
@@ -310,6 +342,15 @@ public class VelocityBot extends Bot {
                 return 20;
             }
             return 35;
+        } else if (card instanceof BorderFort) {
+            if (deck == 1) {
+                return 70;
+            } else if (deck == 2) {
+                return 55;
+            } else if (deck == 3) {
+                return 30;
+            }
+            return 15;
         } else if (card instanceof BrainWorld) {
             if (deck < 3) {
                 return 100;
@@ -383,6 +424,13 @@ public class VelocityBot extends Bot {
                 return 80;
             }
             return 60;
+        } else if (card instanceof PatrolBot) {
+            if (deck == 1) {
+                return 60;
+            } else if (deck == 2) {
+                return 40;
+            }
+            return 15;
         } else if (card instanceof PatrolMech) {
             if (deck == 1) {
                 return 80;

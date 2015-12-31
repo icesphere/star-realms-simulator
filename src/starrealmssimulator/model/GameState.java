@@ -16,6 +16,8 @@ public class GameState {
 
     public String includeCrisisEvents = "N";
 
+    public String includeCrisisFleetsAndFortresses = "N";
+
     public String includeGambits = "N";
 
     public String tradeRow;
@@ -61,6 +63,7 @@ public class GameState {
                 "\nincludeYearOnePromos: " + includeYearOnePromos +
                 "\nincludeCrisisBasesAndBattleships: " + includeCrisisBasesAndBattleships +
                 "\nincludeCrisisEvents: " + includeCrisisEvents +
+                "\nincludeCrisisFleetsAndFortresses: " + includeCrisisFleetsAndFortresses +
                 "\nincludeGambits: " + includeGambits +
                 "\ntradeRow: '" + tradeRow + '\'' +
 
@@ -120,6 +123,14 @@ public class GameState {
 
     public void setIncludeCrisisEvents(String includeCrisisEvents) {
         this.includeCrisisEvents = includeCrisisEvents;
+    }
+
+    public String getIncludeCrisisFleetsAndFortresses() {
+        return includeCrisisFleetsAndFortresses;
+    }
+
+    public void setIncludeCrisisFleetsAndFortresses(String includeCrisisFleetsAndFortresses) {
+        this.includeCrisisFleetsAndFortresses = includeCrisisFleetsAndFortresses;
     }
 
     public String getIncludeGambits() {
@@ -269,6 +280,10 @@ public class GameState {
 
     public boolean determineIncludeCrisisEvents() {
         return determineBoolean(includeCrisisEvents);
+    }
+
+    public boolean determineIncludeCrisisFleetsAndFortresses() {
+        return determineBoolean(includeCrisisFleetsAndFortresses);
     }
 
     public boolean determineIncludeGambits() {

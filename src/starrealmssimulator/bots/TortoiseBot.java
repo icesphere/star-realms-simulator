@@ -58,6 +58,14 @@ public class TortoiseBot extends Bot {
                 return 60;
             }
             return 50;
+        } else if (card instanceof DeathWorld) {
+            if (deck < 3) {
+                return 55;
+            }
+            if (deck == 3) {
+                return 45;
+            }
+            return 40;
         } else if (card instanceof BreedingSite) {
             if (deck < 3 && bases > 0) {
                 return 35;
@@ -82,6 +90,11 @@ public class TortoiseBot extends Bot {
                 return 40;
             }
             return 20;
+        } else if (card instanceof SpikePod) {
+            if (deck < 3) {
+                return 10;
+            }
+            return 5;
         } else if (card instanceof TheHive) {
             if (bases > 3) {
                 return 15;
@@ -111,6 +124,11 @@ public class TortoiseBot extends Bot {
                 return 50;
             }
             return 40;
+        } else if (card instanceof CapitolWorld) {
+            if (deck <= 3) {
+                return 100;
+            }
+            return 90;
         } else if (card instanceof CentralOffice) {
             if (deck < 3) {
                 return 85;
@@ -127,6 +145,13 @@ public class TortoiseBot extends Bot {
                 return 60;
             }
             return 40;
+        } else if (card instanceof CustomsFrigate) {
+            if (deck < 3) {
+                return 50;
+            } else if (deck == 3) {
+                return 40;
+            }
+            return 30;
         } else if (card instanceof Cutter) {
             if (deck == 1) {
                 return 80;
@@ -236,6 +261,8 @@ public class TortoiseBot extends Bot {
             return 30;
         } else if (card instanceof Battlecruiser) {
             return 70;
+        } else if (card instanceof CargoLaunch) {
+            return 5;
         } else if (card instanceof Corvette) {
             if (deck < 3) {
                 return 5;
@@ -291,6 +318,11 @@ public class TortoiseBot extends Bot {
                 return 40;
             }
             return 25;
+        } else if (card instanceof StarFortress) {
+            if (deck <= 3) {
+                return 50;
+            }
+            return 40;
         } else if (card instanceof StarbaseOmega) {
             if (deck < 3 && bases > 0) {
                 return 40;
@@ -319,6 +351,15 @@ public class TortoiseBot extends Bot {
                 return 10;
             } else if (deck == 2) {
                 return 20;
+            }
+            return 30;
+        } else if (card instanceof BorderFort) {
+            if (deck == 1) {
+                return 65;
+            } else if (deck == 2) {
+                return 45;
+            } else if (deck == 3) {
+                return 35;
             }
             return 30;
         } else if (card instanceof BrainWorld) {
@@ -388,6 +429,13 @@ public class TortoiseBot extends Bot {
                 return 70;
             }
             return 50;
+        } else if (card instanceof PatrolBot) {
+            if (deck == 1) {
+                return 50;
+            } else if (deck == 2) {
+                return 30;
+            }
+            return 15;
         } else if (card instanceof PatrolMech) {
             if (deck == 1) {
                 return 70;

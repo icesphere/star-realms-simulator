@@ -15,10 +15,6 @@ public class BreedingSite extends Base
     }
 
     @Override
-    public void cardPlayed(Player player) {
-    }
-
-    @Override
     public void baseUsed(Player player) {
         player.addCombat(5);
     }

@@ -15,14 +15,13 @@ public class TradeWheel extends Base implements AlliableCard
     }
 
     @Override
-    public void cardPlayed(Player player)
-    {
-        player.addTrade(1);
+    public void cardPlayed(Player player) {
+        this.useBase(player);
     }
 
     @Override
     public void baseUsed(Player player) {
-
+        player.addTrade(1);
     }
 
     @Override

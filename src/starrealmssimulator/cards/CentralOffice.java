@@ -16,13 +16,13 @@ public class CentralOffice extends Base implements AlliableCard
 
     @Override
     public void cardPlayed(Player player) {
-        player.addTrade(2);
-        player.nextShipToTop();
+        this.useBase(player);
     }
 
     @Override
-    public void baseUsed(Player player)
-    {
+    public void baseUsed(Player player) {
+        player.addTrade(2);
+        player.nextShipToTop();
     }
 
     @Override

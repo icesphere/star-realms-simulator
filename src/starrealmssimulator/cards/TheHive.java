@@ -16,12 +16,12 @@ public class TheHive extends Base implements AlliableCard
 
     @Override
     public void cardPlayed(Player player) {
-        player.addCombat(3);
+        this.useBase(player);
     }
 
     @Override
     public void baseUsed(Player player) {
-
+        player.addCombat(3);
     }
 
     @Override

@@ -328,13 +328,13 @@ public abstract class Player {
         }
     }
 
-    private void scrapCardFromDiscard(Card card) {
+    protected void scrapCardFromDiscard(Card card) {
         getGame().gameLog("Scrapped " + card.getName() + " from discard");
         discard.remove(card);
         playerCardScrapped(card);
     }
 
-    private void scrapCardFromHand(Card card) {
+    protected void scrapCardFromHand(Card card) {
         getGame().gameLog("Scrapped " + card.getName() + " from hand");
         hand.remove(card);
         playerCardScrapped(card);
@@ -659,7 +659,16 @@ public abstract class Player {
     public void acquireFreeCard(int maxCost) {
         Card card = chooseFreeCardToAcquire(maxCost);
         if (card != null) {
+            getGame().gameLog("Acquired free card: " + card.getName());
             discard.add(card);
+        }
+    }
+
+    public void acquireFreeCardToTopOfDeck(int maxCost) {
+        Card card = chooseFreeCardToAcquire(maxCost);
+        if (card != null) {
+            getGame().gameLog("Acquired free card: " + card.getName());
+            addCardToTopOfDeck(card);
         }
     }
 
@@ -737,4 +746,6 @@ public abstract class Player {
     public abstract void handleBombardment();
 
     public abstract void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack);
+
+    public abstract void handleDeathWorld();
 }

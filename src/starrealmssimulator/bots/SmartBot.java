@@ -27,6 +27,8 @@ public class SmartBot extends Bot {
 
         } else if (card instanceof BlobWorld) {
 
+        } else if (card instanceof DeathWorld) {
+
         } else if (card instanceof BreedingSite) {
 
         } else if (card instanceof Mothership) {
@@ -34,6 +36,8 @@ public class SmartBot extends Bot {
         } else if (card instanceof Obliterator) {
 
         } else if (card instanceof Ram) {
+
+        } else if (card instanceof SpikePod) {
 
         } else if (card instanceof TheHive) {
 
@@ -46,11 +50,15 @@ public class SmartBot extends Bot {
         //Trade Federation
         else if (card instanceof BarterWorld) {
 
+        } else if (card instanceof CapitolWorld) {
+
         } else if (card instanceof CentralOffice) {
 
         } else if (card instanceof CommandShip) {
 
         } else if (card instanceof ConstructionHauler) {
+
+        } else if (card instanceof CustomsFrigate) {
 
         } else if (card instanceof Cutter) {
 
@@ -83,6 +91,8 @@ public class SmartBot extends Bot {
 
         } else if (card instanceof Battlecruiser) {
 
+        } else if (card instanceof CargoLaunch) {
+
         } else if (card instanceof Corvette) {
 
         } else if (card instanceof Dreadnaught) {
@@ -103,6 +113,8 @@ public class SmartBot extends Bot {
 
         } else if (card instanceof SpaceStation) {
 
+        } else if (card instanceof StarFortress) {
+
         } else if (card instanceof StarbaseOmega) {
 
         } else if (card instanceof SurveyShip) {
@@ -115,6 +127,8 @@ public class SmartBot extends Bot {
         else if (card instanceof BattleMech) {
 
         } else if (card instanceof BattleStation) {
+
+        } else if (card instanceof BorderFort) {
 
         } else if (card instanceof BrainWorld) {
 
@@ -133,6 +147,8 @@ public class SmartBot extends Bot {
         } else if (card instanceof MissileBot) {
 
         } else if (card instanceof MissileMech) {
+
+        } else if (card instanceof PatrolBot) {
 
         } else if (card instanceof PatrolMech) {
 

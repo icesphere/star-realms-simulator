@@ -18,6 +18,7 @@ public abstract class Bot extends Player {
     protected Comparator<Base> useBaseScoreDescending = (b1, b2) -> Integer.compare(getUseBaseScore(b2), getUseBaseScore(b1));
     protected Comparator<Card> playCardScoreDescending = (c1, c2) -> Integer.compare(getPlayCardScore(c2), getPlayCardScore(c1));
     protected Comparator<Card> cardToBuyScoreDescending = (c1, c2) -> Integer.compare(getBuyCardScore(c2), getBuyCardScore(c1));
+    protected Comparator<Card> cardToBuyScoreAscending = cardToBuyScoreDescending.reversed();
     protected Comparator<Base> destroyBaseScoreDescending = (c1, c2) -> Integer.compare(getDestroyBaseScore(c2), getDestroyBaseScore(c1));
     protected Comparator<Base> destroyBaseScoreAscending = destroyBaseScoreDescending.reversed();
     protected Comparator<Base> attackBaseScoreDescending = (c1, c2) -> Integer.compare(getAttackBaseScore(c2), getAttackBaseScore(c1));
@@ -735,11 +736,15 @@ public abstract class Bot extends Player {
 
     @Override
     public Card chooseFreeCardToAcquire(int maxCost) {
-        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> c.getCost() <= maxCost).sorted(cardToBuyScoreDescending).collect(toList());
+        if (!getGame().getTradeRow().isEmpty()) {
+            List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> c.getCost() <= maxCost).sorted(cardToBuyScoreDescending).collect(toList());
 
-        Card card = sortedCards.get(0);
-        if (getBuyCardScore(card) > 0) {
-            return card;
+            if (!sortedCards.isEmpty()) {
+                Card card = sortedCards.get(0);
+                if (getBuyCardScore(card) > 0) {
+                    return card;
+                }
+            }
         }
 
         return null;
@@ -839,6 +844,32 @@ public abstract class Bot extends Player {
                     getHand().remove(card);
                     addCardToTopOfDeck(card);
                     cardsToPutBack++;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void handleDeathWorld() {
+        if (!getDiscard().isEmpty()) {
+            List<Card> sortedDiscard = getDiscard().stream().filter(c -> c.isTradeFederation() || c.isStarEmpire() || c.isMachineCult()).sorted(cardToBuyScoreAscending).collect(toList());
+            if (!sortedDiscard.isEmpty()) {
+                Card card = sortedDiscard.get(0);
+                if (getBuyCardScore(card) <= 20) {
+                    scrapCardFromDiscard(card);
+                    drawCard();
+                    return;
+                }
+            }
+        }
+
+        if (!getHand().isEmpty()) {
+            List<Card> sortedHand = getHand().stream().filter(c -> c.isTradeFederation() || c.isStarEmpire() || c.isMachineCult()).sorted(cardToBuyScoreAscending).collect(toList());
+            if (!sortedHand.isEmpty()) {
+                Card card = sortedHand.get(0);
+                if (getBuyCardScore(card) <= 10) {
+                    scrapCardFromHand(card);
+                    drawCard();
                 }
             }
         }
