@@ -2,9 +2,12 @@ package starrealmssimulator.service;
 
 import starrealmssimulator.bots.*;
 import starrealmssimulator.bots.json.JsonBot;
-import starrealmssimulator.cards.*;
+import starrealmssimulator.cards.bases.*;
+import starrealmssimulator.cards.bases.outposts.*;
+import starrealmssimulator.cards.events.*;
 import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.cards.gambits.*;
+import starrealmssimulator.cards.ships.*;
 import starrealmssimulator.model.*;
 
 import java.text.DecimalFormat;

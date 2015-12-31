@@ -1,7 +1,7 @@
 package starrealmssimulator.model;
 
-import starrealmssimulator.cards.Scout;
-import starrealmssimulator.cards.Viper;
+import starrealmssimulator.cards.ships.Scout;
+import starrealmssimulator.cards.ships.Viper;
 
 import java.util.Objects;
 

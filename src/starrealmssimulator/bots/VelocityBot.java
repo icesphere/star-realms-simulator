@@ -1,6 +1,8 @@
 package starrealmssimulator.bots;
 
-import starrealmssimulator.cards.*;
+import starrealmssimulator.cards.bases.*;
+import starrealmssimulator.cards.bases.outposts.*;
+import starrealmssimulator.cards.ships.*;
 import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.Card;
 

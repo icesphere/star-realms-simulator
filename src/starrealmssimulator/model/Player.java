@@ -1,6 +1,9 @@
 package starrealmssimulator.model;
 
-import starrealmssimulator.cards.*;
+import starrealmssimulator.cards.bases.FleetHQ;
+import starrealmssimulator.cards.bases.outposts.MechWorld;
+import starrealmssimulator.cards.ships.Explorer;
+import starrealmssimulator.cards.ships.StealthNeedle;
 
 import java.util.*;
 import java.util.function.Function;
