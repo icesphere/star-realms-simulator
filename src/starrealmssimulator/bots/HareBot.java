@@ -2,6 +2,7 @@ package starrealmssimulator.bots;
 
 import starrealmssimulator.cards.bases.*;
 import starrealmssimulator.cards.bases.outposts.*;
+import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.cards.ships.*;
 import starrealmssimulator.model.Card;
 
@@ -10,6 +11,65 @@ public class HareBot extends AttackBot {
     @Override
     public int getBuyCardScore(Card card) {
         int deck = getCurrentDeckNumber();
+
+        //Heroes
+        if (card instanceof RamPilot) {
+            if (deck == 1) {
+                return 15;
+            } else if (deck <= 3) {
+                return 30;
+            }
+            return 15;
+        } else if (card instanceof BlobOverlord) {
+            if (deck == 1) {
+                return 20;
+            } else if (deck <= 3) {
+                return 40;
+            }
+            return 20;
+        } else if (card instanceof SpecialOpsDirector) {
+            if (deck == 1) {
+                return 0;
+            } else if (deck <= 3) {
+                return 10;
+            }
+            return 5;
+        } else if (card instanceof CeoTorres) {
+            if (deck == 1) {
+                return 5;
+            } else if (deck <= 3) {
+                return 15;
+            }
+            return 10;
+        } else if (card instanceof WarElder) {
+            if (deck == 1) {
+                return 20;
+            } else if (deck <= 3) {
+                return 35;
+            }
+            return 10;
+        } else if (card instanceof HighPriestLyle) {
+            if (deck == 1) {
+                return 30;
+            } else if (deck <= 3) {
+                return 45;
+            }
+            return 15;
+        } else if (card instanceof CunningCaptain) {
+            if (deck == 1) {
+                return 15;
+            } else if (deck <= 3) {
+                return 30;
+            }
+            return 15;
+        } else if (card instanceof AdmiralRasmussen) {
+            if (deck == 1) {
+                return 20;
+            } else if (deck <= 3) {
+                return 40;
+            }
+            return 20;
+        }
 
         //Blob
         if (card instanceof BattleBlob) {

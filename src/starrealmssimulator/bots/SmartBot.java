@@ -2,6 +2,7 @@ package starrealmssimulator.bots;
 
 import starrealmssimulator.cards.bases.*;
 import starrealmssimulator.cards.bases.outposts.*;
+import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.cards.ships.*;
 import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.Card;
@@ -11,6 +12,25 @@ public class SmartBot extends Bot {
     @Override
     public int getBuyCardScore(Card card) {
         //todo
+
+        //Heroes
+        if (card instanceof RamPilot) {
+
+        } else if (card instanceof BlobOverlord) {
+
+        } else if (card instanceof SpecialOpsDirector) {
+
+        } else if (card instanceof CeoTorres) {
+
+        } else if (card instanceof WarElder) {
+
+        } else if (card instanceof HighPriestLyle) {
+
+        } else if (card instanceof CunningCaptain) {
+
+        } else if (card instanceof AdmiralRasmussen) {
+
+        }
 
         //Blob
         if (card instanceof BattleBlob) {
