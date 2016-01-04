@@ -9,4 +9,6 @@ public abstract class Hero extends Card implements ScrappableCard {
     public void cardPlayed(Player player) {
 
     }
+
+    public abstract Faction getAlliedFaction();
 }

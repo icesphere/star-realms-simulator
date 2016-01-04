@@ -442,6 +442,32 @@ public class GameService {
         return cards;
     }
 
+    public List<Hero> getCrisisHeroes() {
+        List<Hero> cards = new ArrayList<>();
+
+        cards.add(new RamPilot());
+        cards.add(new RamPilot());
+
+        cards.add(new BlobOverlord());
+
+        cards.add(new SpecialOpsDirector());
+        cards.add(new SpecialOpsDirector());
+
+        cards.add(new CeoTorres());
+
+        cards.add(new WarElder());
+        cards.add(new WarElder());
+
+        cards.add(new HighPriestLyle());
+
+        cards.add(new CunningCaptain());
+        cards.add(new CunningCaptain());
+
+        cards.add(new AdmiralRasmussen());
+
+        return cards;
+    }
+
     public List<Gambit> getGambits() {
         List<Gambit> gambits = new ArrayList<>();
 
@@ -766,6 +792,9 @@ public class GameService {
         }
         if (gameState.determineIncludeCrisisFleetsAndFortresses()) {
             deck.addAll(getCrisisFleetsAndFortresses());
+        }
+        if (gameState.determineIncludeCrisisHeroes()) {
+            deck.addAll(getCrisisHeroes());
         }
 
         game.setDeck(deck);

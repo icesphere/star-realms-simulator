@@ -1,6 +1,7 @@
 package starrealmssimulator.cards.heroes;
 
 import starrealmssimulator.model.CardSet;
+import starrealmssimulator.model.Faction;
 import starrealmssimulator.model.Hero;
 import starrealmssimulator.model.Player;
 
@@ -13,8 +14,18 @@ public class BlobOverlord extends Hero {
     }
 
     @Override
+    public Faction getAlliedFaction() {
+        return Faction.BLOB;
+    }
+
+    @Override
     public void cardScrapped(Player player) {
         player.addCombat(4);
         player.blobAlliedUntilEndOfTurn();
+    }
+
+    @Override
+    public int getCombatWhenScrapped() {
+        return 4;
     }
 }

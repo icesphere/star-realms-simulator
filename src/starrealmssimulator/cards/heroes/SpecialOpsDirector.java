@@ -1,6 +1,7 @@
 package starrealmssimulator.cards.heroes;
 
 import starrealmssimulator.model.CardSet;
+import starrealmssimulator.model.Faction;
 import starrealmssimulator.model.Hero;
 import starrealmssimulator.model.Player;
 
@@ -13,8 +14,18 @@ public class SpecialOpsDirector extends Hero {
     }
 
     @Override
+    public Faction getAlliedFaction() {
+        return Faction.TRADE_FEDERATION;
+    }
+
+    @Override
     public void cardScrapped(Player player) {
         player.addAuthority(4);
         player.tradeFederationAlliedUntilEndOfTurn();
+    }
+
+    @Override
+    public int getAuthorityWhenScrapped() {
+        return 4;
     }
 }

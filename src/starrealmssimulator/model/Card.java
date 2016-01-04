@@ -140,6 +140,10 @@ public abstract class Card {
         return 0;
     }
 
+    public int getAuthorityWhenScrapped() {
+        return 0;
+    }
+
     public int getTradeWhenScrapped() {
         return 0;
     }

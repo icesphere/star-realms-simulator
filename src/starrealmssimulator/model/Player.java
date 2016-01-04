@@ -804,4 +804,11 @@ public abstract class Player {
     public List<Hero> getHeroes() {
         return heroes;
     }
+
+    public void useHero(Hero hero) {
+        getGame().gameLog("Using hero " + hero.getName());
+        heroes.remove(hero);
+        playerCardScrapped(hero);
+        hero.cardScrapped(this);
+    }
 }

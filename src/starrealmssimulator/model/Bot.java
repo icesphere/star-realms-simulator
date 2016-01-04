@@ -30,6 +30,7 @@ public abstract class Bot extends Player {
     protected Comparator<Base> returnBaseToHandScoreDescending = (c1, c2) -> Integer.compare(getReturnBaseToHandScore(c2), getReturnBaseToHandScore(c1));
     protected Comparator<Gambit> useGambitScoreDescending = (g1, g2) -> Integer.compare(getUseGambitScore(g2), getUseGambitScore(g1));
     protected Comparator<Card> returnCardToTopOfDeckScoreDescending = (c1, c2) -> Integer.compare(getReturnCardToTopOfDeckScore(c2), getReturnCardToTopOfDeckScore(c1));
+    protected Comparator<Hero> useHeroScoreDescending = (h1, h2) -> Integer.compare(getUseHeroScore(h2), getUseHeroScore(h1));
 
     @Override
     public void takeTurn() {
@@ -104,6 +105,16 @@ public abstract class Bot extends Player {
             for (Card card : getInPlay()) {
                 if (card instanceof AlliableCard) {
                     if (useAlliedAbility((AlliableCard) card)) {
+                        endTurn = false;
+                    }
+                }
+            }
+
+            if (!getHeroes().isEmpty()) {
+                List<Hero> sortedHeroes = getHeroes().stream().sorted(useHeroScoreDescending).collect(toList());
+                for (Hero hero : sortedHeroes) {
+                    if (getUseHeroScore(hero) > 0) {
+                        useHero(hero);
                         endTurn = false;
                     }
                 }
@@ -453,6 +464,31 @@ public abstract class Bot extends Player {
 
     public int getReturnCardToTopOfDeckScore(Card card) {
         return 1000 - getBuyCardScore(card);
+    }
+
+    public int getUseHeroScore(Hero hero) {
+        int authority = getAuthority();
+        int opponentAuthority = getOpponent().getAuthority();
+
+        int numOpponentOutposts = getOpponent().getOutposts().size();
+
+        if (numOpponentOutposts == 0 && hero.getCombatWhenScrapped() >= opponentAuthority) {
+            return 10;
+        } else if (getUnusedBasesAndOutposts().isEmpty() && getCombat() < getSmallestOutpostShield() && (getCombat() + hero.getCombatWhenScrapped()) >= getSmallestOutpostShield()) {
+            return 10;
+        }
+
+        if (authority <= 15 && hero.getAuthorityWhenScrapped() > 0) {
+            return 5;
+        }
+
+        for (Card card : getInPlay()) {
+            if (card instanceof AlliableCard && !card.isAlliedAbilityUsed() && card.getFaction() == hero.getAlliedFaction()) {
+                return 15;
+            }
+        }
+
+        return 0;
     }
 
     public int getChoice(Card card) {
