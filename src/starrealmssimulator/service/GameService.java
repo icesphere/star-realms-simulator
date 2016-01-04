@@ -806,9 +806,7 @@ public class GameService {
         game.gameLog("Setting up cards for Player");
         player.setGame(game);
         player.setOpponent(opponent);
-        if (player instanceof EndGameBot) {
-            player.setShuffles(4);
-        }
+        player.setShuffles(gameState.shuffles);
         player.setAuthority(gameState.authority);
         if (gameState.hand.isEmpty() && gameState.deck.isEmpty() && gameState.discard.isEmpty()) {
             player.getDeck().addAll(getStartingCards());
@@ -838,9 +836,7 @@ public class GameService {
         game.gameLog("Setting up cards for Opponent");
         opponent.setGame(game);
         opponent.setOpponent(player);
-        if (opponent instanceof EndGameBot) {
-            opponent.setShuffles(4);
-        }
+        opponent.setShuffles(gameState.opponentShuffles);
         opponent.setAuthority(gameState.opponentAuthority);
         if (gameState.opponentHandAndDeck.isEmpty() && gameState.opponentDiscard.isEmpty()) {
             opponent.getDeck().addAll(getStartingCards());
@@ -862,8 +858,8 @@ public class GameService {
         }
 
         if (gameState.determineIncludeCrisisHeroes()) {
-            player.getHeroes().addAll(getHeroesFromHeroNames(gameState.heroes));
-            opponent.getHeroes().addAll(getHeroesFromHeroNames(gameState.opponentHeroes));
+            player.getHeroes().addAll(getHeroesFromHeroNames(gameState.heroesInPlay));
+            opponent.getHeroes().addAll(getHeroesFromHeroNames(gameState.opponentHeroesInPlay));
         }
 
         game.getDeck().removeAll(player.getAllCards());

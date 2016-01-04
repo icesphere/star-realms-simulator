@@ -41,7 +41,9 @@ public class GameState {
 
     public String gambits = "";
 
-    public String heroes = "";
+    public String heroesInPlay = "";
+
+    public int shuffles = 0;
 
 
     //opponent info
@@ -56,9 +58,11 @@ public class GameState {
 
     public String opponentBasesInPlay = "";
 
+    public String opponentHeroesInPlay = "";
+
     public String opponentGambits = "";
 
-    public String opponentHeroes = "";
+    public int opponentShuffles = 0;
 
     @Override
     public String toString() {
@@ -80,8 +84,8 @@ public class GameState {
                 "\ndeck: '" + deck + '\'' +
                 "\ndiscard: '" + discard + '\'' +
                 "\nbasesInPlay: '" + basesInPlay + '\'' +
+                "\nheroesInPlay: '" + heroesInPlay + '\'' +
                 "\ngambits: '" + gambits + '\'' +
-                "\nheroes: '" + heroes + '\'' +
 
                 "\n\n--opponent info--" +
                 "\nopponentBot: '" + opponentBot + '\'' +
@@ -89,6 +93,7 @@ public class GameState {
                 "\nopponentHandAndDeck: '" + opponentHandAndDeck + '\'' +
                 "\nopponentDiscard: '" + opponentDiscard + '\'' +
                 "\nopponentBasesInPlay: '" + opponentBasesInPlay + '\'' +
+                "\nopponentHeroesInPlay: '" + opponentHeroesInPlay + '\'' +
                 "\nopponentGambits: '" + opponentGambits + '\'';
     }
 
@@ -212,20 +217,20 @@ public class GameState {
         this.basesInPlay = basesInPlay;
     }
 
+    public String getHeroesInPlay() {
+        return heroesInPlay;
+    }
+
+    public void setHeroesInPlay(String heroesInPlay) {
+        this.heroesInPlay = heroesInPlay;
+    }
+
     public String getGambits() {
         return gambits;
     }
 
     public void setGambits(String gambits) {
         this.gambits = gambits;
-    }
-
-    public String getHeroes() {
-        return heroes;
-    }
-
-    public void setHeroes(String heroes) {
-        this.heroes = heroes;
     }
 
     public String getOpponentBot() {
@@ -266,6 +271,14 @@ public class GameState {
 
     public void setOpponentBasesInPlay(String opponentBasesInPlay) {
         this.opponentBasesInPlay = opponentBasesInPlay;
+    }
+
+    public String getOpponentHeroesInPlay() {
+        return opponentHeroesInPlay;
+    }
+
+    public void setOpponentHeroesInPlay(String opponentHeroesInPlay) {
+        this.opponentHeroesInPlay = opponentHeroesInPlay;
     }
 
     public String getOpponentGambits() {
@@ -315,5 +328,21 @@ public class GameState {
 
     public boolean determineIncludeGambits() {
         return determineBoolean(includeGambits);
+    }
+
+    public int getShuffles() {
+        return shuffles;
+    }
+
+    public void setShuffles(int shuffles) {
+        this.shuffles = shuffles;
+    }
+
+    public int getOpponentShuffles() {
+        return opponentShuffles;
+    }
+
+    public void setOpponentShuffles(int opponentShuffles) {
+        this.opponentShuffles = opponentShuffles;
     }
 }
