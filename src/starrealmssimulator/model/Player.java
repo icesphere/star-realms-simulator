@@ -2,6 +2,8 @@ package starrealmssimulator.model;
 
 import starrealmssimulator.cards.bases.FleetHQ;
 import starrealmssimulator.cards.bases.outposts.MechWorld;
+import starrealmssimulator.cards.ships.ColonySeedShip;
+import starrealmssimulator.cards.ships.EmperorsDreadnaught;
 import starrealmssimulator.cards.ships.Explorer;
 import starrealmssimulator.cards.ships.StealthNeedle;
 
@@ -50,6 +52,8 @@ public abstract class Player {
     private boolean starEmpireAlliedUntilEndOfTurn;
     private boolean tradeFederationAlliedUntilEndOfTurn;
     private boolean machineCultAlliedUntilEndOfTurn;
+
+    private Set<Faction> factionsPlayedThisTurn = new HashSet<>();
 
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
@@ -156,7 +160,7 @@ public abstract class Player {
             if (!deck.isEmpty()) {
                 Card cardToDraw = deck.remove(0);
                 cardsDrawn.add(cardToDraw);
-                hand.add(cardToDraw);
+                addCardToHand(cardToDraw);
                 getGame().gameLog("Added " + cardToDraw.getName() + " to hand");
             }
         }
@@ -221,6 +225,8 @@ public abstract class Player {
         starEmpireAlliedUntilEndOfTurn = false;
         tradeFederationAlliedUntilEndOfTurn = false;
         machineCultAlliedUntilEndOfTurn = false;
+
+        factionsPlayedThisTurn.clear();
 
         played.clear();
 
@@ -410,15 +416,23 @@ public abstract class Player {
         }
     }
 
+    public void addCardToHand(Card card) {
+        hand.add(card);
+    }
+
     private void cardAcquired(Card card) {
-        if (card instanceof Hero) {
+        if ((card instanceof ColonySeedShip && factionPlayedThisTurn(Faction.TRADE_FEDERATION)) ||
+                (card instanceof EmperorsDreadnaught && factionPlayedThisTurn(Faction.STAR_EMPIRE))) {
+            addCardToHand(card);
+            getGame().gameLog("Added " + card.getName() + " to hand");
+        } else if (card instanceof Hero) {
             heroes.add((Hero) card);
         } else if (card.isShip() && nextShipToTop) {
             nextShipToTop = false;
             addCardToTopOfDeck(card);
         } else if (card.isBase() && nextBaseToHand) {
             nextBaseToHand = false;
-            hand.add(card);
+            addCardToHand(card);
         } else {
             discard.add(card);
         }
@@ -640,6 +654,8 @@ public abstract class Player {
             addCombat(1);
         }
 
+        factionsPlayedThisTurn.add(card.getFaction());
+
         card.cardPlayed(this);
     }
 
@@ -661,7 +677,7 @@ public abstract class Player {
         if (base != null) {
             getGame().gameLog("Returned base to hand: " + base.getName());
             bases.remove(base);
-            hand.add(base);
+            addCardToHand(base);
             cardRemovedFromPlay(base);
         }
     }
@@ -810,5 +826,9 @@ public abstract class Player {
         heroes.remove(hero);
         playerCardScrapped(hero);
         hero.cardScrapped(this);
+    }
+
+    public boolean factionPlayedThisTurn(Faction faction) {
+        return factionsPlayedThisTurn.contains(faction);
     }
 }

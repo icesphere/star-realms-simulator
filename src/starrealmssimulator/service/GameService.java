@@ -468,6 +468,51 @@ public class GameService {
         return cards;
     }
 
+    public List<Card> getColonyWarsDeck() {
+        List<Card> cards = new ArrayList<>();
+
+        cards.add(new SolarSkiff());
+        cards.add(new SolarSkiff());
+        cards.add(new SolarSkiff());
+
+        cards.add(new TradeHauler());
+        cards.add(new TradeHauler());
+        cards.add(new TradeHauler());
+
+        cards.add(new PatrolCutter());
+        cards.add(new PatrolCutter());
+        cards.add(new PatrolCutter());
+
+        cards.add(new FrontierFerry());
+        cards.add(new FrontierFerry());
+
+        cards.add(new ColonySeedShip());
+
+        cards.add(new Peacekeeper());
+
+        cards.add(new StarBarge());
+        cards.add(new StarBarge());
+        cards.add(new StarBarge());
+
+        cards.add(new Lancer());
+        cards.add(new Lancer());
+        cards.add(new Lancer());
+
+        cards.add(new Falcon());
+        cards.add(new Falcon());
+
+        cards.add(new Gunship());
+        cards.add(new Gunship());
+
+        cards.add(new HeavyCruiser());
+
+        cards.add(new AgingBattleship());
+
+        cards.add(new EmperorsDreadnaught());
+
+        return cards;
+    }
+
     public List<Gambit> getGambits() {
         List<Gambit> gambits = new ArrayList<>();
 
