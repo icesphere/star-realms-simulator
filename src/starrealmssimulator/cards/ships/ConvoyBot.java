@@ -2,20 +2,20 @@ package starrealmssimulator.cards.ships;
 
 import starrealmssimulator.model.*;
 
-public class SupplyBot extends Ship implements AlliableCard
+public class ConvoyBot extends Ship implements AlliableCard
 {
-    public SupplyBot()
+    public ConvoyBot()
     {
-        name = "Supply Bot";
+        name = "Convoy Bot";
         faction = Faction.MACHINE_CULT;
         cost = 3;
-        set = CardSet.CORE;
-        text = "Add 2 Trade; You may scrap a card in your hand or discard pile; Ally: Add 2 Combat";
+        set = CardSet.COLONY_WARS;
+        text = "Add 4 Combat; You may scrap a card in your hand or discard pile; Ally: Add 2 Combat";
     }
 
     @Override
     public void cardPlayed(Player player) {
-        player.addTrade(2);
+        player.addCombat(4);
         player.scrapCardFromHandOrDiscard();
     }
 

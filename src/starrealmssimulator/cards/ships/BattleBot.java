@@ -2,21 +2,21 @@ package starrealmssimulator.cards.ships;
 
 import starrealmssimulator.model.*;
 
-public class MissileBot extends Ship implements AlliableCard
+public class BattleBot extends Ship implements AlliableCard
 {
-    public MissileBot()
+    public BattleBot()
     {
-        name = "Missile Bot";
+        name = "Battle Bot";
         faction = Faction.MACHINE_CULT;
-        cost = 2;
-        set = CardSet.CORE;
-        text = "Add 2 Combat; You may scrap a card in your hand or discard pile; Ally: Add 2 Combat";
+        cost = 1;
+        set = CardSet.COLONY_WARS;
+        text = "Add 2 Combat; You may scrap a card in your hand; Ally: Add 2 Combat";
     }
 
     @Override
     public void cardPlayed(Player player) {
         player.addCombat(2);
-        player.scrapCardFromHandOrDiscard();
+        player.scrapCardFromHand(true);
     }
 
     @Override

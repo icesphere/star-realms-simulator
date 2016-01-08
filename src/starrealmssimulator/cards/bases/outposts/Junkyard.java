@@ -20,6 +20,6 @@ public class Junkyard extends Outpost
 
     @Override
     public void baseUsed(Player player) {
-        player.scrapCard();
+        player.scrapCardFromHandOrDiscard();
     }
 }

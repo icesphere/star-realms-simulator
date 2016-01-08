@@ -2,27 +2,27 @@ package starrealmssimulator.cards.ships;
 
 import starrealmssimulator.model.*;
 
-public class BattleMech extends Ship implements AlliableCard
+public class MechCruiser extends Ship implements AlliableCard
 {
-    public BattleMech()
+    public MechCruiser()
     {
-        name = "Battle Mech";
+        name = "Mech Cruiser";
         faction = Faction.MACHINE_CULT;
         cost = 5;
-        set = CardSet.CORE;
-        text = "Add 4 Combat; You may scrap a card in your hand or discard pile; Ally: Draw a card";
+        set = CardSet.COLONY_WARS;
+        text = "Add 6 Combat; You may scrap a card in your hand or discard pile; Ally: Destroy target base";
     }
 
     @Override
     public void cardPlayed(Player player)
     {
-        player.addCombat(4);
+        player.addCombat(6);
         player.scrapCardFromHandOrDiscard();
     }
 
     @Override
     public void cardAllied(Player player)
     {
-        player.drawCard();
+        player.destroyTargetBase();
     }
 }

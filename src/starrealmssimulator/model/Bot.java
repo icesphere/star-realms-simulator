@@ -536,6 +536,12 @@ public abstract class Bot extends Player {
             if (deck <= 2) {
                 return 2;
             }
+        } else if (card instanceof BorderFort) {
+            //todo
+        } else if (card instanceof SupplyDepot) {
+            //todo
+        }  else if (card instanceof Parasite) {
+            //todo
         }
 
         return 1;
@@ -587,6 +593,19 @@ public abstract class Bot extends Player {
     @Override
     public Card getCardToScrapFromHand(boolean optional) {
         if (!getHand().isEmpty()) {
+            List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
+            Card card = sortedCards.get(0);
+            if (optional && getScrapCardScore(card) < 20) {
+                return null;
+            }
+            return card;
+        }
+        return null;
+    }
+
+    @Override
+    public Card getCardToScrapFromDiscard(boolean optional) {
+        if (!getDiscard().isEmpty()) {
             List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
             Card card = sortedCards.get(0);
             if (optional && getScrapCardScore(card) < 20) {
@@ -918,5 +937,11 @@ public abstract class Bot extends Player {
                 }
             }
         }
+    }
+
+    @Override
+    public List<Card> getCardsToDiscardForSupplyDepot() {
+        //todo
+        return null;
     }
 }

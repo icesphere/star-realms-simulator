@@ -510,6 +510,57 @@ public class GameService {
 
         cards.add(new EmperorsDreadnaught());
 
+        cards.add(new OrbitalPlatform());
+        cards.add(new OrbitalPlatform());
+        cards.add(new OrbitalPlatform());
+
+        cards.add(new CommandCenter());
+        cards.add(new CommandCenter());
+
+        cards.add(new SupplyDepot());
+
+        cards.add(new ImperialPalace());
+
+        cards.add(new Swarmer());
+        cards.add(new Swarmer());
+        cards.add(new Swarmer());
+
+        cards.add(new Predator());
+        cards.add(new Predator());
+        cards.add(new Predator());
+
+        cards.add(new Swarmer());
+        cards.add(new Swarmer());
+        cards.add(new Swarmer());
+
+        cards.add(new Ravager());
+        cards.add(new Ravager());
+
+        cards.add(new Parasite());
+
+        cards.add(new Moonwurm());
+
+        cards.add(new Leviathan());
+
+        cards.add(new BattleBot());
+        cards.add(new BattleBot());
+        cards.add(new BattleBot());
+
+        cards.add(new RepairBot());
+        cards.add(new RepairBot());
+        cards.add(new RepairBot());
+
+        cards.add(new ConvoyBot());
+        cards.add(new ConvoyBot());
+        cards.add(new ConvoyBot());
+
+        cards.add(new MiningMech());
+        cards.add(new MiningMech());
+
+        cards.add(new MechCruiser());
+
+        cards.add(new TheWrecker());
+
         return cards;
     }
 

@@ -34,6 +34,6 @@ public class PatrolMech extends Ship implements AlliableCard
 
     @Override
     public void cardAllied(Player player) {
-        player.scrapCard();
+        player.scrapCardFromHandOrDiscard();
     }
 }

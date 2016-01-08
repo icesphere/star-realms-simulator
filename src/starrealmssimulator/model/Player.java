@@ -1,6 +1,7 @@
 package starrealmssimulator.model;
 
 import starrealmssimulator.cards.bases.FleetHQ;
+import starrealmssimulator.cards.bases.outposts.CommandCenter;
 import starrealmssimulator.cards.bases.outposts.MechWorld;
 import starrealmssimulator.cards.ships.ColonySeedShip;
 import starrealmssimulator.cards.ships.EmperorsDreadnaught;
@@ -52,6 +53,8 @@ public abstract class Player {
     private boolean starEmpireAlliedUntilEndOfTurn;
     private boolean tradeFederationAlliedUntilEndOfTurn;
     private boolean machineCultAlliedUntilEndOfTurn;
+
+    private boolean gainTwoCombatWhenStarEmpireShipPlayed;
 
     private Set<Faction> factionsPlayedThisTurn = new HashSet<>();
 
@@ -188,6 +191,9 @@ public abstract class Player {
         if (card instanceof MechWorld) {
             allFactionsAllied = false;
         }
+        if (card instanceof CommandCenter) {
+            gainTwoCombatWhenStarEmpireShipPlayed = false;
+        }
         if (card instanceof StealthNeedle) {
             ((StealthNeedle) card).setCardBeingCopied(null);
         }
@@ -320,11 +326,11 @@ public abstract class Player {
 
     public abstract Base chooseTargetBaseToDestroy();
 
-    public void scrapCard() {
-        scrapCards(1);
+    public void scrapCardFromHandOrDiscard() {
+        scrapCardsFromHandOrDiscard(1);
     }
 
-    public int scrapCards(int cards) {
+    public int scrapCardsFromHandOrDiscard(int cards) {
         List<List<Card>> cardsToScrap = getCardsToOptionallyScrapFromDiscardOrHand(cards);
 
         List<Card> cardsToScrapFromDiscard = cardsToScrap.get(0);
@@ -342,7 +348,7 @@ public abstract class Player {
     }
 
     public void scrapToDrawCards(int cards) {
-        int numCardsScrapped = scrapCards(cards);
+        int numCardsScrapped = scrapCardsFromHandOrDiscard(cards);
         if (numCardsScrapped > 0) {
             drawCards(numCardsScrapped);
         }
@@ -361,13 +367,8 @@ public abstract class Player {
     }
 
     private void playerCardScrapped(Card card) {
-        if (card instanceof FleetHQ) {
-            allShipsAddOneCombat = false;
-        }
-        if (card instanceof MechWorld) {
-            allFactionsAllied = false;
-        }
         game.getScrapped().add(card);
+        cardRemovedFromPlay(card);
     }
 
     public void scrapCardInPlayForBenefit(Card card) {
@@ -463,7 +464,18 @@ public abstract class Player {
         }
     }
 
+    public void scrapCardFromDiscard(boolean optional) {
+        if (!hand.isEmpty()) {
+            Card card = getCardToScrapFromDiscard(optional);
+            if (card != null) {
+                scrapCardFromDiscard(card);
+            }
+        }
+    }
+
     public abstract Card getCardToScrapFromHand(boolean optional);
+
+    public abstract Card getCardToScrapFromDiscard(boolean optional);
 
     public void allFactionsAllied() {
         allFactionsAllied = true;
@@ -650,8 +662,13 @@ public abstract class Player {
             addBase((Base) card);
         }
 
-        if (card.isShip() && allShipsAddOneCombat) {
-            addCombat(1);
+        if (card.isShip()) {
+            if (allShipsAddOneCombat) {
+                addCombat(1);
+            }
+            if (card.isStarEmpire() && gainTwoCombatWhenStarEmpireShipPlayed) {
+                addCombat(2);
+            }
         }
 
         factionsPlayedThisTurn.add(card.getFaction());
@@ -721,6 +738,14 @@ public abstract class Player {
         if (card != null) {
             getGame().gameLog("Acquired free card: " + card.getName());
             addCardToTopOfDeck(card);
+        }
+    }
+
+    public void acquireFreeCardToHand(int maxCost) {
+        Card card = chooseFreeCardToAcquire(maxCost);
+        if (card != null) {
+            getGame().gameLog("Acquired free card into hand: " + card.getName());
+            addCardToHand(card);
         }
     }
 
@@ -830,5 +855,17 @@ public abstract class Player {
 
     public boolean factionPlayedThisTurn(Faction faction) {
         return factionsPlayedThisTurn.contains(faction);
+    }
+
+    public void gainTwoCombatWhenStarEmpireShipPlayed() {
+        gainTwoCombatWhenStarEmpireShipPlayed = true;
+    }
+
+    public abstract List<Card> getCardsToDiscardForSupplyDepot();
+
+    public void discardCards(List<Card> cards) {
+        for (Card card : cards) {
+            discardCard(card);
+        }
     }
 }
