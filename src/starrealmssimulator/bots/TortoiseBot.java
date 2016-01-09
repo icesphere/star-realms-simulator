@@ -1,9 +1,23 @@
 package starrealmssimulator.bots;
 
-import starrealmssimulator.cards.bases.*;
-import starrealmssimulator.cards.bases.outposts.*;
+import starrealmssimulator.cards.bases.blob.*;
+import starrealmssimulator.cards.bases.outposts.machinecult.*;
+import starrealmssimulator.cards.bases.outposts.starempire.*;
+import starrealmssimulator.cards.bases.outposts.tradefederation.CapitolWorld;
+import starrealmssimulator.cards.bases.outposts.tradefederation.DefenseCenter;
+import starrealmssimulator.cards.bases.outposts.tradefederation.PortOfCall;
+import starrealmssimulator.cards.bases.outposts.tradefederation.TradingPost;
+import starrealmssimulator.cards.bases.starempire.FleetHQ;
+import starrealmssimulator.cards.bases.starempire.StarbaseOmega;
+import starrealmssimulator.cards.bases.tradefederation.BarterWorld;
+import starrealmssimulator.cards.bases.tradefederation.CentralOffice;
+import starrealmssimulator.cards.bases.tradefederation.Starmarket;
 import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.cards.ships.*;
+import starrealmssimulator.cards.ships.blob.*;
+import starrealmssimulator.cards.ships.machinecult.*;
+import starrealmssimulator.cards.ships.starempire.*;
+import starrealmssimulator.cards.ships.tradefederation.*;
 import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.Card;
 

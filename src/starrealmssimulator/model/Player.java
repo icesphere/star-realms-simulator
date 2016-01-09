@@ -1,15 +1,15 @@
 package starrealmssimulator.model;
 
-import starrealmssimulator.cards.bases.FleetHQ;
-import starrealmssimulator.cards.bases.PlasmaVent;
-import starrealmssimulator.cards.bases.outposts.CommandCenter;
-import starrealmssimulator.cards.bases.outposts.MechWorld;
-import starrealmssimulator.cards.bases.outposts.StealthTower;
-import starrealmssimulator.cards.bases.outposts.WarningBeacon;
-import starrealmssimulator.cards.ships.ColonySeedShip;
-import starrealmssimulator.cards.ships.EmperorsDreadnaught;
+import starrealmssimulator.cards.bases.starempire.FleetHQ;
+import starrealmssimulator.cards.bases.blob.PlasmaVent;
+import starrealmssimulator.cards.bases.outposts.starempire.CommandCenter;
+import starrealmssimulator.cards.bases.outposts.machinecult.MechWorld;
+import starrealmssimulator.cards.bases.outposts.machinecult.StealthTower;
+import starrealmssimulator.cards.bases.outposts.machinecult.WarningBeacon;
+import starrealmssimulator.cards.ships.tradefederation.ColonySeedShip;
+import starrealmssimulator.cards.ships.starempire.EmperorsDreadnaught;
 import starrealmssimulator.cards.ships.Explorer;
-import starrealmssimulator.cards.ships.StealthNeedle;
+import starrealmssimulator.cards.ships.machinecult.StealthNeedle;
 
 import java.util.*;
 import java.util.function.Function;

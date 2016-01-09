@@ -2,12 +2,22 @@ package starrealmssimulator.service;
 
 import starrealmssimulator.bots.*;
 import starrealmssimulator.bots.json.JsonBot;
-import starrealmssimulator.cards.bases.*;
-import starrealmssimulator.cards.bases.outposts.*;
+import starrealmssimulator.cards.bases.blob.*;
+import starrealmssimulator.cards.bases.outposts.machinecult.*;
+import starrealmssimulator.cards.bases.outposts.starempire.*;
+import starrealmssimulator.cards.bases.outposts.tradefederation.*;
+import starrealmssimulator.cards.bases.starempire.FleetHQ;
+import starrealmssimulator.cards.bases.starempire.OrbitalPlatform;
+import starrealmssimulator.cards.bases.starempire.StarbaseOmega;
+import starrealmssimulator.cards.bases.tradefederation.*;
 import starrealmssimulator.cards.events.*;
 import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.cards.gambits.*;
 import starrealmssimulator.cards.ships.*;
+import starrealmssimulator.cards.ships.blob.*;
+import starrealmssimulator.cards.ships.machinecult.*;
+import starrealmssimulator.cards.ships.starempire.*;
+import starrealmssimulator.cards.ships.tradefederation.*;
 import starrealmssimulator.model.*;
 
 import java.text.DecimalFormat;

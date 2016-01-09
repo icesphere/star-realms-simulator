@@ -3,7 +3,7 @@ package starrealmssimulator.bots.json;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import starrealmssimulator.cards.ships.StealthNeedle;
+import starrealmssimulator.cards.ships.machinecult.StealthNeedle;
 import starrealmssimulator.model.*;
 import starrealmssimulator.service.GameService;
 
