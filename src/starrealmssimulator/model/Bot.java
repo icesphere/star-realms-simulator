@@ -382,6 +382,7 @@ public abstract class Bot extends Player {
     }
 
     public int getDiscardCardScore(Card card) {
+        //todo determine when discarding Explorer would not be good
         if (card instanceof Viper) {
             return 100;
         } else if (card instanceof Scout) {
@@ -505,6 +506,9 @@ public abstract class Bot extends Player {
                 return 2;
             }
         } else if (card instanceof DefenseCenter) {
+            if (this.canOnlyDestroyBaseWithExtraCombat(2)) {
+                return 2;
+            }
             if (opponentAuthority <= 2) {
                 return 2;
             }
@@ -512,6 +516,9 @@ public abstract class Bot extends Player {
                 return 2;
             }
         } else if (card instanceof PatrolMech) {
+            if (this.canOnlyDestroyBaseWithExtraCombat(2)) {
+                return 2;
+            }
             if (deck > 2) {
                 return 2;
             }
@@ -537,19 +544,76 @@ public abstract class Bot extends Player {
                 return 2;
             }
         } else if (card instanceof BorderFort) {
-            //todo
+            if (this.canOnlyDestroyBaseWithExtraCombat(2)) {
+                return 2;
+            }
+            if (deck <= 2) {
+                return 1;
+            }
+            if (deck > 3) {
+                return 2;
+            }
+            int buyScoreIncrease = getBuyScoreIncrease(1);
+            if (buyScoreIncrease >= 20) {
+                return 1;
+            } else {
+                return 2;
+            }
         } else if (card instanceof SupplyDepot) {
-            //todo
+            if (this.canOnlyDestroyBaseWithExtraCombat(2)) {
+                return 2;
+            }
+            if (deck <= 2) {
+                return 1;
+            }
+            if (deck > 3) {
+                return 2;
+            }
+            int buyScoreIncrease = getBuyScoreIncrease(2);
+            if (buyScoreIncrease >= 20) {
+                return 1;
+            } else {
+                return 2;
+            }
         }  else if (card instanceof Parasite) {
-            //todo
+            if (this.canOnlyDestroyBaseWithExtraCombat(2)) {
+                return 1;
+            }
+            if (deck <= 2) {
+                return 2;
+            }
+            if (deck > 3) {
+                return 1;
+            }
+            if (getHighestBuyScoreForTrade(6) >= 50) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }  else if (card instanceof FrontierStation) {
+            if (this.canOnlyDestroyBaseWithExtraCombat(3)) {
+                return 2;
+            }
+            if (deck <= 2) {
+                return 1;
+            }
+            if (deck > 3) {
+                return 2;
+            }
+            int buyScoreIncrease = getBuyScoreIncrease(2);
+            if (buyScoreIncrease >= 25) {
+                return 1;
+            } else {
+                return 2;
+            }
         }
 
         return 1;
     }
 
     @Override
-    public int discardCards(int cards, boolean optional) {
-        int cardsDiscarded = 0;
+    public List<Card> getCardsToDiscard(int cards, boolean optional) {
+        List<Card> cardsToDiscard = new ArrayList<>();
 
         if (!getHand().isEmpty()) {
             if (cards > getHand().size()) {
@@ -562,13 +626,12 @@ public abstract class Bot extends Player {
                 if (getHand().isEmpty() || (optional && score < 20)) {
                     break;
                 } else {
-                    discardCard(card);
-                    cardsDiscarded++;
+                    cardsToDiscard.add(card);
                 }
             }
         }
 
-        return cardsDiscarded;
+        return cardsToDiscard;
     }
 
     @Override
@@ -587,6 +650,11 @@ public abstract class Bot extends Player {
             return shipToCopy;
         }
 
+        return null;
+    }
+
+    @Override
+    public Base getBaseToCopy() {
         return null;
     }
 
@@ -738,6 +806,15 @@ public abstract class Bot extends Player {
         if (!sortedCards.isEmpty()) {
             int bestCardScore = getBuyCardScore(sortedCards.get(0));
             return bestCardScore - cardToBuyScore;
+        }
+
+        return 0;
+    }
+
+    public int getHighestBuyScoreForTrade(int trade) {
+        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> trade >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
+        if (!sortedCards.isEmpty()) {
+            return getBuyCardScore(sortedCards.get(0));
         }
 
         return 0;
@@ -941,7 +1018,7 @@ public abstract class Bot extends Player {
 
     @Override
     public List<Card> getCardsToDiscardForSupplyDepot() {
-        //todo
-        return null;
+        //todo - consider when discarding things besides Scout, Viper, and Explorer would be good
+        return getCardsToDiscard(2, true);
     }
 }

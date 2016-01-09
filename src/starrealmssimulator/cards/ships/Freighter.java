@@ -20,6 +20,6 @@ public class Freighter extends Ship implements AlliableCard
 
     @Override
     public void cardAllied(Player player) {
-        player.nextShipToTop();
+        player.nextShipToTopOfDeck();
     }
 }

@@ -1,8 +1,11 @@
 package starrealmssimulator.model;
 
 import starrealmssimulator.cards.bases.FleetHQ;
+import starrealmssimulator.cards.bases.PlasmaVent;
 import starrealmssimulator.cards.bases.outposts.CommandCenter;
 import starrealmssimulator.cards.bases.outposts.MechWorld;
+import starrealmssimulator.cards.bases.outposts.StealthTower;
+import starrealmssimulator.cards.bases.outposts.WarningBeacon;
 import starrealmssimulator.cards.ships.ColonySeedShip;
 import starrealmssimulator.cards.ships.EmperorsDreadnaught;
 import starrealmssimulator.cards.ships.Explorer;
@@ -31,7 +34,11 @@ public abstract class Player {
     private Game game;
     private Player opponent;
 
-    private boolean nextShipToTop;
+    private boolean nextShipToTopOfDeck;
+
+    private boolean nextShipOrBaseToTopOfDeck;
+
+    private boolean nextShipOrBaseToHand;
 
     private boolean nextBaseToHand;
 
@@ -197,12 +204,13 @@ public abstract class Player {
         if (card instanceof StealthNeedle) {
             ((StealthNeedle) card).setCardBeingCopied(null);
         }
+        if (card instanceof StealthTower) {
+            ((StealthTower) card).setBaseBeingCopied(null);
+        }
         if (card.isBase()) {
             ((Base) card).setUsed(false);
         }
     }
-
-    public abstract int discardCards(int cards, boolean optional);
 
     public void addTrade(int trade) {
         this.trade += trade;
@@ -224,7 +232,9 @@ public abstract class Player {
         combat = 0;
         trade = 0;
 
-        nextShipToTop = false;
+        nextShipToTopOfDeck = false;
+        nextShipOrBaseToTopOfDeck = false;
+        nextShipOrBaseToHand = false;
         nextBaseToHand = false;
 
         blobAlliedUntilEndOfTurn = false;
@@ -423,17 +433,25 @@ public abstract class Player {
 
     private void cardAcquired(Card card) {
         if ((card instanceof ColonySeedShip && factionPlayedThisTurn(Faction.TRADE_FEDERATION)) ||
-                (card instanceof EmperorsDreadnaught && factionPlayedThisTurn(Faction.STAR_EMPIRE))) {
+                (card instanceof EmperorsDreadnaught && factionPlayedThisTurn(Faction.STAR_EMPIRE)) ||
+                (card instanceof PlasmaVent && blobCardPlayedThisTurn()) ||
+                (card instanceof WarningBeacon && machineCultCardPlayedThisTurn())) {
             addCardToHand(card);
             getGame().gameLog("Added " + card.getName() + " to hand");
         } else if (card instanceof Hero) {
             heroes.add((Hero) card);
-        } else if (card.isShip() && nextShipToTop) {
-            nextShipToTop = false;
+        } else if (card.isShip() && (nextShipToTopOfDeck || nextShipOrBaseToTopOfDeck)) {
+            nextShipToTopOfDeck = false;
+            nextShipOrBaseToTopOfDeck = false;
             addCardToTopOfDeck(card);
-        } else if (card.isBase() && nextBaseToHand) {
+        } else if (card.isBase() && (nextBaseToHand || nextShipOrBaseToHand)) {
             nextBaseToHand = false;
+            nextShipOrBaseToHand = false;
             addCardToHand(card);
+            getGame().gameLog("Added " + card.getName() + " to hand");
+        } else if (card.isBase() && nextShipOrBaseToTopOfDeck) {
+            nextShipOrBaseToTopOfDeck = false;
+            addCardToTopOfDeck(card);
         } else {
             discard.add(card);
         }
@@ -443,8 +461,16 @@ public abstract class Player {
 
     public abstract void makeChoice(Card card, Choice... choices);
 
-    public void nextShipToTop() {
-        nextShipToTop = true;
+    public void nextShipToTopOfDeck() {
+        nextShipToTopOfDeck = true;
+    }
+
+    public void nextShipOrBaseToTopOfDeck() {
+        nextShipOrBaseToTopOfDeck = true;
+    }
+
+    public void nextShipOrBaseToHand() {
+        nextShipOrBaseToHand = true;
     }
 
     public void nextBaseToHand() {
@@ -499,7 +525,25 @@ public abstract class Player {
         }
     }
 
+    public void copyBase(StealthTower stealthTower) {
+        if (!getBases().isEmpty() || !getOpponent().getBases().isEmpty()) {
+            Base baseToCopy = getBaseToCopy();
+            if (baseToCopy != null) {
+                getGame().gameLog("Copying base: " + baseToCopy.getName());
+                try {
+                    Base baseToCopyCopy = baseToCopy.getClass().newInstance();
+                    stealthTower.setBaseBeingCopied(baseToCopyCopy);
+                    this.playCard(baseToCopyCopy);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public abstract Ship getShipToCopy();
+
+    public abstract Base getBaseToCopy();
 
     public void setupTurn() {
         Game game = getGame();
@@ -610,6 +654,9 @@ public abstract class Player {
 
         if (card instanceof StealthNeedle && ((StealthNeedle) card).getCardBeingCopied() != null) {
             cardToUse = ((StealthNeedle) card).getCardBeingCopied();
+        }
+        if (card instanceof StealthTower && ((StealthTower) card).getBaseBeingCopied() != null) {
+            cardToUse = ((StealthTower) card).getBaseBeingCopied();
         }
         if (!cardToUse.isAlliedAbilityUsed() && cardHasAlly(cardToUse)) {
             getGame().gameLog("Using allied ability of " + cardToUse.getName());
@@ -868,4 +915,43 @@ public abstract class Player {
             discardCard(card);
         }
     }
+
+    public boolean blobCardPlayedThisTurn() {
+        for (Card card : played) {
+            if (card.isBlob()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean machineCultCardPlayedThisTurn() {
+        for (Card card : played) {
+            if (card.isMachineCult()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canOnlyDestroyBaseWithExtraCombat(int extraCombat) {
+        if (getOpponent().getBases().size() > 0) {
+            if (getOpponent().getOutposts().size() > 0) {
+                if (getCombat() < getOpponent().getSmallestOutpostShield()) {
+                    return (getCombat() + extraCombat) >= getOpponent().getSmallestOutpostShield();
+                }
+            } else if (getOpponent().getBases().size() > 0) {
+                if (getCombat() < getOpponent().getSmallestBaseShield()) {
+                    return (getCombat() + extraCombat) >= getOpponent().getSmallestBaseShield();
+                }
+            }
+        }
+        return false;
+    }
+
+    public int discardCards(int cards, boolean optional) {
+        return getCardsToDiscard(cards, optional).size();
+    }
+
+    public abstract List<Card> getCardsToDiscard(int cards, boolean optional);
 }

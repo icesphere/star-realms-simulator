@@ -490,6 +490,18 @@ public class GameService {
 
         cards.add(new Peacekeeper());
 
+        cards.add(new StorageSilo());
+        cards.add(new StorageSilo());
+
+        cards.add(new CentralStation());
+        cards.add(new CentralStation());
+
+        cards.add(new FederationShipyard());
+
+        cards.add(new LoyalColony());
+
+        cards.add(new FactoryWorld());
+
         cards.add(new StarBarge());
         cards.add(new StarBarge());
         cards.add(new StarBarge());
@@ -542,6 +554,15 @@ public class GameService {
 
         cards.add(new Leviathan());
 
+        cards.add(new StellarReef());
+        cards.add(new StellarReef());
+        cards.add(new StellarReef());
+
+        cards.add(new Bioformer());
+        cards.add(new Bioformer());
+
+        cards.add(new PlasmaVent());
+
         cards.add(new BattleBot());
         cards.add(new BattleBot());
         cards.add(new BattleBot());
@@ -560,6 +581,18 @@ public class GameService {
         cards.add(new MechCruiser());
 
         cards.add(new TheWrecker());
+
+        cards.add(new WarningBeacon());
+        cards.add(new WarningBeacon());
+        cards.add(new WarningBeacon());
+
+        cards.add(new TheOracle());
+
+        cards.add(new StealthTower());
+
+        cards.add(new FrontierStation());
+
+        cards.add(new TheIncinerator());
 
         return cards;
     }

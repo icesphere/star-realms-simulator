@@ -15,10 +15,6 @@ public class Junkyard extends Outpost
     }
 
     @Override
-    public void cardPlayed(Player player) {
-    }
-
-    @Override
     public void baseUsed(Player player) {
         player.scrapCardFromHandOrDiscard();
     }

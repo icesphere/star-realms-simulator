@@ -22,7 +22,7 @@ public class CentralOffice extends Base implements AlliableCard
     @Override
     public void baseUsed(Player player) {
         player.addTrade(2);
-        player.nextShipToTop();
+        player.nextShipToTopOfDeck();
     }
 
     @Override
