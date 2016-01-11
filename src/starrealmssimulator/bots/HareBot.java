@@ -1,21 +1,22 @@
 package starrealmssimulator.bots;
 
-import starrealmssimulator.cards.bases.blob.*;
+import starrealmssimulator.cards.bases.blob.BlobWorld;
+import starrealmssimulator.cards.bases.blob.DeathWorld;
 import starrealmssimulator.cards.bases.outposts.machinecult.*;
-import starrealmssimulator.cards.bases.outposts.starempire.*;
+import starrealmssimulator.cards.bases.outposts.starempire.RoyalRedoubt;
+import starrealmssimulator.cards.bases.outposts.starempire.SpaceStation;
+import starrealmssimulator.cards.bases.outposts.starempire.StarFortress;
 import starrealmssimulator.cards.bases.outposts.tradefederation.DefenseCenter;
 import starrealmssimulator.cards.bases.outposts.tradefederation.PortOfCall;
 import starrealmssimulator.cards.bases.outposts.tradefederation.TradingPost;
-import starrealmssimulator.cards.bases.starempire.FleetHQ;
-import starrealmssimulator.cards.bases.starempire.StarbaseOmega;
 import starrealmssimulator.cards.bases.tradefederation.BarterWorld;
 import starrealmssimulator.cards.bases.tradefederation.CentralOffice;
 import starrealmssimulator.cards.bases.tradefederation.Starmarket;
 import starrealmssimulator.cards.heroes.*;
-import starrealmssimulator.cards.ships.*;
-import starrealmssimulator.cards.ships.blob.*;
 import starrealmssimulator.cards.ships.machinecult.*;
-import starrealmssimulator.cards.ships.starempire.*;
+import starrealmssimulator.cards.ships.starempire.Battlecruiser;
+import starrealmssimulator.cards.ships.starempire.CargoLaunch;
+import starrealmssimulator.cards.ships.starempire.Dreadnaught;
 import starrealmssimulator.cards.ships.tradefederation.*;
 import starrealmssimulator.model.Card;
 
@@ -85,21 +86,7 @@ public class HareBot extends AttackBot {
         }
 
         //Blob
-        if (card instanceof BattleBlob) {
-
-        } else if (card instanceof BattlePod) {
-
-        } else if (card instanceof BattleScreecher) {
-
-        } else if (card instanceof BlobCarrier) {
-
-        } else if (card instanceof BlobDestroyer) {
-
-        } else if (card instanceof BlobFighter) {
-
-        } else if (card instanceof BlobWheel) {
-
-        } else if (card instanceof BlobWorld) {
+        if (card instanceof BlobWorld) {
             return 100;
         } else if (card instanceof DeathWorld) {
             if (deck < 3) {
@@ -109,16 +96,6 @@ public class HareBot extends AttackBot {
                 return 85;
             }
             return 75;
-        } else if (card instanceof BreedingSite) {
-
-        } else if (card instanceof Mothership) {
-
-        } else if (card instanceof Ram) {
-
-        } else if (card instanceof TheHive) {
-
-        } else if (card instanceof TradePod) {
-
         }
 
         //Trade Federation
@@ -136,8 +113,6 @@ public class HareBot extends AttackBot {
             return 15;
         } else if (card instanceof CommandShip) {
             return 80;
-        } else if (card instanceof ConstructionHauler) {
-
         } else if (card instanceof Cutter) {
             if (deck == 1) {
                 return 80;
@@ -163,8 +138,6 @@ public class HareBot extends AttackBot {
             if (deck == 1) {
                 return 30;
             }
-        } else if (card instanceof Megahauler) {
-
         } else if (card instanceof PortOfCall) {
             if (deck == 1) {
                 return 30;
@@ -194,24 +167,12 @@ public class HareBot extends AttackBot {
         }
 
         //Star Empire
-        else if (card instanceof BattleBarge) {
-
-        } else if (card instanceof Battlecruiser) {
+        else if (card instanceof Battlecruiser) {
             return 70;
         } else if (card instanceof CargoLaunch) {
             return 10;
-        } else if (card instanceof Corvette) {
-
         } else if (card instanceof Dreadnaught) {
             return 90;
-        } else if (card instanceof FleetHQ) {
-
-        } else if (card instanceof ImperialFighter) {
-
-        } else if (card instanceof ImperialFrigate) {
-
-        } else if (card instanceof RecyclingStation) {
-
         } else if (card instanceof RoyalRedoubt) {
             return 40;
         } else if (card instanceof SpaceStation) {
@@ -224,12 +185,6 @@ public class HareBot extends AttackBot {
                 return 90;
             }
             return 80;
-        } else if (card instanceof StarbaseOmega) {
-
-        } else if (card instanceof SurveyShip) {
-
-        } else if (card instanceof WarWorld) {
-
         }
 
         //Machine Cult
@@ -256,10 +211,6 @@ public class HareBot extends AttackBot {
                 return 50;
             }
             return 15;
-        } else if (card instanceof FortressOblivion) {
-
-        } else if (card instanceof Junkyard) {
-
         } else if (card instanceof MachineBase) {
             return 30;
         } else if (card instanceof MechWorld) {
@@ -271,8 +222,6 @@ public class HareBot extends AttackBot {
                 return 30;
             }
             return 5;
-        } else if (card instanceof MissileMech) {
-
         } else if (card instanceof PatrolBot) {
             if (deck == 1) {
                 return 40;
@@ -293,8 +242,6 @@ public class HareBot extends AttackBot {
             } else if (deck == 2) {
                 return 20;
             }
-        } else if (card instanceof StealthNeedle) {
-
         } else if (card instanceof TheArk) {
             if (deck < 3) {
                 return 90;
@@ -307,14 +254,6 @@ public class HareBot extends AttackBot {
                 return 10;
             }
             return 0;
-        }
-
-        //Other
-        else if (card instanceof Explorer) {
-
-        }
-        else if (card instanceof MercCruiser) {
-
         }
 
         return super.getBuyCardScore(card);

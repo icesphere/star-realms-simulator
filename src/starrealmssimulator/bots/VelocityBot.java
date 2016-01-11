@@ -3,15 +3,11 @@ package starrealmssimulator.bots;
 import starrealmssimulator.cards.bases.blob.*;
 import starrealmssimulator.cards.bases.outposts.machinecult.*;
 import starrealmssimulator.cards.bases.outposts.starempire.*;
-import starrealmssimulator.cards.bases.outposts.tradefederation.CapitolWorld;
-import starrealmssimulator.cards.bases.outposts.tradefederation.DefenseCenter;
-import starrealmssimulator.cards.bases.outposts.tradefederation.PortOfCall;
-import starrealmssimulator.cards.bases.outposts.tradefederation.TradingPost;
+import starrealmssimulator.cards.bases.outposts.tradefederation.*;
 import starrealmssimulator.cards.bases.starempire.FleetHQ;
+import starrealmssimulator.cards.bases.starempire.OrbitalPlatform;
 import starrealmssimulator.cards.bases.starempire.StarbaseOmega;
-import starrealmssimulator.cards.bases.tradefederation.BarterWorld;
-import starrealmssimulator.cards.bases.tradefederation.CentralOffice;
-import starrealmssimulator.cards.bases.tradefederation.Starmarket;
+import starrealmssimulator.cards.bases.tradefederation.*;
 import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.cards.ships.*;
 import starrealmssimulator.cards.ships.blob.*;
@@ -103,6 +99,14 @@ public class VelocityBot extends Bot {
                 return 50;
             }
             return 25;
+        } else if (card instanceof Bioformer) {
+            if (deck == 1) {
+                return 55;
+            } else if (deck == 2) {
+                return 25;
+            } else if (deck == 3) {
+                return 5;
+            }
         } else if (card instanceof BlobCarrier) {
             if (deck < 3) {
                 return 60;
@@ -136,6 +140,14 @@ public class VelocityBot extends Bot {
                 return 80;
             }
             return 60;
+        } else if (card instanceof CargoPod) {
+            if (deck == 1) {
+                return 65;
+            } else if (deck == 2) {
+                return 25;
+            } else if (deck == 3) {
+                return 10;
+            }
         } else if (card instanceof DeathWorld) {
             if (deck < 3) {
                 return 80;
@@ -153,6 +165,10 @@ public class VelocityBot extends Bot {
                 return 10;
             }
             return 20;
+        } else if (card instanceof Leviathan) {
+            return 100;
+        } else if (card instanceof Moonwurm) {
+            return 80;
         } else if (card instanceof Mothership) {
             return 80;
         } else if (card instanceof Obliterator) {
@@ -163,12 +179,45 @@ public class VelocityBot extends Bot {
                 return 60;
             }
             return 50;
+        } else if (card instanceof Parasite) {
+            if (deck < 3) {
+                return 50;
+            }
+            return 30;
+        } else if (card instanceof PlasmaVent) {
+            if (blobCardPlayedThisTurn()) {
+                return 15;
+            } else {
+                if (deck <= 2) {
+                    return 5;
+                } else if (deck == 3) {
+                    return 10;
+                }
+            }
+        } else if (card instanceof Predator) {
+            if (deck == 1) {
+                return 10;
+            } else if (deck == 2) {
+                return 15;
+            }
+            return 45;
         } else if (card instanceof Ram) {
             if (deck < 3) {
                 return 60;
             }
             return 30;
+        } else if (card instanceof Ravager) {
+            return 35;
         } else if (card instanceof SpikePod) {
+            if (deck < 3) {
+                return 15;
+            }
+            return 10;
+        } else if (card instanceof StellarReef) {
+            if (deck <= 2) {
+                return 5;
+            }
+        } else if (card instanceof Swarmer) {
             if (deck < 3) {
                 return 15;
             }
@@ -210,6 +259,41 @@ public class VelocityBot extends Bot {
                 return 60;
             }
             return 50;
+        } else if (card instanceof CentralStation) {
+            if (deck == 1 && bases > 0) {
+                return 35;
+            } else if (deck == 1) {
+                return 30;
+            } else if (deck == 2 && bases > 0) {
+                return 25;
+            } else if (deck == 2) {
+                return 15;
+            } else if (deck == 3 && bases >= 3) {
+                return 15;
+            }
+            if (bases >= 4) {
+                return 10;
+            }
+        } else if (card instanceof ColonySeedShip) {
+            if (tradeFederationCardPlayedThisTurn()) {
+                if (deck == 1) {
+                    return 95;
+                } else if (deck == 2) {
+                    return 85;
+                } else if (deck == 3) {
+                    return 60;
+                }
+                return 40;
+            } else {
+                if (deck == 1) {
+                    return 90;
+                } else if (deck == 2) {
+                    return 80;
+                } else if (deck == 3) {
+                    return 45;
+                }
+                return 25;
+            }
         } else if (card instanceof CommandShip) {
             return 95;
         } else if (card instanceof ConstructionHauler) {
@@ -253,6 +337,24 @@ public class VelocityBot extends Bot {
                 return 60;
             }
             return 20;
+        } else if (card instanceof FactoryWorld) {
+            if (deck == 1) {
+                return 80;
+            } else if (deck == 2) {
+                return 60;
+            } else if (deck == 3) {
+                return 40;
+            }
+            return 30;
+        } else if (card instanceof FederationShipyard) {
+            if (deck == 1) {
+                return 60;
+            } else if (deck == 2) {
+                return 40;
+            } else if (deck == 3) {
+                return 20;
+            }
+            return 10;
         } else if (card instanceof FederationShuttle) {
             if (deck == 1) {
                 return 30;
@@ -272,6 +374,22 @@ public class VelocityBot extends Bot {
             } else if (deck == 3) {
                 return 20;
             }
+        } else if (card instanceof FrontierFerry) {
+            if (deck == 1) {
+                return 90;
+            } else if (deck == 2) {
+                return 80;
+            } else if (deck == 3) {
+                return 50;
+            }
+            return 40;
+        } else if (card instanceof LoyalColony) {
+            if (deck < 3) {
+                return 80;
+            } else if (deck == 3) {
+                return 60;
+            }
+            return 50;
         } else if (card instanceof Megahauler) {
             if (deck < 3) {
                 return 50;
@@ -286,6 +404,26 @@ public class VelocityBot extends Bot {
                 return 40;
             }
             return 30;
+        } else if (card instanceof PatrolCutter) {
+            if (deck == 1) {
+                return 80;
+            } else if (deck == 2) {
+                return 70;
+            } else if (deck == 3) {
+                return 40;
+            }
+            return 30;
+        } else if (card instanceof Peacekeeper) {
+            if (deck < 3) {
+                return 40;
+            }
+            return 60;
+        } else if (card instanceof SolarSkiff) {
+            if (deck == 1) {
+                return 30;
+            } else if (deck == 2) {
+                return 15;
+            }
         } else if (card instanceof Starmarket) {
             if (deck == 1 && bases > 0) {
                 return 40;
@@ -299,11 +437,21 @@ public class VelocityBot extends Bot {
                 return 15;
             }
             return 5;
+        } else if (card instanceof StorageSilo) {
+            if (deck == 1) {
+                return 5;
+            }
         } else if (card instanceof TradeEscort) {
             if (deck < 3) {
                 return 25;
             }
             return 50;
+        } else if (card instanceof TradeHauler) {
+            if (deck == 1) {
+                return 35;
+            } else if (deck == 2) {
+                return 20;
+            }
         } else if (card instanceof TradeRaft) {
             if (deck == 1) {
                 return 35;
@@ -319,7 +467,9 @@ public class VelocityBot extends Bot {
         }
 
         //Star Empire
-        else if (card instanceof BattleBarge) {
+        else if (card instanceof AgingBattleship) {
+
+        } else if (card instanceof BattleBarge) {
             if (bases >= 4) {
                 return 50;
             } else if (bases >= 2) {
@@ -330,6 +480,8 @@ public class VelocityBot extends Bot {
             return 80;
         } else if (card instanceof CargoLaunch) {
             return 5;
+        } else if (card instanceof CommandCenter) {
+
         } else if (card instanceof Corvette) {
             if (deck < 3) {
                 return 5;
@@ -337,6 +489,10 @@ public class VelocityBot extends Bot {
             return 10;
         } else if (card instanceof Dreadnaught) {
             return 90;
+        } else if (card instanceof EmperorsDreadnaught) {
+
+        } else if (card instanceof Falcon) {
+
         } else if (card instanceof FighterBase) {
             return 0;
         } else if (card instanceof FleetHQ) {
@@ -344,6 +500,10 @@ public class VelocityBot extends Bot {
                 return 20;
             }
             return 10;
+        } else if (card instanceof Gunship) {
+
+        } else if (card instanceof HeavyCruiser) {
+
         } else if (card instanceof ImperialFighter) {
             if (deck <= 2) {
                 return 0;
@@ -354,6 +514,8 @@ public class VelocityBot extends Bot {
                 return 15;
             }
             return 35;
+        } else if (card instanceof ImperialPalace) {
+
         } else if (card instanceof ImperialTrader) {
             if (deck == 1) {
                 return 60;
@@ -363,6 +525,10 @@ public class VelocityBot extends Bot {
                 return 30;
             }
             return 20;
+        } else if (card instanceof Lancer) {
+
+        } else if (card instanceof OrbitalPlatform) {
+
         } else if (card instanceof RecyclingStation) {
             if (deck == 1) {
                 return 25;
@@ -380,6 +546,8 @@ public class VelocityBot extends Bot {
                 return 40;
             }
             return 25;
+        } else if (card instanceof StarBarge) {
+
         } else if (card instanceof StarFortress) {
             if (deck <= 3) {
                 return 70;
@@ -398,6 +566,8 @@ public class VelocityBot extends Bot {
             return 5;
         } else if (card instanceof SurveyShip) {
             return 5;
+        } else if (card instanceof SupplyDepot) {
+
         } else if (card instanceof WarWorld) {
             if (bases > 2) {
                 return 30;
@@ -406,7 +576,9 @@ public class VelocityBot extends Bot {
         }
 
         //Machine Cult
-        else if (card instanceof BattleMech) {
+        else if (card instanceof BattleBot) {
+
+        } else if (card instanceof BattleMech) {
             if (deck < 3) {
                 return 80;
             }
@@ -435,6 +607,8 @@ public class VelocityBot extends Bot {
                 return 90;
             }
             return 85;
+        } else if (card instanceof ConvoyBot) {
+
         } else if (card instanceof DefenseBot) {
             if (deck < 3 && bases > 0) {
                 return 40;
@@ -459,6 +633,8 @@ public class VelocityBot extends Bot {
                 return 20;
             }
             return 2;
+        } else if (card instanceof FrontierStation) {
+
         } else if (card instanceof Junkyard) {
             if (deck < 3) {
                 return 40;
@@ -474,6 +650,8 @@ public class VelocityBot extends Bot {
                 return 85;
             }
             return 80;
+        } else if (card instanceof MechCruiser) {
+
         } else if (card instanceof MechWorld) {
             if (deck == 1) {
                 return 20;
@@ -486,6 +664,8 @@ public class VelocityBot extends Bot {
                 return 50;
             }
             return 40;
+        } else if (card instanceof MiningMech) {
+
         } else if (card instanceof MissileBot) {
             if (deck == 1) {
                 return 80;
@@ -514,6 +694,8 @@ public class VelocityBot extends Bot {
                 return 60;
             }
             return 30;
+        } else if (card instanceof RepairBot) {
+
         } else if (card instanceof SupplyBot) {
             if (deck == 1) {
                 return 90;
@@ -527,11 +709,19 @@ public class VelocityBot extends Bot {
                 return 30;
             }
             return 60;
+        } else if (card instanceof StealthTower) {
+
         } else if (card instanceof TheArk) {
             if (deck < 3) {
                 return 100;
             }
             return 90;
+        } else if (card instanceof TheIncinerator) {
+
+        } else if (card instanceof TheOracle) {
+
+        } else if (card instanceof TheWrecker) {
+
         } else if (card instanceof TradeBot) {
             if (deck == 1) {
                 return 75;
@@ -541,6 +731,8 @@ public class VelocityBot extends Bot {
                 return 15;
             }
             return 5;
+        } else if (card instanceof WarningBeacon) {
+
         }
 
         //Other

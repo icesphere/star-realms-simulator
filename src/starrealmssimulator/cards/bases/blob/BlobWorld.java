@@ -30,11 +30,8 @@ public class BlobWorld extends Base
             player.addCombat(5);
         } else {
             player.getGame().gameLog("Chose Draw a card for each Blob card that you've played this turn");
-            for (Card card : player.getPlayed()) {
-                if (card.isBlob()) {
-                    player.drawCard();
-                }
-            }
+            int numBlobCardsPlayedThisTurn = player.getNumBlobCardsPlayedThisTurn();
+            player.drawCards(numBlobCardsPlayedThisTurn);
         }
     }
 }

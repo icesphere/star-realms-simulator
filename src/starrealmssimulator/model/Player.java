@@ -917,12 +917,15 @@ public abstract class Player {
     }
 
     public boolean blobCardPlayedThisTurn() {
-        for (Card card : played) {
-            if (card.isBlob()) {
-                return true;
-            }
-        }
-        return false;
+        return cardPlayedThisTurn(Card::isBlob);
+    }
+
+    public boolean tradeFederationCardPlayedThisTurn() {
+        return cardPlayedThisTurn(Card::isTradeFederation);
+    }
+
+    public boolean cardPlayedThisTurn(Function<Card, Boolean> typeMatcher) {
+        return countCardsByType(played, typeMatcher) > 0;
     }
 
     public boolean machineCultCardPlayedThisTurn() {
@@ -954,4 +957,8 @@ public abstract class Player {
     }
 
     public abstract List<Card> getCardsToDiscard(int cards, boolean optional);
+
+    public int getNumBlobCardsPlayedThisTurn() {
+        return countCardsByType(played, Card::isBlob);
+    }
 }
