@@ -467,6 +467,8 @@ public abstract class Bot extends Player {
             }
         }
 
+        //todo add new cards
+
         if (card instanceof Explorer) {
             if (deck > 2) {
                 return 5;

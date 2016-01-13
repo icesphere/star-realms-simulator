@@ -385,7 +385,7 @@ public class AttackBot extends Bot {
 
         //Star Empire
         else if (card instanceof AgingBattleship) {
-
+            return 65;
         } else if (card instanceof BattleBarge) {
             if (bases >= 4) {
                 return 60;
@@ -398,7 +398,13 @@ public class AttackBot extends Bot {
         } else if (card instanceof CargoLaunch) {
             return 10;
         } else if (card instanceof CommandCenter) {
-
+            int numberOfStarEmpireCards = countCardsByType(getAllCards(), Card::isStarEmpire);
+            if (deck == 1) {
+                return 30;
+            } else if (deck == 2) {
+                return 15 + (5 * numberOfStarEmpireCards);
+            }
+            return 5 * numberOfStarEmpireCards;
         } else if (card instanceof Corvette) {
             if (deck < 3) {
                 return 10;
@@ -407,9 +413,16 @@ public class AttackBot extends Bot {
         } else if (card instanceof Dreadnaught) {
             return 95;
         } else if (card instanceof EmperorsDreadnaught) {
-
+            if (starEmpireCardPlayedThisTurn()) {
+                return 120;
+            } else {
+                return 100;
+            }
         } else if (card instanceof Falcon) {
-
+            if (deck < 3) {
+                return 10;
+            }
+            return 20;
         } else if (card instanceof FighterBase) {
             if (deck == 1) {
                 return 10;
@@ -421,9 +434,9 @@ public class AttackBot extends Bot {
             }
             return 10;
         } else if (card instanceof Gunship) {
-
+            return 30;
         } else if (card instanceof HeavyCruiser) {
-
+            return 65;
         } else if (card instanceof ImperialFighter) {
             if (deck == 1) {
                 return 10;
@@ -435,7 +448,7 @@ public class AttackBot extends Bot {
             }
             return 40;
         } else if (card instanceof ImperialPalace) {
-
+            return 40;
         } else if (card instanceof ImperialTrader) {
             if (deck == 1) {
                 return 80;
@@ -446,9 +459,19 @@ public class AttackBot extends Bot {
             }
             return 40;
         } else if (card instanceof Lancer) {
-
+            if (deck < 3) {
+                if (getOpponent().getNumBases() >= 1) {
+                    return 11;
+                }
+                return 9;
+            }
+            if (getOpponent().getNumBases() >= 2) {
+                return 21;
+            } else {
+                return 19;
+            }
         } else if (card instanceof OrbitalPlatform) {
-
+            return 5;
         } else if (card instanceof RecyclingStation) {
             return 30;
         } else if (card instanceof RoyalRedoubt) {
@@ -459,7 +482,12 @@ public class AttackBot extends Bot {
             }
             return 10;
         } else if (card instanceof StarBarge) {
-
+            if (deck < 3) {
+                return 25;
+            } else if (deck == 3) {
+                return 15;
+            }
+            return 5;
         } else if (card instanceof StarFortress) {
             if (deck <= 3) {
                 return 85;
@@ -479,7 +507,12 @@ public class AttackBot extends Bot {
         } else if (card instanceof SurveyShip) {
             return 5;
         } else if (card instanceof SupplyDepot) {
-
+            if (deck < 3) {
+                return 40;
+            } else if (deck == 3) {
+                return 25;
+            }
+            return 20;
         } else if (card instanceof WarWorld) {
             return 30;
         }

@@ -482,7 +482,7 @@ public class TortoiseBot extends Bot {
 
         //Star Empire
         else if (card instanceof AgingBattleship) {
-
+            return 60;
         } else if (card instanceof BattleBarge) {
             if (bases >= 4) {
                 return 50;
@@ -495,7 +495,13 @@ public class TortoiseBot extends Bot {
         } else if (card instanceof CargoLaunch) {
             return 5;
         } else if (card instanceof CommandCenter) {
-
+            int numberOfStarEmpireCards = countCardsByType(getAllCards(), Card::isStarEmpire);
+            if (deck == 1) {
+                return 50;
+            } else if (deck == 2) {
+                return 30 + (5 * numberOfStarEmpireCards);
+            }
+            return 10 + (5 * numberOfStarEmpireCards);
         } else if (card instanceof Corvette) {
             if (deck < 3) {
                 return 5;
@@ -504,9 +510,16 @@ public class TortoiseBot extends Bot {
         } else if (card instanceof Dreadnaught) {
             return 80;
         } else if (card instanceof EmperorsDreadnaught) {
-
+            if (starEmpireCardPlayedThisTurn()) {
+                return 105;
+            } else {
+                return 85;
+            }
         } else if (card instanceof Falcon) {
-
+            if (deck < 3) {
+                return 5;
+            }
+            return 10;
         } else if (card instanceof FighterBase) {
             if (deck == 1) {
                 return 10;
@@ -518,9 +531,9 @@ public class TortoiseBot extends Bot {
             }
             return 10;
         } else if (card instanceof Gunship) {
-
+            return 10;
         } else if (card instanceof HeavyCruiser) {
-
+            return 60;
         } else if (card instanceof ImperialFighter) {
             if (deck <= 2) {
                 return 0;
@@ -532,7 +545,10 @@ public class TortoiseBot extends Bot {
             }
             return 30;
         } else if (card instanceof ImperialPalace) {
-
+            if (countCardsByType(getAllCards(), Card::isStarEmpire) > 2) {
+                return 50;
+            }
+            return 35;
         } else if (card instanceof ImperialTrader) {
             if (deck == 1) {
                 return 60;
@@ -543,9 +559,25 @@ public class TortoiseBot extends Bot {
             }
             return 20;
         } else if (card instanceof Lancer) {
-
+            if (deck < 3) {
+                if (getOpponent().getNumBases() >= 1) {
+                    return 5;
+                }
+                return 0;
+            }
+            if (getOpponent().getNumBases() >= 2) {
+                return 10;
+            } else {
+                return 5;
+            }
         } else if (card instanceof OrbitalPlatform) {
-
+            if (deck == 1) {
+                return 0;
+            }
+            if (deck < 3) {
+                return 5;
+            }
+            return 10;
         } else if (card instanceof RecyclingStation) {
             if (deck == 1) {
                 return 15;
@@ -566,7 +598,11 @@ public class TortoiseBot extends Bot {
             }
             return 25;
         } else if (card instanceof StarBarge) {
-
+            if (deck < 3) {
+                return 10;
+            } else if (deck == 3) {
+                return 5;
+            }
         } else if (card instanceof StarFortress) {
             if (deck <= 3) {
                 return 50;
@@ -586,7 +622,12 @@ public class TortoiseBot extends Bot {
         } else if (card instanceof SurveyShip) {
             return 5;
         } else if (card instanceof SupplyDepot) {
-
+            if (deck < 3) {
+                return 50;
+            } else if (deck == 3) {
+                return 40;
+            }
+            return 30;
         } else if (card instanceof WarWorld) {
             if (bases > 2) {
                 return 30;

@@ -626,15 +626,7 @@ public abstract class Player {
     }
 
     public int getNumBases() {
-        int bases = 0;
-
-        for (Card card : getAllCards()) {
-            if (card instanceof Base) {
-                bases++;
-            }
-        }
-
-        return bases;
+        return countCardsByType(getAllCards(), Card::isBase);
     }
 
     public int getNumOutposts() {
@@ -922,6 +914,10 @@ public abstract class Player {
 
     public boolean tradeFederationCardPlayedThisTurn() {
         return cardPlayedThisTurn(Card::isTradeFederation);
+    }
+
+    public boolean starEmpireCardPlayedThisTurn() {
+        return cardPlayedThisTurn(Card::isStarEmpire);
     }
 
     public boolean cardPlayedThisTurn(Function<Card, Boolean> typeMatcher) {

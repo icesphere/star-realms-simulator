@@ -468,7 +468,7 @@ public class VelocityBot extends Bot {
 
         //Star Empire
         else if (card instanceof AgingBattleship) {
-
+            return 70;
         } else if (card instanceof BattleBarge) {
             if (bases >= 4) {
                 return 50;
@@ -481,7 +481,13 @@ public class VelocityBot extends Bot {
         } else if (card instanceof CargoLaunch) {
             return 5;
         } else if (card instanceof CommandCenter) {
-
+            int numberOfStarEmpireCards = countCardsByType(getAllCards(), Card::isStarEmpire);
+            if (deck == 1) {
+                return 40;
+            } else if (deck == 2) {
+                return 15 + (5 * numberOfStarEmpireCards);
+            }
+            return 5 * numberOfStarEmpireCards;
         } else if (card instanceof Corvette) {
             if (deck < 3) {
                 return 5;
@@ -490,9 +496,16 @@ public class VelocityBot extends Bot {
         } else if (card instanceof Dreadnaught) {
             return 90;
         } else if (card instanceof EmperorsDreadnaught) {
-
+            if (starEmpireCardPlayedThisTurn()) {
+                return 115;
+            } else {
+                return 95;
+            }
         } else if (card instanceof Falcon) {
-
+            if (deck < 3) {
+                return 5;
+            }
+            return 10;
         } else if (card instanceof FighterBase) {
             return 0;
         } else if (card instanceof FleetHQ) {
@@ -501,9 +514,9 @@ public class VelocityBot extends Bot {
             }
             return 10;
         } else if (card instanceof Gunship) {
-
+            return 30;
         } else if (card instanceof HeavyCruiser) {
-
+            return 70;
         } else if (card instanceof ImperialFighter) {
             if (deck <= 2) {
                 return 0;
@@ -515,7 +528,10 @@ public class VelocityBot extends Bot {
             }
             return 35;
         } else if (card instanceof ImperialPalace) {
-
+            if (countCardsByType(getAllCards(), Card::isStarEmpire) > 2) {
+                return 50;
+            }
+            return 35;
         } else if (card instanceof ImperialTrader) {
             if (deck == 1) {
                 return 60;
@@ -526,9 +542,23 @@ public class VelocityBot extends Bot {
             }
             return 20;
         } else if (card instanceof Lancer) {
-
+            if (deck < 3) {
+                if (getOpponent().getNumBases() >= 1) {
+                    return 5;
+                }
+                return 0;
+            }
+            if (getOpponent().getNumBases() >= 3) {
+                return 10;
+            } else {
+                return 5;
+            }
         } else if (card instanceof OrbitalPlatform) {
-
+            if (deck == 1) {
+                return 0;
+            } else if (deck <= 3) {
+                return 5;
+            }
         } else if (card instanceof RecyclingStation) {
             if (deck == 1) {
                 return 25;
@@ -547,7 +577,11 @@ public class VelocityBot extends Bot {
             }
             return 25;
         } else if (card instanceof StarBarge) {
-
+            if (deck < 3) {
+                return 10;
+            } else if (deck == 3) {
+                return 5;
+            }
         } else if (card instanceof StarFortress) {
             if (deck <= 3) {
                 return 70;
@@ -567,7 +601,12 @@ public class VelocityBot extends Bot {
         } else if (card instanceof SurveyShip) {
             return 5;
         } else if (card instanceof SupplyDepot) {
-
+            if (deck < 3) {
+                return 50;
+            } else if (deck == 3) {
+                return 30;
+            }
+            return 25;
         } else if (card instanceof WarWorld) {
             if (bases > 2) {
                 return 30;
