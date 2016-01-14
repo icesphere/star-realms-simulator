@@ -2,7 +2,7 @@ package starrealmssimulator.cards.bases.blob;
 
 import starrealmssimulator.model.*;
 
-public class PlasmaVent extends Base implements ScrappableCard
+public class PlasmaVent extends Base
 {
     public PlasmaVent()
     {
@@ -23,11 +23,5 @@ public class PlasmaVent extends Base implements ScrappableCard
     @Override
     public void baseUsed(Player player) {
         player.addCombat(4);
-    }
-
-    @Override
-    public void cardScrapped(Player player)
-    {
-        player.destroyTargetBase();
     }
 }

@@ -140,6 +140,10 @@ public abstract class Card {
         return 0;
     }
 
+    public boolean canDestroyBasedWhenScrapped() {
+        return false;
+    }
+
     public int getAuthorityWhenScrapped() {
         return 0;
     }

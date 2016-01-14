@@ -32,4 +32,9 @@ public class Battlecruiser extends Ship implements ScrappableCard, AlliableCard
         player.drawCard();
         player.destroyTargetBase();
     }
+
+    @Override
+    public boolean canDestroyBasedWhenScrapped() {
+        return true;
+    }
 }

@@ -23,4 +23,9 @@ public class TheArk extends Ship implements ScrappableCard
     public void cardScrapped(Player player) {
         player.destroyTargetBase();
     }
+
+    @Override
+    public boolean canDestroyBasedWhenScrapped() {
+        return true;
+    }
 }

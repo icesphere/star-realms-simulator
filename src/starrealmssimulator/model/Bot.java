@@ -1,7 +1,9 @@
 package starrealmssimulator.model;
 
+import starrealmssimulator.cards.bases.blob.Bioformer;
 import starrealmssimulator.cards.bases.blob.BlobWheel;
 import starrealmssimulator.cards.bases.blob.BlobWorld;
+import starrealmssimulator.cards.bases.blob.StellarReef;
 import starrealmssimulator.cards.bases.outposts.machinecult.*;
 import starrealmssimulator.cards.bases.outposts.starempire.RecyclingStation;
 import starrealmssimulator.cards.bases.outposts.starempire.SpaceStation;
@@ -14,12 +16,15 @@ import starrealmssimulator.cards.bases.tradefederation.BarterWorld;
 import starrealmssimulator.cards.bases.tradefederation.Starmarket;
 import starrealmssimulator.cards.gambits.*;
 import starrealmssimulator.cards.ships.*;
+import starrealmssimulator.cards.ships.blob.CargoPod;
 import starrealmssimulator.cards.ships.blob.Parasite;
 import starrealmssimulator.cards.ships.blob.Ram;
+import starrealmssimulator.cards.ships.blob.SpikePod;
 import starrealmssimulator.cards.ships.machinecult.*;
-import starrealmssimulator.cards.ships.starempire.Battlecruiser;
-import starrealmssimulator.cards.ships.starempire.ImperialFrigate;
-import starrealmssimulator.cards.ships.starempire.SurveyShip;
+import starrealmssimulator.cards.ships.starempire.*;
+import starrealmssimulator.cards.ships.tradefederation.CustomsFrigate;
+import starrealmssimulator.cards.ships.tradefederation.FrontierFerry;
+import starrealmssimulator.cards.ships.tradefederation.TradeRaft;
 
 import java.util.*;
 
@@ -434,46 +439,53 @@ public abstract class Bot extends Player {
             return 10;
         }
 
-        if (card instanceof Battlecruiser || card instanceof TheArk) {
+        if (card.canDestroyBasedWhenScrapped()) {
             if (numOpponentOutposts > 0 && getCombat() >= opponentAuthority) {
                 return 10;
             }
         }
 
-        if (card instanceof ImperialFrigate) {
+        if (card instanceof ImperialFrigate || card instanceof CustomsFrigate) {
             if (opponentAuthority <= 10 || authority <= 10) {
                 return 5;
             }
         }
 
         if (card instanceof PortOfCall) {
-            if (numOpponentOutposts > 0 && getCombat() >= opponentAuthority) {
-                return 10;
-            } else if (authority >= 20 && opponentAuthority <= 10) {
+            if (authority >= 20 && opponentAuthority <= 10) {
                 return 5;
             }
         }
 
-        if (card instanceof SurveyShip) {
+        if (card instanceof SurveyShip || card instanceof Falcon) {
             if (getOpponent().getHand().size() <= 4 || opponentAuthority <= 10 || authority <= 10) {
                 return 5;
             }
         }
 
-        if (card instanceof BlobWheel || card instanceof Ram || card instanceof SpaceStation) {
+        if (card.getTradeWhenScrapped() > 0) {
             int buyScoreIncrease = getBuyScoreIncrease(card.getTradeWhenScrapped());
             if ((deck < 3 && buyScoreIncrease >= 20) || buyScoreIncrease >= 40) {
                 return 5;
             }
         }
 
-        //todo add new cards
+        if (card instanceof AgingBattleship) {
+            if (getHand().isEmpty() && (opponentAuthority <= 10 || authority <= 10 || (opponentAuthority <= 20 && canOnlyDestroyBaseWithExtraCombat(2)))) {
+                return 5;
+            }
+        }
+
+        if (getHand().isEmpty() && card.canDestroyBasedWhenScrapped() && numOpponentOutposts > 0 && (opponentAuthority <= 10 || authority <= 10)) {
+            return 5;
+        }
+
+        if (getHand().isEmpty() && card.getCombatWhenScrapped() > 0 && canOnlyDestroyBaseWithExtraCombat(card.getCombatWhenScrapped())) {
+            return 5;
+        }
 
         if (card instanceof Explorer) {
             if (deck > 2) {
-                return 5;
-            }
-            if (getHand().isEmpty() && getUnusedBasesAndOutposts().isEmpty() && getCombat() < getSmallestOutpostShield() && (getCombat() + 2) >= getSmallestOutpostShield()) {
                 return 5;
             }
         }

@@ -29,4 +29,9 @@ public class PortOfCall extends Outpost implements ScrappableCard
         player.drawCard();
         player.destroyTargetBase();
     }
+
+    @Override
+    public boolean canDestroyBasedWhenScrapped() {
+        return true;
+    }
 }
