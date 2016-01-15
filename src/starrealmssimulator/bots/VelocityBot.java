@@ -616,7 +616,16 @@ public class VelocityBot extends Bot {
 
         //Machine Cult
         else if (card instanceof BattleBot) {
-
+            if (deck == 1) {
+                return 70;
+            } else if (deck == 2) {
+                return 50;
+            } else if (deck == 3) {
+                return 20;
+            }
+            if (countCardsByType(getAllCards(), Card::isStarterCard) >= 2) {
+                return 5;
+            }
         } else if (card instanceof BattleMech) {
             if (deck < 3) {
                 return 80;
@@ -647,7 +656,14 @@ public class VelocityBot extends Bot {
             }
             return 85;
         } else if (card instanceof ConvoyBot) {
-
+            if (deck == 1) {
+                return 90;
+            } else if (deck == 2) {
+                return 70;
+            } else if (deck == 3) {
+                return 40;
+            }
+            return 20;
         } else if (card instanceof DefenseBot) {
             if (deck < 3 && bases > 0) {
                 return 40;
@@ -673,7 +689,12 @@ public class VelocityBot extends Bot {
             }
             return 2;
         } else if (card instanceof FrontierStation) {
-
+            if (deck < 3) {
+                return 55;
+            } else if (deck == 3) {
+                return 35;
+            }
+            return 30;
         } else if (card instanceof Junkyard) {
             if (deck < 3) {
                 return 40;
@@ -690,7 +711,10 @@ public class VelocityBot extends Bot {
             }
             return 80;
         } else if (card instanceof MechCruiser) {
-
+            if (deck < 3) {
+                return 75;
+            }
+            return 45;
         } else if (card instanceof MechWorld) {
             if (deck == 1) {
                 return 20;
@@ -704,7 +728,14 @@ public class VelocityBot extends Bot {
             }
             return 40;
         } else if (card instanceof MiningMech) {
-
+            if (deck == 1) {
+                return 85;
+            } else if (deck == 2) {
+                return 65;
+            } else if (deck == 3) {
+                return 35;
+            }
+            return 10;
         } else if (card instanceof MissileBot) {
             if (deck == 1) {
                 return 80;
@@ -731,10 +762,18 @@ public class VelocityBot extends Bot {
                 return 80;
             } else if (deck == 2) {
                 return 60;
+            } else if (deck == 3) {
+                return 30;
             }
-            return 30;
+            return 15;
         } else if (card instanceof RepairBot) {
-
+            if (deck == 1) {
+                return 80;
+            } else if (deck == 2) {
+                return 60;
+            } else if (deck == 3) {
+                return 20;
+            }
         } else if (card instanceof SupplyBot) {
             if (deck == 1) {
                 return 90;
@@ -749,18 +788,42 @@ public class VelocityBot extends Bot {
             }
             return 60;
         } else if (card instanceof StealthTower) {
-
+            int totalBases = getNumBases() + getOpponent().getNumBases();
+            if (deck < 3) {
+                return 10 + (5 * totalBases);
+            } else {
+                return 5 * totalBases;
+            }
         } else if (card instanceof TheArk) {
             if (deck < 3) {
                 return 100;
             }
-            return 90;
+            return 95;
         } else if (card instanceof TheIncinerator) {
-
+            if (deck < 3) {
+                return 90;
+            }
+            if (deck == 3) {
+                return 80;
+            }
+            return 75;
         } else if (card instanceof TheOracle) {
-
+            if (deck == 1) {
+                return 75;
+            } else if (deck == 2) {
+                return 55;
+            } else if (deck == 3) {
+                return 25;
+            }
+            return 5;
         } else if (card instanceof TheWrecker) {
-
+            if (deck < 3) {
+                return 90;
+            }
+            if (countCardsByType(getAllCards(), Card::isStarterCard) >= 3) {
+                return 80;
+            }
+            return 70;
         } else if (card instanceof TradeBot) {
             if (deck == 1) {
                 return 75;
@@ -771,7 +834,11 @@ public class VelocityBot extends Bot {
             }
             return 5;
         } else if (card instanceof WarningBeacon) {
-
+            if (machineCultCardPlayedThisTurn()) {
+                return 20;
+            } else {
+                return 5;
+            }
         }
 
         //Other

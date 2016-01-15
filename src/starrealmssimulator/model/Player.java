@@ -920,17 +920,12 @@ public abstract class Player {
         return cardPlayedThisTurn(Card::isStarEmpire);
     }
 
-    public boolean cardPlayedThisTurn(Function<Card, Boolean> typeMatcher) {
-        return countCardsByType(played, typeMatcher) > 0;
+    public boolean machineCultCardPlayedThisTurn() {
+        return cardPlayedThisTurn(Card::isMachineCult);
     }
 
-    public boolean machineCultCardPlayedThisTurn() {
-        for (Card card : played) {
-            if (card.isMachineCult()) {
-                return true;
-            }
-        }
-        return false;
+    public boolean cardPlayedThisTurn(Function<Card, Boolean> typeMatcher) {
+        return countCardsByType(played, typeMatcher) > 0;
     }
 
     public boolean canOnlyDestroyBaseWithExtraCombat(int extraCombat) {

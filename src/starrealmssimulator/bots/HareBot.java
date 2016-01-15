@@ -22,6 +22,8 @@ import starrealmssimulator.model.Card;
 
 public class HareBot extends AttackBot {
 
+    //todo override more cards
+
     @Override
     public int getBuyCardScore(Card card) {
         int deck = getCurrentDeckNumber();

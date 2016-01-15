@@ -46,6 +46,7 @@ public abstract class Bot extends Player {
     protected Comparator<Base> destroyBaseScoreAscending = destroyBaseScoreDescending.reversed();
     protected Comparator<Base> attackBaseScoreDescending = (c1, c2) -> Integer.compare(getAttackBaseScore(c2), getAttackBaseScore(c1));
     protected Comparator<Card> copyShipScoreDescending = (c1, c2) -> Integer.compare(getCopyShipScore((Ship) c2), getCopyShipScore((Ship) c1));
+    protected Comparator<Base> copyBaseScoreDescending = (b1, b2) -> Integer.compare(getCopyBaseScore(b2), getCopyBaseScore(b1));
     protected Comparator<Card> scrapCardFromTradeRowScoreDescending = (c1, c2) -> Integer.compare(getScrapCardFromTradeRowScore(c2), getScrapCardFromTradeRowScore(c1));
     protected Comparator<Card> cardToTopOfDeckScoreDescending = (c1, c2) -> Integer.compare(getCardToTopOfDeckScore(c2), getCardToTopOfDeckScore(c1));
     protected Comparator<Base> returnBaseToHandScoreDescending = (c1, c2) -> Integer.compare(getReturnBaseToHandScore(c2), getReturnBaseToHandScore(c1));
@@ -378,6 +379,13 @@ public abstract class Bot extends Player {
         return getBuyCardScore(card);
     }
 
+    public int getCopyBaseScore(Base base) {
+        if (base instanceof StealthTower) {
+            return 0;
+        }
+        return getBuyCardScore(base);
+    }
+
     public int getScrapCardFromTradeRowScore(Card card) {
         Faction factionWithMostCards = getFactionWithMostCards();
         Faction opponentFactionWithMostCards = getOpponent().getFactionWithMostCards();
@@ -672,12 +680,14 @@ public abstract class Bot extends Player {
 
     @Override
     public Ship getShipToCopy() {
-        List<Card> sortedCards = getInPlay().stream().filter(Card::isShip).sorted(copyShipScoreDescending).collect(toList());
+        if (!getInPlay().isEmpty()) {
+            List<Card> sortedCards = getInPlay().stream().filter(Card::isShip).sorted(copyShipScoreDescending).collect(toList());
 
-        Ship shipToCopy = (Ship) sortedCards.get(0);
+            Ship shipToCopy = (Ship) sortedCards.get(0);
 
-        if (getCopyShipScore(shipToCopy) > 0) {
-            return shipToCopy;
+            if (getCopyShipScore(shipToCopy) > 0) {
+                return shipToCopy;
+            }
         }
 
         return null;
@@ -685,6 +695,19 @@ public abstract class Bot extends Player {
 
     @Override
     public Base getBaseToCopy() {
+        List<Base> bases = getBases();
+        bases.addAll(getOpponent().getBases());
+
+        if (!bases.isEmpty()) {
+            List<Base> sortedCards = bases.stream().filter(Card::isBase).sorted(copyBaseScoreDescending).collect(toList());
+
+            Base baseToCopy = sortedCards.get(0);
+
+            if (getCopyBaseScore(baseToCopy) > 0) {
+                return baseToCopy;
+            }
+        }
+
         return null;
     }
 
