@@ -919,7 +919,12 @@ public class GameService {
         game.setCreateGameLog(createGameLog);
 
         List<Card> deck = new ArrayList<>();
-        deck.addAll(getBaseSetDeck());
+        if (gameState.determineIncludeBaseSet()) {
+            deck.addAll(getBaseSetDeck());
+        }
+        if (gameState.determineIncludeColonyWars()) {
+            deck.addAll(getColonyWarsDeck());
+        }
         if (gameState.determineIncludeYearOnePromos()) {
             deck.addAll(getYear1PromoCards());
         }

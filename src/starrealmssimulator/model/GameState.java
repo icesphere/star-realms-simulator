@@ -10,6 +10,10 @@ public class GameState {
 
     public String currentPlayer = "N";
 
+    public String includeBaseSet = "Y";
+
+    public String includeColonyWars = "N";
+
     public String includeYearOnePromos = "N";
 
     public String includeCrisisBasesAndBattleships = "N";
@@ -70,6 +74,8 @@ public class GameState {
                 "--game info--" +
                 "\nturn: " + turn +
                 "\ncurrentPlayer: " + currentPlayer +
+                "\nincludeBaseSet: " + includeBaseSet +
+                "\nincludeColonyWars: " + includeColonyWars +
                 "\nincludeYearOnePromos: " + includeYearOnePromos +
                 "\nincludeCrisisBasesAndBattleships: " + includeCrisisBasesAndBattleships +
                 "\nincludeCrisisEvents: " + includeCrisisEvents +
@@ -111,6 +117,22 @@ public class GameState {
 
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public String getIncludeBaseSet() {
+        return includeBaseSet;
+    }
+
+    public void setIncludeBaseSet(String includeBaseSet) {
+        this.includeBaseSet = includeBaseSet;
+    }
+
+    public String getIncludeColonyWars() {
+        return includeColonyWars;
+    }
+
+    public void setIncludeColonyWars(String includeColonyWars) {
+        this.includeColonyWars = includeColonyWars;
     }
 
     public String getIncludeYearOnePromos() {
@@ -304,6 +326,14 @@ public class GameState {
 
     public boolean determineCurrentPlayer() {
         return determineBoolean(currentPlayer);
+    }
+
+    public boolean determineIncludeBaseSet() {
+        return determineBoolean(includeBaseSet);
+    }
+
+    public boolean determineIncludeColonyWars() {
+        return determineBoolean(includeColonyWars);
     }
 
     public boolean determineIncludeYearOnePromos() {
