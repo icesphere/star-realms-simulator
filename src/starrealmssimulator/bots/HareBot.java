@@ -13,6 +13,7 @@ import starrealmssimulator.cards.bases.tradefederation.BarterWorld;
 import starrealmssimulator.cards.bases.tradefederation.CentralOffice;
 import starrealmssimulator.cards.bases.tradefederation.Starmarket;
 import starrealmssimulator.cards.heroes.*;
+import starrealmssimulator.cards.ships.blob.BlobFighter;
 import starrealmssimulator.cards.ships.machinecult.*;
 import starrealmssimulator.cards.ships.starempire.Battlecruiser;
 import starrealmssimulator.cards.ships.starempire.CargoLaunch;
@@ -22,11 +23,10 @@ import starrealmssimulator.model.Card;
 
 public class HareBot extends AttackBot {
 
-    //todo override more cards
-
     @Override
     public int getBuyCardScore(Card card) {
         int deck = getCurrentDeckNumber();
+        int bases = getNumBases();
 
         //Heroes
         if (card instanceof RamPilot) {
@@ -88,7 +88,15 @@ public class HareBot extends AttackBot {
         }
 
         //Blob
-        if (card instanceof BlobWorld) {
+        if (card instanceof BlobFighter) {
+            if (deck == 1) {
+                return 35;
+            } else if (deck == 2) {
+                return 55;
+            } else {
+                return 65;
+            }
+        } else if (card instanceof BlobWorld) {
             return 100;
         } else if (card instanceof DeathWorld) {
             if (deck < 3) {
@@ -146,7 +154,6 @@ public class HareBot extends AttackBot {
             }
             return 15;
         } else if (card instanceof Starmarket) {
-            int bases = getNumBases();
             if (deck == 1 && bases > 0) {
                 return 10;
             } else if (deck == 1) {
@@ -190,7 +197,16 @@ public class HareBot extends AttackBot {
         }
 
         //Machine Cult
-        else if (card instanceof BattleMech) {
+        else if (card instanceof BattleBot) {
+            if (deck == 1) {
+                return 30;
+            } else if (deck == 2) {
+                return 15;
+            }
+        } else if (card instanceof BattleMech) {
+            if (deck < 3) {
+                return 50;
+            }
             return 40;
         } else if (card instanceof BattleStation) {
             if (deck < 3) {
@@ -207,16 +223,60 @@ public class HareBot extends AttackBot {
             }
         } else if (card instanceof BrainWorld) {
             if (deck < 3) {
-                return 80;
+                return 85;
             }
             if (deck == 3) {
                 return 50;
             }
-            return 15;
+            return 20;
+        } else if (card instanceof ConvoyBot) {
+            if (deck == 1) {
+                return 50;
+            } else if (deck == 2) {
+                return 30;
+            } else if (deck == 3) {
+                return 20;
+            }
+            return 10;
+        } else if (card instanceof DefenseBot) {
+            if (deck < 3 && bases > 0) {
+                return 20;
+            } else if (deck < 3) {
+                return 10;
+            }
+        } else if (card instanceof FortressOblivion) {
+            if (deck < 3 && bases > 0) {
+                return 20;
+            } else if (deck < 3) {
+                return 10;
+            }
+        } else if (card instanceof Junkyard) {
+            if (deck < 3) {
+                return 10;
+            }
         } else if (card instanceof MachineBase) {
-            return 30;
+            if (deck < 3) {
+                return 40;
+            }
+            if (deck == 3) {
+                return 20;
+            }
+            return 5;
+        } else if (card instanceof MechCruiser) {
+            if (deck < 3) {
+                return 60;
+            }
+            return 50;
         } else if (card instanceof MechWorld) {
             return 15;
+        } else if (card instanceof MiningMech) {
+            if (deck == 1) {
+                return 40;
+            } else if (deck == 2) {
+                return 20;
+            } else if (deck == 3) {
+                return 5;
+            }
         } else if (card instanceof MissileBot) {
             if (deck == 1) {
                 return 50;
@@ -238,6 +298,14 @@ public class HareBot extends AttackBot {
                 return 40;
             }
             return 20;
+        } else if (card instanceof RepairBot) {
+            if (deck == 1) {
+                return 25;
+            } else if (deck == 2) {
+                return 15;
+            } else if (deck == 3) {
+                return 5;
+            }
         } else if (card instanceof SupplyBot) {
             if (deck == 1) {
                 return 50;
@@ -249,6 +317,29 @@ public class HareBot extends AttackBot {
                 return 90;
             }
             return 80;
+        } else if (card instanceof TheIncinerator) {
+            if (deck < 3) {
+                return 80;
+            }
+            if (deck == 3) {
+                return 45;
+            }
+            return 20;
+        } else if (card instanceof TheOracle) {
+            if (deck == 1) {
+                return 30;
+            } else if (deck == 2) {
+                return 15;
+            } else if (deck == 3) {
+                return 5;
+            }
+        } else if (card instanceof TheWrecker) {
+            if (deck < 3) {
+                return 80;
+            } else if (deck == 3) {
+                return 70;
+            }
+            return 60;
         } else if (card instanceof TradeBot) {
             if (deck == 1) {
                 return 20;
