@@ -812,11 +812,45 @@ public class GameService {
         botCache.put(botFile, jsonBotCache);
     }
 
+    public Map<Card, CardToBuySimulationResults> simulateBestCardToBuy(GameState gameState, int timesToSimulate) {
+        Map<Card, CardToBuySimulationResults> resultsByCard = new LinkedHashMap<>();
+
+        List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
+
+        boolean playerGoesFirst = gameState.determineCurrentPlayer();
+
+        for (Card card : tradeRowCards) {
+            CardToBuySimulationResults cardToBuySimulationResults = new CardToBuySimulationResults();
+
+            SimulationResults results = simulateGameToEnd(gameState, timesToSimulate, card);
+
+            float ableToBuyFirstTurnPercentage = ((float) results.getTotalGamesCounted() / timesToSimulate) * 100;
+
+            cardToBuySimulationResults.setAbleToBuyFirstTurnPercentage(ableToBuyFirstTurnPercentage);
+
+            if (playerGoesFirst) {
+                cardToBuySimulationResults.setWinPercentage(results.getWinPercentage());
+            } else {
+                cardToBuySimulationResults.setWinPercentage(100 - results.getWinPercentage());
+            }
+
+            resultsByCard.put(card, cardToBuySimulationResults);
+        }
+
+        return resultsByCard;
+    }
+
     public SimulationResults simulateGameToEnd(GameState gameState, int timesToSimulate) {
+        return simulateGameToEnd(gameState, timesToSimulate, null);
+    }
+
+    public SimulationResults simulateGameToEnd(GameState gameState, int timesToSimulate, Card cardToBuyOnFirstTurn) {
         SimulationResults results = new SimulationResults();
 
         boolean createdWinGameLog = false;
         boolean createdLossGameLog = false;
+
+        int totalGamesCounted = 0;
 
         System.out.println("Game State: \n\n" + gameState.toString() + "\n\n");
 
@@ -838,7 +872,10 @@ public class GameService {
 
         for (int i = 0; i < timesToSimulate; i++) {
             boolean createGameLog = !createdWinGameLog || !createdLossGameLog;
-            Game game = simulateGameToEnd(gameState, createGameLog);
+            Game game = simulateGameToEnd(gameState, createGameLog, cardToBuyOnFirstTurn);
+            if (cardToBuyOnFirstTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn()) {
+                continue;
+            }
             if (game.getWinner().getPlayerName().equals(player.getPlayerName())) {
                 wins++;
                 if (createGameLog) {
@@ -855,6 +892,7 @@ public class GameService {
                 }
                 game.setGameLog(null);
             }
+            totalGamesCounted++;
             games.add(game);
             turnTotal += game.getTurn();
         }
@@ -889,12 +927,13 @@ public class GameService {
 
         DecimalFormat f = new DecimalFormat("##.00");
 
-        float winPercentage = ((float) wins / timesToSimulate) * 100;
+        float winPercentage = ((float) wins / totalGamesCounted) * 100;
 
         System.out.println("Player wins: " + f.format(winPercentage) + "%");
 
+        results.setTotalGamesCounted(totalGamesCounted);
         results.setWinPercentage(winPercentage);
-        results.setAverageNumTurns(turnTotal / timesToSimulate);
+        results.setAverageNumTurns(turnTotal / totalGamesCounted);
 
         for (String playerName : averageAuthorityByPlayerByTurn.keySet()) {
             Map<Integer, Integer> averageAuthorityByTurn = averageAuthorityByPlayerByTurn.get(playerName);
@@ -908,12 +947,21 @@ public class GameService {
         return results;
     }
 
-    public Game simulateGameToEnd(GameState gameState, boolean createGameLog) {
+    public Game simulateGameToEnd(GameState gameState, boolean createGameLog, Card cardToBuyOnFirstTurn) {
+
+        boolean playerGoesFirst = gameState.determineCurrentPlayer();
+
         Bot player = getBotFromBotName(gameState.bot);
         player.setPlayerName(player.getPlayerName() + "(Player)");
+        if (playerGoesFirst) {
+            player.setCardToBuyOnFirstTurn(cardToBuyOnFirstTurn);
+        }
 
         Bot opponent = getBotFromBotName(gameState.opponentBot);
         opponent.setPlayerName(opponent.getPlayerName() + "(Opponent)");
+        if (!playerGoesFirst) {
+            opponent.setCardToBuyOnFirstTurn(cardToBuyOnFirstTurn);
+        }
 
         Game game = new Game();
         game.setCreateGameLog(createGameLog);
@@ -944,8 +992,6 @@ public class GameService {
         game.setDeck(deck);
 
         game.setExplorer(new Explorer());
-
-        boolean playerGoesFirst = gameState.determineCurrentPlayer();
 
         game.gameLog("Setting up cards for Player");
         player.setGame(game);
@@ -1041,7 +1087,7 @@ public class GameService {
                 if (EXTRA_LOGGING) {
                     System.out.println("-----Game stuck, trying again-----");
                 }
-                return simulateGameToEnd(gameState, createGameLog);
+                return simulateGameToEnd(gameState, createGameLog, cardToBuyOnFirstTurn);
             } else {
                 game.getCurrentPlayer().setupTurn();
                 game.getCurrentPlayer().takeTurn();

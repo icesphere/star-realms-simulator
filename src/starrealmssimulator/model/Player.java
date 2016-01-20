@@ -68,6 +68,11 @@ public abstract class Player {
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
 
+    //these are for simulating which card is the best to buy
+    protected Card cardToBuyOnFirstTurn;
+    protected boolean firstTurn = true;
+    protected boolean boughtSpecifiedCardOnFirstTurn = false;
+
     protected Player() {
     }
 
@@ -228,6 +233,8 @@ public abstract class Player {
         getGame().gameLog("Ending turn");
 
         turns++;
+
+        firstTurn = false;
 
         combat = 0;
         trade = 0;
@@ -454,6 +461,13 @@ public abstract class Player {
             addCardToTopOfDeck(card);
         } else {
             discard.add(card);
+        }
+
+        if (cardToBuyOnFirstTurn != null && cardToBuyOnFirstTurn.equals(card)) {
+            cardToBuyOnFirstTurn = null;
+            if (firstTurn) {
+                boughtSpecifiedCardOnFirstTurn = true;
+            }
         }
     }
 
@@ -951,5 +965,17 @@ public abstract class Player {
 
     public int getNumBlobCardsPlayedThisTurn() {
         return countCardsByType(played, Card::isBlob);
+    }
+
+    public Card getCardToBuyOnFirstTurn() {
+        return cardToBuyOnFirstTurn;
+    }
+
+    public void setCardToBuyOnFirstTurn(Card cardToBuyOnFirstTurn) {
+        this.cardToBuyOnFirstTurn = cardToBuyOnFirstTurn;
+    }
+
+    public boolean isBoughtSpecifiedCardOnFirstTurn() {
+        return boughtSpecifiedCardOnFirstTurn;
     }
 }

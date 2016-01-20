@@ -221,6 +221,11 @@ public abstract class Bot extends Player {
         cards.add(getGame().getExplorer());
 
         List<Card> sortedCards = cards.stream().filter(c -> getTrade() >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
+
+        if (cardToBuyOnFirstTurn != null) {
+
+        }
+
         if (!sortedCards.isEmpty() && getBuyCardScore(sortedCards.get(0)) > 0) {
             Card cardWithHighestBuyScore = sortedCards.get(0);
 

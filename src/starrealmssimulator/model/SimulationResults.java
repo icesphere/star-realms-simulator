@@ -7,6 +7,8 @@ public class SimulationResults {
 
     private float averageNumTurns;
 
+    private int totalGamesCounted;
+
     private Map<Integer, Integer> playerAverageAuthorityByTurn;
     private Map<Integer, Integer> opponentAverageAuthorityByTurn;
 
@@ -59,5 +61,13 @@ public class SimulationResults {
 
     public void setLossGameLog(String lossGameLog) {
         this.lossGameLog = lossGameLog;
+    }
+
+    public int getTotalGamesCounted() {
+        return totalGamesCounted;
+    }
+
+    public void setTotalGamesCounted(int totalGamesCounted) {
+        this.totalGamesCounted = totalGamesCounted;
     }
 }
