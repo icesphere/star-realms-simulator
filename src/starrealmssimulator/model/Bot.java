@@ -223,6 +223,9 @@ public abstract class Bot extends Player {
         List<Card> sortedCards = cards.stream().filter(c -> getTrade() >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
 
         if (cardToBuyOnFirstTurn != null && getTrade() >= cardToBuyOnFirstTurn.getCost()) {
+            if (cardToBuyOnFirstTurn instanceof DoNotBuyCard) {
+                return cardsToBuy;
+            }
             cardsToBuy.add(cardToBuyOnFirstTurn);
             return cardsToBuy;
         }

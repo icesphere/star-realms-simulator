@@ -6,6 +6,7 @@ import starrealmssimulator.cards.bases.outposts.starempire.CommandCenter;
 import starrealmssimulator.cards.bases.outposts.machinecult.MechWorld;
 import starrealmssimulator.cards.bases.outposts.machinecult.StealthTower;
 import starrealmssimulator.cards.bases.outposts.machinecult.WarningBeacon;
+import starrealmssimulator.cards.ships.DoNotBuyCard;
 import starrealmssimulator.cards.ships.tradefederation.ColonySeedShip;
 import starrealmssimulator.cards.ships.starempire.EmperorsDreadnaught;
 import starrealmssimulator.cards.ships.Explorer;
@@ -235,6 +236,12 @@ public abstract class Player {
         turns++;
 
         firstTurn = false;
+
+        if (cardToBuyOnFirstTurn != null && cardToBuyOnFirstTurn instanceof DoNotBuyCard) {
+            boughtSpecifiedCardOnFirstTurn = true;
+        }
+
+        cardToBuyOnFirstTurn = null;
 
         combat = 0;
         trade = 0;

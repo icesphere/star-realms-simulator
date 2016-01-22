@@ -817,6 +817,7 @@ public class GameService {
 
         List<Card> cards = getCardsFromCardNames(gameState.tradeRow);
         cards.add(new Explorer());
+        cards.add(new DoNotBuyCard());
 
         boolean playerGoesFirst = gameState.determineCurrentPlayer();
 
@@ -1007,7 +1008,7 @@ public class GameService {
         if (gameState.hand.isEmpty() && gameState.deck.isEmpty() && gameState.discard.isEmpty()) {
             player.getDeck().addAll(getStartingCards());
             Collections.shuffle(player.getDeck());
-            if (playerGoesFirst && gameState.turn == 0) {
+            if (playerGoesFirst && gameState.turn == 1) {
                 player.drawCards(3);
             } else {
                 player.drawCards(5);
@@ -1016,7 +1017,7 @@ public class GameService {
             player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
             Collections.shuffle(player.getDeck());
             if (gameState.hand.isEmpty()) {
-                if (playerGoesFirst && gameState.turn == 0) {
+                if (playerGoesFirst && gameState.turn == 1) {
                     player.drawCards(3);
                 } else {
                     player.drawCards(5);
@@ -1041,7 +1042,7 @@ public class GameService {
             opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
         }
         Collections.shuffle(opponent.getDeck());
-        if (!playerGoesFirst && gameState.turn == 0) {
+        if (!playerGoesFirst && gameState.turn == 1) {
             opponent.drawCards(3);
         } else {
             opponent.drawCards(5);
