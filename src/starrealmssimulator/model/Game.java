@@ -16,7 +16,7 @@ public class Game
 
     private Card explorer;
 
-    private List<Card> scrapped = new ArrayList<>();
+    private List<Card> tradeRowCardsScrapped = new ArrayList<>();
 
     private int currentPlayerIndex;
 
@@ -27,6 +27,10 @@ public class Game
     private StringBuilder gameLog = new StringBuilder();
 
     private Map<String, TreeMap<Integer, Integer>> authorityByPlayerByTurn = new HashMap<>();
+
+    private boolean trackAuthority = true;
+
+    private Set<CardSet> cardSets = new HashSet<>();
 
     public int getTurn()
     {
@@ -67,8 +71,8 @@ public class Game
         this.explorer = explorer;
     }
 
-    public List<Card> getScrapped() {
-        return scrapped;
+    public List<Card> getTradeRowCardsScrapped() {
+        return tradeRowCardsScrapped;
     }
 
     public boolean isGameOver() {
@@ -106,10 +110,12 @@ public class Game
     }
 
     public void setupPlayerAuthorityMap() {
-        for (Player player : players) {
-            TreeMap<Integer, Integer> playerAuthority = new TreeMap<>();
-            authorityByPlayerByTurn.put(player.getPlayerName(), playerAuthority);
-            playerAuthority.put(player.getTurns(), player.getAuthority());
+        if (trackAuthority) {
+            for (Player player : players) {
+                TreeMap<Integer, Integer> playerAuthority = new TreeMap<>();
+                authorityByPlayerByTurn.put(player.getPlayerName(), playerAuthority);
+                playerAuthority.put(player.getTurns(), player.getAuthority());
+            }
         }
     }
 
@@ -131,9 +137,10 @@ public class Game
         gameLog("End of turn " + turn);
         for (Player player : players) {
             gameLog(player.getPlayerName() + "'s authority: " + player.getAuthority());
-
-            TreeMap<Integer, Integer> playerAuthority = authorityByPlayerByTurn.get(player.getPlayerName());
-            playerAuthority.put(player.getTurns(), player.getAuthority());
+            if (trackAuthority) {
+                TreeMap<Integer, Integer> playerAuthority = authorityByPlayerByTurn.get(player.getPlayerName());
+                playerAuthority.put(player.getTurns(), player.getAuthority());
+            }
         }
 
         for (Player player : players) {
@@ -202,6 +209,14 @@ public class Game
         return authorityByPlayerByTurn;
     }
 
+    public boolean isTrackAuthority() {
+        return trackAuthority;
+    }
+
+    public void setTrackAuthority(boolean trackAuthority) {
+        this.trackAuthority = trackAuthority;
+    }
+
     public boolean isCreateGameLog() {
         return createGameLog;
     }
@@ -221,7 +236,7 @@ public class Game
     public void scrapCardFromTradeRow(Card card) {
         gameLog("Scrapped " + card.getName() + " from trade row");
         tradeRow.remove(card);
-        scrapped.add(card);
+        tradeRowCardsScrapped.add(card);
         addCardToTradeRow();
     }
 
@@ -230,5 +245,13 @@ public class Game
         for (Card card : cardsInTradeRow) {
             scrapCardFromTradeRow(card);
         }
+    }
+
+    public Set<CardSet> getCardSets() {
+        return cardSets;
+    }
+
+    public void setCardSets(Set<CardSet> cardSets) {
+        this.cardSets = cardSets;
     }
 }

@@ -1,12 +1,8 @@
 package starrealmssimulator.model;
 
-import starrealmssimulator.cards.bases.blob.Bioformer;
-import starrealmssimulator.cards.bases.blob.BlobWheel;
 import starrealmssimulator.cards.bases.blob.BlobWorld;
-import starrealmssimulator.cards.bases.blob.StellarReef;
 import starrealmssimulator.cards.bases.outposts.machinecult.*;
 import starrealmssimulator.cards.bases.outposts.starempire.RecyclingStation;
-import starrealmssimulator.cards.bases.outposts.starempire.SpaceStation;
 import starrealmssimulator.cards.bases.outposts.starempire.SupplyDepot;
 import starrealmssimulator.cards.bases.outposts.tradefederation.DefenseCenter;
 import starrealmssimulator.cards.bases.outposts.tradefederation.PortOfCall;
@@ -15,16 +11,17 @@ import starrealmssimulator.cards.bases.starempire.FleetHQ;
 import starrealmssimulator.cards.bases.tradefederation.BarterWorld;
 import starrealmssimulator.cards.bases.tradefederation.Starmarket;
 import starrealmssimulator.cards.gambits.*;
-import starrealmssimulator.cards.ships.*;
-import starrealmssimulator.cards.ships.blob.CargoPod;
+import starrealmssimulator.cards.ships.DoNotBuyCard;
+import starrealmssimulator.cards.ships.Explorer;
+import starrealmssimulator.cards.ships.Scout;
+import starrealmssimulator.cards.ships.Viper;
 import starrealmssimulator.cards.ships.blob.Parasite;
-import starrealmssimulator.cards.ships.blob.Ram;
-import starrealmssimulator.cards.ships.blob.SpikePod;
 import starrealmssimulator.cards.ships.machinecult.*;
-import starrealmssimulator.cards.ships.starempire.*;
+import starrealmssimulator.cards.ships.starempire.AgingBattleship;
+import starrealmssimulator.cards.ships.starempire.Falcon;
+import starrealmssimulator.cards.ships.starempire.ImperialFrigate;
+import starrealmssimulator.cards.ships.starempire.SurveyShip;
 import starrealmssimulator.cards.ships.tradefederation.CustomsFrigate;
-import starrealmssimulator.cards.ships.tradefederation.FrontierFerry;
-import starrealmssimulator.cards.ships.tradefederation.TradeRaft;
 
 import java.util.*;
 

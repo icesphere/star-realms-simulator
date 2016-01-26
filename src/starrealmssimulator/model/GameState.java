@@ -8,7 +8,7 @@ public class GameState {
 
     public int turn = 1;
 
-    public String currentPlayer = "N";
+    public String currentPlayer = "Y";
 
     public String includeBaseSet = "Y";
 
@@ -27,6 +27,8 @@ public class GameState {
     public String includeGambits = "N";
 
     public String tradeRow;
+
+    public String tradeRowCardsScrapped = "";
 
 
     //player info
@@ -49,6 +51,29 @@ public class GameState {
 
     public int shuffles = 0;
 
+    //player info for partial turn
+
+    public String played = "";
+
+    public String inPlay = "";
+
+    public int combat;
+
+    public int trade;
+
+    public boolean nextShipToTopOfDeck;
+
+    public boolean nextShipOrBaseToTopOfDeck;
+
+    public boolean nextShipOrBaseToHand;
+
+    public boolean nextBaseToHand;
+
+    public boolean allShipsAddOneCombat;
+
+    public boolean allFactionsAllied;
+
+    public boolean preventFirstDamage;
 
     //opponent info
 
@@ -374,5 +399,21 @@ public class GameState {
 
     public void setOpponentShuffles(int opponentShuffles) {
         this.opponentShuffles = opponentShuffles;
+    }
+
+    public String getPlayed() {
+        return played;
+    }
+
+    public void setPlayed(String played) {
+        this.played = played;
+    }
+
+    public String getInPlay() {
+        return inPlay;
+    }
+
+    public void setInPlay(String inPlay) {
+        this.inPlay = inPlay;
     }
 }

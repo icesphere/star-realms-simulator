@@ -391,7 +391,9 @@ public abstract class Player {
     }
 
     private void playerCardScrapped(Card card) {
-        game.getScrapped().add(card);
+        if (!card.isStarterCard() && card instanceof Explorer) {
+            game.getTradeRowCardsScrapped().add(card);
+        }
         cardRemovedFromPlay(card);
     }
 
@@ -586,15 +588,17 @@ public abstract class Player {
     public abstract void takeTurn();
 
     public void buyCard(Card card) {
-        if (trade >= card.getCost()) {
-            getGame().gameLog("Bought card: " + card.getName());
-            trade -= card.getCost();
-            if (card instanceof Explorer) {
-                cardAcquired(new Explorer());
-            } else {
-                game.getTradeRow().remove(card);
-                game.addCardToTradeRow();
-                cardAcquired(card);
+        if (card != null) {
+            if (trade >= card.getCost()) {
+                getGame().gameLog("Bought card: " + card.getName());
+                trade -= card.getCost();
+                if (card instanceof Explorer) {
+                    cardAcquired(new Explorer());
+                } else {
+                    game.getTradeRow().remove(card);
+                    game.addCardToTradeRow();
+                    cardAcquired(card);
+                }
             }
         }
     }
@@ -984,5 +988,99 @@ public abstract class Player {
 
     public boolean isBoughtSpecifiedCardOnFirstTurn() {
         return boughtSpecifiedCardOnFirstTurn;
+    }
+
+    public List getHandAndDeck() {
+        List<Card> cards = new ArrayList<>(hand);
+        cards.addAll(deck);
+        return cards;
+    }
+
+    public boolean isNextShipToTopOfDeck() {
+        return nextShipToTopOfDeck;
+    }
+
+    public void setNextShipToTopOfDeck(boolean nextShipToTopOfDeck) {
+        this.nextShipToTopOfDeck = nextShipToTopOfDeck;
+    }
+
+    public boolean isNextShipOrBaseToTopOfDeck() {
+        return nextShipOrBaseToTopOfDeck;
+    }
+
+    public void setNextShipOrBaseToTopOfDeck(boolean nextShipOrBaseToTopOfDeck) {
+        this.nextShipOrBaseToTopOfDeck = nextShipOrBaseToTopOfDeck;
+    }
+
+    public boolean isNextShipOrBaseToHand() {
+        return nextShipOrBaseToHand;
+    }
+
+    public void setNextShipOrBaseToHand(boolean nextShipOrBaseToHand) {
+        this.nextShipOrBaseToHand = nextShipOrBaseToHand;
+    }
+
+    public boolean isNextBaseToHand() {
+        return nextBaseToHand;
+    }
+
+    public void setNextBaseToHand(boolean nextBaseToHand) {
+        this.nextBaseToHand = nextBaseToHand;
+    }
+
+    public boolean isAllShipsAddOneCombat() {
+        return allShipsAddOneCombat;
+    }
+
+    public void setAllShipsAddOneCombat(boolean allShipsAddOneCombat) {
+        this.allShipsAddOneCombat = allShipsAddOneCombat;
+    }
+
+    public boolean isAllFactionsAllied() {
+        return allFactionsAllied;
+    }
+
+    public void setAllFactionsAllied(boolean allFactionsAllied) {
+        this.allFactionsAllied = allFactionsAllied;
+    }
+
+    public boolean isBlobAlliedUntilEndOfTurn() {
+        return blobAlliedUntilEndOfTurn;
+    }
+
+    public void setBlobAlliedUntilEndOfTurn(boolean blobAlliedUntilEndOfTurn) {
+        this.blobAlliedUntilEndOfTurn = blobAlliedUntilEndOfTurn;
+    }
+
+    public boolean isStarEmpireAlliedUntilEndOfTurn() {
+        return starEmpireAlliedUntilEndOfTurn;
+    }
+
+    public void setStarEmpireAlliedUntilEndOfTurn(boolean starEmpireAlliedUntilEndOfTurn) {
+        this.starEmpireAlliedUntilEndOfTurn = starEmpireAlliedUntilEndOfTurn;
+    }
+
+    public boolean isTradeFederationAlliedUntilEndOfTurn() {
+        return tradeFederationAlliedUntilEndOfTurn;
+    }
+
+    public void setTradeFederationAlliedUntilEndOfTurn(boolean tradeFederationAlliedUntilEndOfTurn) {
+        this.tradeFederationAlliedUntilEndOfTurn = tradeFederationAlliedUntilEndOfTurn;
+    }
+
+    public boolean isMachineCultAlliedUntilEndOfTurn() {
+        return machineCultAlliedUntilEndOfTurn;
+    }
+
+    public void setMachineCultAlliedUntilEndOfTurn(boolean machineCultAlliedUntilEndOfTurn) {
+        this.machineCultAlliedUntilEndOfTurn = machineCultAlliedUntilEndOfTurn;
+    }
+
+    public boolean isGainTwoCombatWhenStarEmpireShipPlayed() {
+        return gainTwoCombatWhenStarEmpireShipPlayed;
+    }
+
+    public void setGainTwoCombatWhenStarEmpireShipPlayed(boolean gainTwoCombatWhenStarEmpireShipPlayed) {
+        this.gainTwoCombatWhenStarEmpireShipPlayed = gainTwoCombatWhenStarEmpireShipPlayed;
     }
 }

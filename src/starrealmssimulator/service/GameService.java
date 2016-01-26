@@ -2,6 +2,7 @@ package starrealmssimulator.service;
 
 import starrealmssimulator.bots.*;
 import starrealmssimulator.bots.json.JsonBot;
+import starrealmssimulator.bots.strategies.VelocityStrategy;
 import starrealmssimulator.cards.bases.blob.*;
 import starrealmssimulator.cards.bases.outposts.machinecult.*;
 import starrealmssimulator.cards.bases.outposts.starempire.*;
@@ -194,7 +195,7 @@ public class GameService {
         Collections.shuffle(player.getDeck());
     }
 
-    private List<Card> getStartingCards() {
+    public List<Card> getStartingCards() {
         List<Card> cards = new ArrayList<>();
 
         cards.add(new Scout());
@@ -212,7 +213,7 @@ public class GameService {
         return cards;
     }
 
-    private List<Card> getBaseSetDeck() {
+    public List<Card> getBaseSetDeck() {
         List<Card> cards = new ArrayList<>();
 
         cards.add(new TradeBot());
@@ -344,7 +345,7 @@ public class GameService {
         return cards;
     }
 
-    private List<Card> getYear1PromoCards() {
+    public List<Card> getYear1PromoCards() {
         List<Card> cards = new ArrayList<>();
 
         cards.add(new Megahauler());
@@ -694,7 +695,7 @@ public class GameService {
 
         //service.simulateOneAgainstAllBots(new HareBot(), bots);
 
-        service.simulateGameToEnd(service.getGameState(), 1000);
+        service.simulateGameToEnd(new GameStateGame(service.getGameState(), service), 1000);
     }
 
     private GameState getGameState() {
@@ -812,19 +813,79 @@ public class GameService {
         botCache.put(botFile, jsonBotCache);
     }
 
+    public GameState getGameStateFromGame(Game game) {
+        Player player = game.getCurrentPlayer();
+        Player opponent = player.getOpponent();
+
+        GameState gameState = new GameState();
+
+        gameState.turn = game.getTurn();
+        gameState.currentPlayer = "Y";
+        gameState.includeBaseSet = game.getCardSets().contains(CardSet.CORE) ? "Y" : "N";
+        gameState.includeColonyWars = game.getCardSets().contains(CardSet.COLONY_WARS) ? "Y" : "N";
+        gameState.includeYearOnePromos = game.getCardSets().contains(CardSet.PROMO_YEAR_1) ? "Y" : "N";
+        gameState.includeCrisisBasesAndBattleships = game.getCardSets().contains(CardSet.CRISIS_BASES_AND_BATTLESHIPS) ? "Y" : "N";
+        gameState.includeCrisisEvents = game.getCardSets().contains(CardSet.CRISIS_BASES_AND_BATTLESHIPS) ? "Y" : "N";
+        gameState.includeCrisisFleetsAndFortresses = game.getCardSets().contains(CardSet.CRISIS_FLEETS_AND_FORTRESSES) ? "Y" : "N";
+        gameState.includeCrisisHeroes = game.getCardSets().contains(CardSet.CRISIS_HEROES) ? "Y" : "N";
+        gameState.includeGambits = game.getCardSets().contains(CardSet.GAMBITS) ? "Y" : "N";
+
+        gameState.tradeRow = game.getCardsAsString(game.getTradeRow());
+
+        gameState.tradeRowCardsScrapped = game.getCardsAsString(game.getTradeRowCardsScrapped());
+
+        gameState.bot = player.getClass().getSimpleName();
+        gameState.authority = player.getAuthority();
+        gameState.shuffles = player.getShuffles();
+        gameState.hand = game.getCardsAsString(player.getHand());
+        gameState.deck = game.getCardsAsString(player.getDeck());
+        gameState.discard = game.getCardsAsString(player.getDiscard());
+        gameState.basesInPlay = game.getCardsAsString(player.getBases());
+        gameState.heroesInPlay = game.getCardsAsString(player.getHeroes());
+        gameState.gambits = game.getCardsAsString(player.getGambits());
+
+        //partial turn
+        gameState.played = game.getCardsAsString(player.getPlayed());
+        gameState.inPlay = game.getCardsAsString(player.getInPlay());
+        gameState.combat = player.getCombat();
+        gameState.trade = player.getTrade();
+        gameState.nextShipToTopOfDeck = player.isNextShipToTopOfDeck();
+        gameState.nextShipOrBaseToTopOfDeck = player.isNextShipOrBaseToTopOfDeck();
+        gameState.nextShipOrBaseToHand = player.isNextShipOrBaseToHand();
+        gameState.nextBaseToHand = player.isNextBaseToHand();
+        gameState.allShipsAddOneCombat = player.isAllShipsAddOneCombat();
+        gameState.allFactionsAllied = player.isAllFactionsAllied();
+        gameState.preventFirstDamage = player.isPreventFirstDamage();
+
+        gameState.opponentBot = opponent.getClass().getSimpleName();
+        gameState.opponentAuthority = opponent.getAuthority();
+        gameState.opponentShuffles = opponent.getShuffles();
+        gameState.opponentHandAndDeck = game.getCardsAsString(opponent.getHandAndDeck());
+        gameState.opponentDiscard = game.getCardsAsString(player.getDiscard());
+        gameState.opponentBasesInPlay = game.getCardsAsString(player.getBases());
+        gameState.opponentHeroesInPlay = game.getCardsAsString(player.getHeroes());
+        gameState.opponentGambits = game.getCardsAsString(player.getGambits());
+
+        return gameState;
+    }
+
     public Map<Card, CardToBuySimulationResults> simulateBestCardToBuy(GameState gameState, int timesToSimulate) {
+        return simulateBestCardToBuy(new GameStateGame(gameState, this), timesToSimulate);
+    }
+
+    public Map<Card, CardToBuySimulationResults> simulateBestCardToBuy(GameStateHolder gameStateHolder, int timesToSimulate) {
         Map<Card, CardToBuySimulationResults> resultsByCard = new LinkedHashMap<>();
 
-        List<Card> cards = getCardsFromCardNames(gameState.tradeRow);
+        List<Card> cards = gameStateHolder.getTradeRow();
         cards.add(new Explorer());
         cards.add(new DoNotBuyCard());
 
-        boolean playerGoesFirst = gameState.determineCurrentPlayer();
+        boolean playerGoesFirst = gameStateHolder.playerIsCurrentPlayer();
 
         for (Card card : cards) {
             CardToBuySimulationResults cardToBuySimulationResults = new CardToBuySimulationResults();
 
-            SimulationResults results = simulateGameToEnd(gameState, timesToSimulate, card);
+            SimulationResults results = simulateGameToEnd(gameStateHolder, timesToSimulate, card);
 
             float ableToBuyFirstTurnPercentage = ((float) results.getTotalGamesCounted() / timesToSimulate) * 100;
 
@@ -842,19 +903,17 @@ public class GameService {
         return resultsByCard;
     }
 
-    public SimulationResults simulateGameToEnd(GameState gameState, int timesToSimulate) {
-        return simulateGameToEnd(gameState, timesToSimulate, null);
+    public SimulationResults simulateGameToEnd(GameStateHolder gameStateHolder, int timesToSimulate) {
+        return simulateGameToEnd(gameStateHolder, timesToSimulate, null);
     }
 
-    public SimulationResults simulateGameToEnd(GameState gameState, int timesToSimulate, Card cardToBuyOnFirstTurn) {
+    public SimulationResults simulateGameToEnd(GameStateHolder gameStateHolder, int timesToSimulate, Card cardToBuyOnFirstTurn) {
         SimulationResults results = new SimulationResults();
 
         boolean createdWinGameLog = false;
         boolean createdLossGameLog = false;
 
         int totalGamesCounted = 0;
-
-        System.out.println("Game State: \n\n" + gameState.toString() + "\n\n");
 
         List<Game> games = new ArrayList<>(timesToSimulate);
 
@@ -864,17 +923,17 @@ public class GameService {
 
         int wins = 0;
 
-        Bot player = getBotFromBotName(gameState.bot);
-        player.setPlayerName(player.getPlayerName() + "(Player)");
+        Player player = gameStateHolder.getPlayerInstance();
+        player.setPlayerName(player.getClass().getSimpleName() + "(Player)");
         averageAuthorityByPlayerByTurn.put(player.getPlayerName(), new HashMap<>());
 
-        Bot opponent = getBotFromBotName(gameState.opponentBot);
-        opponent.setPlayerName(opponent.getPlayerName() + "(Opponent)");
+        Player opponent = gameStateHolder.getOpponentInstance();
+        opponent.setPlayerName(opponent.getClass().getSimpleName() + "(Opponent)");
         averageAuthorityByPlayerByTurn.put(opponent.getPlayerName(), new HashMap<>());
 
         for (int i = 0; i < timesToSimulate; i++) {
             boolean createGameLog = !createdWinGameLog || !createdLossGameLog;
-            Game game = simulateGameToEnd(gameState, createGameLog, cardToBuyOnFirstTurn);
+            Game game = simulateGameToEnd(gameStateHolder, createGameLog, cardToBuyOnFirstTurn);
             if (cardToBuyOnFirstTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn()) {
                 continue;
             }
@@ -936,7 +995,9 @@ public class GameService {
             winPercentage = 0;
         }
 
-        System.out.println("Player wins: " + f.format(winPercentage) + "%");
+        if (EXTRA_LOGGING) {
+            System.out.println("Player wins: " + f.format(winPercentage) + "%");
+        }
 
         results.setTotalGamesCounted(totalGamesCounted);
         results.setWinPercentage(winPercentage);
@@ -954,139 +1015,43 @@ public class GameService {
         return results;
     }
 
-    public Game simulateGameToEnd(GameState gameState, boolean createGameLog, Card cardToBuyOnFirstTurn) {
+    public Game simulateGameToEnd(GameStateHolder gameStateHolder, boolean createGameLog, Card cardToBuyOnFirstTurn) {
 
-        boolean playerGoesFirst = gameState.determineCurrentPlayer();
+        boolean playerIsCurrentPlayer = gameStateHolder.playerIsCurrentPlayer();
 
-        Bot player = getBotFromBotName(gameState.bot);
-        player.setPlayerName(player.getPlayerName() + "(Player)");
-        if (playerGoesFirst) {
-            player.setCardToBuyOnFirstTurn(cardToBuyOnFirstTurn);
+        Game game = gameStateHolder.getGameInstance();
+        if (cardToBuyOnFirstTurn != null) {
+            game.setCreateGameLog(createGameLog);
+        } else {
+            game.setCreateGameLog(false);
         }
 
-        Bot opponent = getBotFromBotName(gameState.opponentBot);
-        opponent.setPlayerName(opponent.getPlayerName() + "(Opponent)");
-        if (!playerGoesFirst) {
+        Player player;
+
+        if (playerIsCurrentPlayer) {
+            player = game.getCurrentPlayer();
+            if (player instanceof SimulatorBot && cardToBuyOnFirstTurn != null) {
+                ((SimulatorBot) player).setStrategy(new VelocityStrategy());
+            }
+        } else {
+            player = game.getCurrentPlayer().getOpponent();
+        }
+
+        Player opponent = player.getOpponent();
+
+        player.setPlayerName(player.getClass().getSimpleName() + "(Player)");
+        opponent.setPlayerName(opponent.getClass().getSimpleName() + "(Opponent)");
+
+        if (playerIsCurrentPlayer) {
+            player.setCardToBuyOnFirstTurn(cardToBuyOnFirstTurn);
+        } else {
             opponent.setCardToBuyOnFirstTurn(cardToBuyOnFirstTurn);
         }
 
-        Game game = new Game();
-        game.setCreateGameLog(createGameLog);
-
-        List<Card> deck = new ArrayList<>();
-        if (gameState.determineIncludeBaseSet()) {
-            deck.addAll(getBaseSetDeck());
-        }
-        if (gameState.determineIncludeColonyWars()) {
-            deck.addAll(getColonyWarsDeck());
-        }
-        if (gameState.determineIncludeYearOnePromos()) {
-            deck.addAll(getYear1PromoCards());
-        }
-        if (gameState.determineIncludeCrisisBasesAndBattleships()) {
-            deck.addAll(getCrisisBasesAndBattleships());
-        }
-        if (gameState.determineIncludeCrisisEvents()) {
-            deck.addAll(getCrisisEvents());
-        }
-        if (gameState.determineIncludeCrisisFleetsAndFortresses()) {
-            deck.addAll(getCrisisFleetsAndFortresses());
-        }
-        if (gameState.determineIncludeCrisisHeroes()) {
-            deck.addAll(getCrisisHeroes());
-        }
-
-        game.setDeck(deck);
-
-        game.setExplorer(new Explorer());
-
-        game.gameLog("Setting up cards for Player");
-        player.setGame(game);
-        player.setOpponent(opponent);
-        player.setShuffles(gameState.shuffles);
-        player.setAuthority(gameState.authority);
-        if (gameState.hand.isEmpty() && gameState.deck.isEmpty() && gameState.discard.isEmpty()) {
-            player.getDeck().addAll(getStartingCards());
-            Collections.shuffle(player.getDeck());
-            if (playerGoesFirst && gameState.turn == 1) {
-                player.drawCards(3);
-            } else {
-                player.drawCards(5);
-            }
+        if (cardToBuyOnFirstTurn != null) {
+            game.setTrackAuthority(false);
         } else {
-            player.getDeck().addAll(getCardsFromCardNames(gameState.deck));
-            Collections.shuffle(player.getDeck());
-            if (gameState.hand.isEmpty()) {
-                if (playerGoesFirst && gameState.turn == 1) {
-                    player.drawCards(3);
-                } else {
-                    player.drawCards(5);
-                }
-            } else {
-                player.getHand().addAll(getCardsFromCardNames(gameState.hand));
-            }
-            player.getDiscard().addAll(getCardsFromCardNames(gameState.discard));
-        }
-        player.getBases().addAll(getBasesFromCardNames(gameState.basesInPlay));
-
-        game.gameLog("-------------------------");
-        game.gameLog("Setting up cards for Opponent");
-        opponent.setGame(game);
-        opponent.setOpponent(player);
-        opponent.setShuffles(gameState.opponentShuffles);
-        opponent.setAuthority(gameState.opponentAuthority);
-        if (gameState.opponentHandAndDeck.isEmpty() && gameState.opponentDiscard.isEmpty()) {
-            opponent.getDeck().addAll(getStartingCards());
-        } else {
-            opponent.getDeck().addAll(getCardsFromCardNames(gameState.opponentHandAndDeck));
-            opponent.getDiscard().addAll(getCardsFromCardNames(gameState.opponentDiscard));
-        }
-        Collections.shuffle(opponent.getDeck());
-        if (!playerGoesFirst && gameState.turn == 1) {
-            opponent.drawCards(3);
-        } else {
-            opponent.drawCards(5);
-        }
-        opponent.getBases().addAll(getBasesFromCardNames(gameState.opponentBasesInPlay));
-
-        if (gameState.determineIncludeGambits()) {
-            player.getGambits().addAll(getGambitsFromGambitNames(gameState.gambits));
-            opponent.getGambits().addAll(getGambitsFromGambitNames(gameState.opponentGambits));
-        }
-
-        if (gameState.determineIncludeCrisisHeroes()) {
-            player.getHeroes().addAll(getHeroesFromHeroNames(gameState.heroesInPlay));
-            opponent.getHeroes().addAll(getHeroesFromHeroNames(gameState.opponentHeroesInPlay));
-        }
-
-        game.getDeck().removeAll(player.getAllCards());
-        game.getDeck().removeAll(opponent.getAllCards());
-
-        Collections.shuffle(game.getDeck());
-
-        List<Player> players = new ArrayList<>(2);
-        players.add(player);
-        players.add(opponent);
-
-        game.setPlayers(players);
-
-        game.setTurn(gameState.turn);
-
-        game.setupPlayerAuthorityMap();
-
-        if (!playerGoesFirst) {
-            game.setCurrentPlayerIndex(1);
-        }
-
-        if (gameState.tradeRow == null || gameState.tradeRow.isEmpty()) {
-            game.gameLog("-------------------------");
-            game.addCardsToTradeRow(5);
-        } else {
-            List<Card> tradeRowCards = getCardsFromCardNames(gameState.tradeRow);
-            game.getDeck().removeAll(tradeRowCards);
-            for (Card card : tradeRowCards) {
-                game.addCardToTradeRow(card);
-            }
+            game.setupPlayerAuthorityMap();
         }
 
         while (!game.isGameOver()) {
@@ -1094,8 +1059,11 @@ public class GameService {
                 if (EXTRA_LOGGING) {
                     System.out.println("-----Game stuck, trying again-----");
                 }
-                return simulateGameToEnd(gameState, createGameLog, cardToBuyOnFirstTurn);
+                return simulateGameToEnd(gameStateHolder, createGameLog, cardToBuyOnFirstTurn);
             } else {
+                if (game.isGameOver()) {
+                    return game;
+                }
                 game.getCurrentPlayer().setupTurn();
                 game.getCurrentPlayer().takeTurn();
             }
@@ -1128,6 +1096,9 @@ public class GameService {
             case "random":
             case "randombot":
                 return new RandomBot();
+            case "simulator":
+            case "simulatorbot":
+                return new SimulatorBot(this);
             case "tortoise":
             case "tortoisebot":
                 return new TortoiseBot();
@@ -1139,7 +1110,7 @@ public class GameService {
         }
     }
 
-    private List<Gambit> getGambitsFromGambitNames(String gambitNames) {
+    public List<Gambit> getGambitsFromGambitNames(String gambitNames) {
         List<Gambit> gambits = new ArrayList<>();
 
         String[] gambitNameArray = gambitNames.split(",");
@@ -1192,7 +1163,7 @@ public class GameService {
         }
     }
 
-    private List<Card> getCardsFromCardNames(String cardNames) {
+    public List<Card> getCardsFromCardNames(String cardNames) {
         List<Card> cards = new ArrayList<>();
 
         if (cardNames == null || cardNames.isEmpty()) {
@@ -1229,7 +1200,7 @@ public class GameService {
         return cards;
     }
 
-    private List<Base> getBasesFromCardNames(String cardNames) {
+    public List<Base> getBasesFromCardNames(String cardNames) {
         List<Base> bases = new ArrayList<>();
 
         if (cardNames == null || cardNames.isEmpty()) {
@@ -1875,7 +1846,7 @@ public class GameService {
         }
     }
 
-    private List<Hero> getHeroesFromHeroNames(String heroNames) {
+    public List<Hero> getHeroesFromHeroNames(String heroNames) {
         List<Hero> heroes = new ArrayList<>();
 
         String[] heroNameArray = heroNames.split(",");
