@@ -70,7 +70,7 @@ public abstract class Player {
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
 
     //these are for simulating which card is the best to buy
-    protected Card cardToBuyOnFirstTurn;
+    protected Card cardToBuyThisTurn;
     protected boolean firstTurn = true;
     protected boolean boughtSpecifiedCardOnFirstTurn = false;
 
@@ -237,11 +237,11 @@ public abstract class Player {
 
         firstTurn = false;
 
-        if (cardToBuyOnFirstTurn != null && cardToBuyOnFirstTurn instanceof DoNotBuyCard) {
+        if (cardToBuyThisTurn != null && cardToBuyThisTurn instanceof DoNotBuyCard) {
             boughtSpecifiedCardOnFirstTurn = true;
         }
 
-        cardToBuyOnFirstTurn = null;
+        cardToBuyThisTurn = null;
 
         combat = 0;
         trade = 0;
@@ -472,8 +472,8 @@ public abstract class Player {
             discard.add(card);
         }
 
-        if (cardToBuyOnFirstTurn != null && cardToBuyOnFirstTurn.equals(card)) {
-            cardToBuyOnFirstTurn = null;
+        if (cardToBuyThisTurn != null && cardToBuyThisTurn.equals(card)) {
+            cardToBuyThisTurn = null;
             if (firstTurn) {
                 boughtSpecifiedCardOnFirstTurn = true;
             }
@@ -588,17 +588,15 @@ public abstract class Player {
     public abstract void takeTurn();
 
     public void buyCard(Card card) {
-        if (card != null) {
-            if (trade >= card.getCost()) {
-                getGame().gameLog("Bought card: " + card.getName());
-                trade -= card.getCost();
-                if (card instanceof Explorer) {
-                    cardAcquired(new Explorer());
-                } else {
-                    game.getTradeRow().remove(card);
-                    game.addCardToTradeRow();
-                    cardAcquired(card);
-                }
+        if (trade >= card.getCost()) {
+            getGame().gameLog("Bought card: " + card.getName());
+            trade -= card.getCost();
+            if (card instanceof Explorer) {
+                cardAcquired(new Explorer());
+            } else {
+                game.getTradeRow().remove(card);
+                game.addCardToTradeRow();
+                cardAcquired(card);
             }
         }
     }
@@ -978,12 +976,12 @@ public abstract class Player {
         return countCardsByType(played, Card::isBlob);
     }
 
-    public Card getCardToBuyOnFirstTurn() {
-        return cardToBuyOnFirstTurn;
+    public Card getCardToBuyThisTurn() {
+        return cardToBuyThisTurn;
     }
 
-    public void setCardToBuyOnFirstTurn(Card cardToBuyOnFirstTurn) {
-        this.cardToBuyOnFirstTurn = cardToBuyOnFirstTurn;
+    public void setCardToBuyThisTurn(Card cardToBuyThisTurn) {
+        this.cardToBuyThisTurn = cardToBuyThisTurn;
     }
 
     public boolean isBoughtSpecifiedCardOnFirstTurn() {

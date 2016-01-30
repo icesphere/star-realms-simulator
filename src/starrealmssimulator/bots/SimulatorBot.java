@@ -1,5 +1,6 @@
 package starrealmssimulator.bots;
 
+import starrealmssimulator.bots.strategies.VelocityStrategy;
 import starrealmssimulator.cards.ships.DoNotBuyCard;
 import starrealmssimulator.model.Bot;
 import starrealmssimulator.model.BotStrategy;
@@ -7,6 +8,7 @@ import starrealmssimulator.model.Card;
 import starrealmssimulator.model.CardToBuySimulationResults;
 import starrealmssimulator.service.GameService;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +29,7 @@ public class SimulatorBot extends Bot {
             return super.getCardsToBuy();
         }
 
-        List<Card> cards = new ArrayList<>();
-
-        Map<Card, CardToBuySimulationResults> results = gameService.simulateBestCardToBuy(gameService.getGameStateFromGame(getGame()), 10);
+        Map<Card, CardToBuySimulationResults> results = gameService.simulateBestCardToBuy(gameService.getGameStateFromGame(getGame()), 5);
 
         if (!results.isEmpty()) {
             Card bestCardToBuy = null;
@@ -38,17 +38,26 @@ public class SimulatorBot extends Bot {
 
             for (Card card : results.keySet()) {
                 float winPercentage = results.get(card).getWinPercentage();
-                if (getTrade() >= card.getCost() && winPercentage > bestWinPercentage) {
+                if (winPercentage > bestWinPercentage) {
                     bestCardToBuy = card;
                     bestWinPercentage = winPercentage;
                 }
             }
 
-            if (!(bestCardToBuy instanceof DoNotBuyCard)) {
-                cards.add(bestCardToBuy);
+            setStrategy(new VelocityStrategy());
+
+            setCardToBuyThisTurn(bestCardToBuy);
+
+            DecimalFormat f = new DecimalFormat("##.00");
+
+            if (bestCardToBuy != null) {
+                getGame().gameLog("Best card to buy this turn: " + bestCardToBuy.getName());
+                getGame().gameLog("Win % with best card: " + f.format(bestWinPercentage) + "%");
             }
         }
 
+        List<Card> cards = super.getCardsToBuy();
+        setStrategy(null);
         return cards;
     }
 

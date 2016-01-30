@@ -907,7 +907,7 @@ public class GameService {
         return simulateGameToEnd(gameStateHolder, timesToSimulate, null);
     }
 
-    public SimulationResults simulateGameToEnd(GameStateHolder gameStateHolder, int timesToSimulate, Card cardToBuyOnFirstTurn) {
+    public SimulationResults simulateGameToEnd(GameStateHolder gameStateHolder, int timesToSimulate, Card cardToBuyThisTurn) {
         SimulationResults results = new SimulationResults();
 
         boolean createdWinGameLog = false;
@@ -933,8 +933,8 @@ public class GameService {
 
         for (int i = 0; i < timesToSimulate; i++) {
             boolean createGameLog = !createdWinGameLog || !createdLossGameLog;
-            Game game = simulateGameToEnd(gameStateHolder, createGameLog, cardToBuyOnFirstTurn);
-            if (cardToBuyOnFirstTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn()) {
+            Game game = simulateGameToEnd(gameStateHolder, createGameLog, cardToBuyThisTurn);
+            if (cardToBuyThisTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn()) {
                 continue;
             }
             if (game.getWinner().getPlayerName().equals(player.getPlayerName())) {
@@ -1015,22 +1015,18 @@ public class GameService {
         return results;
     }
 
-    public Game simulateGameToEnd(GameStateHolder gameStateHolder, boolean createGameLog, Card cardToBuyOnFirstTurn) {
+    public Game simulateGameToEnd(GameStateHolder gameStateHolder, boolean createGameLog, Card cardToBuyThisTurn) {
 
         boolean playerIsCurrentPlayer = gameStateHolder.playerIsCurrentPlayer();
 
         Game game = gameStateHolder.getGameInstance();
-        if (cardToBuyOnFirstTurn != null) {
-            game.setCreateGameLog(createGameLog);
-        } else {
-            game.setCreateGameLog(false);
-        }
+        game.setCreateGameLog(createGameLog);
 
         Player player;
 
         if (playerIsCurrentPlayer) {
             player = game.getCurrentPlayer();
-            if (player instanceof SimulatorBot && cardToBuyOnFirstTurn != null) {
+            if (player instanceof SimulatorBot && cardToBuyThisTurn != null) {
                 ((SimulatorBot) player).setStrategy(new VelocityStrategy());
             }
         } else {
@@ -1043,12 +1039,12 @@ public class GameService {
         opponent.setPlayerName(opponent.getClass().getSimpleName() + "(Opponent)");
 
         if (playerIsCurrentPlayer) {
-            player.setCardToBuyOnFirstTurn(cardToBuyOnFirstTurn);
+            player.setCardToBuyThisTurn(cardToBuyThisTurn);
         } else {
-            opponent.setCardToBuyOnFirstTurn(cardToBuyOnFirstTurn);
+            opponent.setCardToBuyThisTurn(cardToBuyThisTurn);
         }
 
-        if (cardToBuyOnFirstTurn != null) {
+        if (cardToBuyThisTurn != null) {
             game.setTrackAuthority(false);
         } else {
             game.setupPlayerAuthorityMap();
@@ -1059,7 +1055,7 @@ public class GameService {
                 if (EXTRA_LOGGING) {
                     System.out.println("-----Game stuck, trying again-----");
                 }
-                return simulateGameToEnd(gameStateHolder, createGameLog, cardToBuyOnFirstTurn);
+                return simulateGameToEnd(gameStateHolder, createGameLog, cardToBuyThisTurn);
             } else {
                 if (game.isGameOver()) {
                     return game;
