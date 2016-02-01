@@ -869,6 +869,33 @@ public class GameService {
         return gameState;
     }
 
+    public Map<String, Float> simulateBestBot(GameState gameState, int timesToSimulate) {
+        Map<String, Float> botResults = new LinkedHashMap<>();
+
+        List<String> bots = new ArrayList<>();
+
+        bots.add("Attack Bot");
+        bots.add("Defense Bot");
+        bots.add("End Game Bot");
+        bots.add("Expensive Bot");
+        bots.add("Hare Bot");
+        bots.add("Random Bot");
+        bots.add("Tortoise Bot");
+        bots.add("Velocity Bot");
+
+        for (String bot : bots) {
+            gameState.bot = bot;
+
+            GameStateHolder gameStateHolder = new GameStateGame(gameState, this);
+
+            SimulationResults results = simulateGameToEnd(gameStateHolder, timesToSimulate, null);
+
+            botResults.put(bot, results.getWinPercentage());
+        }
+
+        return botResults;
+    }
+
     public Map<Card, CardToBuySimulationResults> simulateBestCardToBuy(GameState gameState, int timesToSimulate) {
         return simulateBestCardToBuy(new GameStateGame(gameState, this), timesToSimulate);
     }
