@@ -876,6 +876,7 @@ public class GameService {
 
         bots.add("Attack Bot");
         bots.add("Defense Bot");
+        bots.add("Economy Bot");
         bots.add("End Game Bot");
         bots.add("Expensive Bot");
         bots.add("Hare Bot");
@@ -1110,6 +1111,9 @@ public class GameService {
             case "defensebot":
             case "defenseandbasebot":
                 return new DefenseAndBaseBot();
+            case "economy":
+            case "economybot":
+                return new EconomyBot();
             case "expensive":
             case "expensivebot":
                 return new ExpensiveBot();
@@ -1735,6 +1739,7 @@ public class GameService {
             case "starfortress":
                 return new StarFortress();
 
+            case "sta":
             case "stamar":
             case "smarket":
             case "starmarket":
