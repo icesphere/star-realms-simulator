@@ -22,12 +22,9 @@ public class GameStateGame implements GameStateHolder {
 
     @Override
     public List<Card> getTradeRow() {
-        if (StringUtils.isEmpty(gameState.tradeRow)) {
-            Game game = getGameInstance();
-            gameState.tradeRow = game.getCardsAsString(game.getTradeRow());
-            return game.getTradeRow();
-        }
-        return gameService.getCardsFromCardNames(gameState.tradeRow);
+        Game game = getGameInstance();
+        gameState.tradeRow = game.getCardsAsString(game.getTradeRow());
+        return game.getTradeRow();
     }
 
     @Override
@@ -176,6 +173,9 @@ public class GameStateGame implements GameStateHolder {
             game.getDeck().removeAll(tradeRowCards);
             for (Card card : tradeRowCards) {
                 game.addCardToTradeRow(card);
+            }
+            if (tradeRowCards.size() < 5) {
+                game.addCardsToTradeRow(5 - tradeRowCards.size());
             }
         }
 
