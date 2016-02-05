@@ -581,11 +581,12 @@ public class DefenseVelocityStrategy implements BotStrategy {
             return 10;
         } else if (card instanceof RecyclingStation) {
             if (deck == 1) {
-                return 15;
-            } else if (deck == 2) {
                 return 30;
             }
-            return 40;
+            if (player.countCardsByType(player.getAllCards(), Card::isStarterCard) >= 4) {
+                return 45;
+            }
+            return 30;
         } else if (card instanceof RoyalRedoubt) {
             if (bases > 2) {
                 return 40;

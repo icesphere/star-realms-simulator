@@ -474,7 +474,7 @@ public class AttackStrategy implements BotStrategy {
         } else if (card instanceof OrbitalPlatform) {
             return 5;
         } else if (card instanceof RecyclingStation) {
-            return 30;
+            return 50;
         } else if (card instanceof RoyalRedoubt) {
             return 30;
         } else if (card instanceof SpaceStation) {

@@ -566,11 +566,12 @@ public class DefenseStrategy implements BotStrategy {
             return 15;
         } else if (card instanceof RecyclingStation) {
             if (deck == 1) {
-                return 25;
-            } else if (deck == 2) {
-                return 40;
+                return 35;
             }
-            return 45;
+            if (player.countCardsByType(player.getAllCards(), Card::isStarterCard) >= 4) {
+                return 45;
+            }
+            return 35;
         } else if (card instanceof RoyalRedoubt) {
             if (bases > 2) {
                 return 60;

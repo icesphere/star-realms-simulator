@@ -562,9 +562,12 @@ public class VelocityStrategy implements BotStrategy {
             }
         } else if (card instanceof RecyclingStation) {
             if (deck == 1) {
-                return 25;
+                return 30;
             }
-            return 40;
+            if (player.countCardsByType(player.getAllCards(), Card::isStarterCard) >= 4) {
+                return 45;
+            }
+            return 30;
         } else if (card instanceof RoyalRedoubt) {
             if (bases > 2) {
                 return 40;
