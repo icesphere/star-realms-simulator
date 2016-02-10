@@ -908,7 +908,7 @@ public class GameService {
         cards.add(new Explorer());
         cards.add(new DoNotBuyCard());
 
-        boolean playerGoesFirst = gameStateHolder.playerIsCurrentPlayer();
+        boolean playerGoesFirst = gameStateHolder.getGameState().determineCurrentPlayer();
 
         for (Card card : cards) {
             CardToBuySimulationResults cardToBuySimulationResults = new CardToBuySimulationResults();
@@ -1045,9 +1045,10 @@ public class GameService {
 
     public Game simulateGameToEnd(GameStateHolder gameStateHolder, boolean createGameLog, Card cardToBuyThisTurn) {
 
-        boolean playerIsCurrentPlayer = gameStateHolder.playerIsCurrentPlayer();
-
         Game game = gameStateHolder.getGameInstance();
+
+        boolean playerIsCurrentPlayer = gameStateHolder.playerIsCurrentPlayerForThisGameInstance();
+
         game.setCreateGameLog(createGameLog);
 
         Player player;

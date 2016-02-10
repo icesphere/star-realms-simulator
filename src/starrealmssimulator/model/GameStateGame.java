@@ -17,7 +17,6 @@ public class GameStateGame implements GameStateHolder {
     public GameStateGame(GameState gameState, GameService gameService) {
         this.gameState = gameState;
         this.gameService = gameService;
-        playerGoesFirst = gameState.determineCurrentPlayer();
     }
 
     @Override
@@ -28,13 +27,15 @@ public class GameStateGame implements GameStateHolder {
     }
 
     @Override
-    public boolean playerIsCurrentPlayer() {
+    public boolean playerIsCurrentPlayerForThisGameInstance() {
         return playerGoesFirst;
     }
 
     @Override
     public Game getGameInstance() {
         Game game = new Game();
+
+        playerGoesFirst = gameState.determineCurrentPlayer();
 
         List<Card> deck = new ArrayList<>();
         if (gameState.determineIncludeBaseSet()) {
@@ -82,7 +83,7 @@ public class GameStateGame implements GameStateHolder {
         if (gameState.hand.isEmpty() && gameState.deck.isEmpty() && gameState.discard.isEmpty()) {
             player.getDeck().addAll(gameService.getStartingCards());
             Collections.shuffle(player.getDeck());
-            if (playerIsCurrentPlayer() && gameState.turn == 1) {
+            if (playerGoesFirst && gameState.turn == 1) {
                 player.drawCards(3);
             } else {
                 player.drawCards(5);
@@ -91,7 +92,7 @@ public class GameStateGame implements GameStateHolder {
             player.getDeck().addAll(gameService.getCardsFromCardNames(gameState.deck));
             Collections.shuffle(player.getDeck());
             if (gameState.hand.isEmpty()) {
-                if (playerIsCurrentPlayer() && gameState.turn == 1) {
+                if (playerGoesFirst && gameState.turn == 1) {
                     player.drawCards(3);
                 } else {
                     player.drawCards(5);
@@ -129,7 +130,7 @@ public class GameStateGame implements GameStateHolder {
             opponent.getDiscard().addAll(gameService.getCardsFromCardNames(gameState.opponentDiscard));
         }
         Collections.shuffle(opponent.getDeck());
-        if (!playerIsCurrentPlayer() && gameState.turn == 1) {
+        if (!playerGoesFirst && gameState.turn == 1) {
             opponent.drawCards(3);
         } else {
             opponent.drawCards(5);
@@ -161,7 +162,7 @@ public class GameStateGame implements GameStateHolder {
 
         game.setTurn(gameState.turn);
 
-        if (!playerIsCurrentPlayer()) {
+        if (!playerGoesFirst) {
             game.setCurrentPlayerIndex(1);
         }
 
@@ -190,5 +191,10 @@ public class GameStateGame implements GameStateHolder {
     @Override
     public Player getOpponentInstance() {
         return gameService.getBotFromBotName(gameState.opponentBot);
+    }
+
+    @Override
+    public GameState getGameState() {
+        return gameState;
     }
 }
