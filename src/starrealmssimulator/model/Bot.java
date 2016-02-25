@@ -162,15 +162,7 @@ public abstract class Bot extends Player {
     }
 
     public boolean useBaseAfterPlay(Base base) {
-        if (base instanceof RecyclingStation) {
-            return true;
-        }
-
-        if (base instanceof BrainWorld) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     private boolean shouldScrapCard(Card card) {
