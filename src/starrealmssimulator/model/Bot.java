@@ -139,6 +139,17 @@ public abstract class Bot extends Player {
                 }
             }
 
+            unusedBasesAndOutposts = getUnusedBasesAndOutposts();
+
+            if (!unusedBasesAndOutposts.isEmpty()) {
+                List<Base> sortedBases = unusedBasesAndOutposts.stream().sorted(useBaseScoreDescending).collect(toList());
+                for (Base sortedBase : sortedBases) {
+                    if (sortedBase.useBase(this)) {
+                        endTurn = false;
+                    }
+                }
+            }
+
             if (getTrade() > 0) {
                 List<Card> cardsToBuy = getCardsToBuy();
                 if (!cardsToBuy.isEmpty()) {
@@ -162,7 +173,11 @@ public abstract class Bot extends Player {
     }
 
     public boolean useBaseAfterPlay(Base base) {
-        return true;
+        if (base instanceof BrainWorld) {
+            return true;
+        }
+
+        return false;
     }
 
     private boolean shouldScrapCard(Card card) {
