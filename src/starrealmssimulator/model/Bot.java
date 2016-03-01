@@ -150,6 +150,24 @@ public abstract class Bot extends Player {
                 }
             }
 
+            cardsToScrapForBenefit = new ArrayList<>();
+
+            for (Card card : getInPlay()) {
+                if (card.isScrappable()) {
+                    if (shouldScrapCard(card)) {
+                        cardsToScrapForBenefit.add(card);
+                    }
+                }
+            }
+
+            if (!cardsToScrapForBenefit.isEmpty()) {
+                endTurn = false;
+                List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
+                for (Card card : sortedCardsToScrapForBenefit) {
+                    this.scrapCardInPlayForBenefit(card);
+                }
+            }
+
             if (getTrade() > 0) {
                 List<Card> cardsToBuy = getCardsToBuy();
                 if (!cardsToBuy.isEmpty()) {

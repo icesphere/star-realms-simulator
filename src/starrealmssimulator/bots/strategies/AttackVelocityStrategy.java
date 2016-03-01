@@ -259,12 +259,12 @@ public class AttackVelocityStrategy implements BotStrategy {
             }
         } else if (card instanceof MachineBase) {
             if (deck < 3) {
-                return 40;
+                return 50;
             }
             if (deck == 3) {
-                return 20;
+                return 30;
             }
-            return 5;
+            return 10;
         } else if (card instanceof MechCruiser) {
             if (deck < 3) {
                 return 60;
