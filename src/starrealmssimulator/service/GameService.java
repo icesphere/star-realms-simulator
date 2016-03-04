@@ -80,6 +80,16 @@ public class GameService {
                 simulationStats.addFirstPlayerWin();
             }
 
+            int authorityDifferential = winner.getAuthority() - winner.getOpponent().getAuthority();
+
+            simulationStats.addAuthorityDifferential(authorityDifferential);
+
+            SimulationStats opponentSimulationStats = simulationStatsMap.get(winner.getOpponent().getPlayerName());
+            if (opponentSimulationStats == null) {
+                opponentSimulationStats = new SimulationStats();
+            }
+            opponentSimulationStats.addAuthorityDifferential(authorityDifferential * (-1));
+
             simulationStatsMap.put(winner.getPlayerName(), simulationStats);
 
             turns += game.getTurn();
@@ -93,15 +103,19 @@ public class GameService {
         String botPercent = "";
         String opponentPercent = "";
         String opponentName = "";
+        String botAuthorityDifferential = "";
+        String opponentAuthorityDifferential = "";
 
         for (String playerName : simulationStatsMap.keySet()) {
             SimulationStats simulationStats = simulationStatsMap.get(playerName);
             String winPercent = f.format(((float) simulationStats.getWins() / gamesSimulated) * 100) + "%";
             if (playerName.equals(botName)) {
                 botPercent = winPercent;
+                botAuthorityDifferential = f.format((float) simulationStats.getAuthorityDifferentialTotal() / gamesSimulated);
             } else {
                 opponentName = playerName;
                 opponentPercent = winPercent;
+                opponentAuthorityDifferential = f.format((float) simulationStats.getAuthorityDifferentialTotal() / gamesSimulated);
             }
         }
 
@@ -122,6 +136,8 @@ public class GameService {
             System.out.println(botName + " v " + botName + ": 1st player wins: " + winPercent + " (Avg # turns: " + avgTurns + ")");
         } else {
             System.out.println(botName + " v " + opponentName + ": " + botPercent + " - " + opponentPercent + " (Avg # turns: " + avgTurns + ")");
+            System.out.println(botName + " avg authority differential: " + botAuthorityDifferential);
+            System.out.println(opponentName + " avg authority differential: " + opponentAuthorityDifferential);
         }
 
         return simulationInfo;
@@ -685,7 +701,7 @@ public class GameService {
 
         //service.simulateTwoBots("VelocityBot.json", "SmartBot.json");
 
-        //service.simulateTwoBots(new VelocityBot(), new HareBot());
+        service.simulateTwoBots(new VelocityBot(), new HareBot());
 
         //service.simulateAllAgainstAll(bots);
 
@@ -695,7 +711,7 @@ public class GameService {
 
         //service.simulateOneAgainstAllBots(new HareBot(), bots);
 
-        service.simulateGameToEnd(new GameStateGame(service.getGameState(), service), 1000);
+        //service.simulateGameToEnd(new GameStateGame(service.getGameState(), service), 1000);
     }
 
     private GameState getGameState() {
