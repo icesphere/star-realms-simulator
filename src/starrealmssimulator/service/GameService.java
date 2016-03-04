@@ -62,6 +62,9 @@ public class GameService {
 
         int turns = 0;
 
+        int firstPlayerAuthDiff = 0;
+        int secondPlayerAuthDiff = 0;
+        
         int gamesSimulated = games.size();
 
         SimulationInfo simulationInfo = new SimulationInfo();
@@ -78,6 +81,11 @@ public class GameService {
             if (winner.isFirstPlayer()) {
                 firstPlayerWins++;
                 simulationStats.addFirstPlayerWin();
+                firstPlayerAuthDiff += game.getPlayers().get(0).getAuthority() - game.getPlayers().get(1).getAuthority();
+            }
+            else
+            {
+                secondPlayerAuthDiff += game.getPlayers().get(1).getAuthority() - game.getPlayers().get(0).getAuthority();
             }
 
             simulationStatsMap.put(winner.getPlayerName(), simulationStats);
@@ -93,6 +101,8 @@ public class GameService {
         String botPercent = "";
         String opponentPercent = "";
         String opponentName = "";
+        String botAuthDif = Integer.toString(firstPlayerAuthDiff / gamesSimulated);
+        String opponentAuthDif = Integer.toString(secondPlayerAuthDiff / gamesSimulated);
 
         for (String playerName : simulationStatsMap.keySet()) {
             SimulationStats simulationStats = simulationStatsMap.get(playerName);
@@ -105,6 +115,8 @@ public class GameService {
             }
         }
 
+        
+        
         simulationInfo.setPlayerName(botName);
 
         if (playAgainstSelf) {
@@ -116,12 +128,12 @@ public class GameService {
         simulationInfo.setSimulationStats(simulationStatsMap);
 
         String avgTurns = f.format((float) turns / gamesSimulated);
-
+        
         if (playAgainstSelf) {
             String winPercent = f.format(((float) firstPlayerWins / gamesSimulated) * 100) + "%";
             System.out.println(botName + " v " + botName + ": 1st player wins: " + winPercent + " (Avg # turns: " + avgTurns + ")");
         } else {
-            System.out.println(botName + " v " + opponentName + ": " + botPercent + " - " + opponentPercent + " (Avg # turns: " + avgTurns + ")");
+            System.out.println(botName + " v " + opponentName + ": " + botPercent + " - " + opponentPercent + " (Avg # turns: " + avgTurns + ") Avg Auth Diffs: " + botAuthDif + " / " + opponentAuthDif);
         }
 
         return simulationInfo;
@@ -134,7 +146,7 @@ public class GameService {
         deck.addAll(getBaseSetDeck());
         deck.addAll(getYear1PromoCards());
         deck.addAll(getCrisisBasesAndBattleships());
-        deck.addAll(getCrisisEvents());
+        //deck.addAll(getCrisisEvents());
 
         game.setDeck(deck);
 
@@ -661,16 +673,16 @@ public class GameService {
         bots.add(new ExpensiveBot());
         bots.add(new RandomBot());
 
-        /*List<String> botFiles = new ArrayList<>();
+        List<String> botFiles = new ArrayList<>();
 
         botFiles.add("HareBot.json");
         botFiles.add("AttackBot.json");
         botFiles.add("DefenseBot.json");
         botFiles.add("VelocityBot.json");
         botFiles.add("TortoiseBot.json");
-        botFiles.add("ExpensiveBot.json");*/
+        botFiles.add("ExpensiveBot.json");
 
-        //botFiles.add("SmartBot.json");
+        botFiles.add("SmartBot.json");
 
         //botFiles.add("DoNothingBot.json");
         //botFiles.add("ExplorerBot.json");
@@ -685,7 +697,7 @@ public class GameService {
 
         //service.simulateTwoBots("VelocityBot.json", "SmartBot.json");
 
-        //service.simulateTwoBots(new VelocityBot(), new HareBot());
+        service.simulateTwoBots(new VelocityBot(), new HareBot());
 
         //service.simulateAllAgainstAll(bots);
 
@@ -695,7 +707,7 @@ public class GameService {
 
         //service.simulateOneAgainstAllBots(new HareBot(), bots);
 
-        service.simulateGameToEnd(new GameStateGame(service.getGameState(), service), 1000);
+        //service.simulateGameToEnd(new GameStateGame(service.getGameState(), service), 1000);
     }
 
     private GameState getGameState() {
@@ -1193,7 +1205,7 @@ public class GameService {
 
     public List<Card> getCardsFromCardNames(String cardNames) {
         List<Card> cards = new ArrayList<>();
-
+        
         if (cardNames == null || cardNames.isEmpty()) {
             return cards;
         }
@@ -1607,6 +1619,7 @@ public class GameService {
             case "mercru":
             case "mercc":
             case "merccruiser":
+            case "mc":
                 return new MercCruiser();
 
             case "minmec":
