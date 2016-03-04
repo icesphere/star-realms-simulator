@@ -142,8 +142,6 @@ public class GameService {
 
         Collections.shuffle(game.getDeck());
 
-        game.addCardsToTradeRow(5);
-
         List<Player> players = new ArrayList<>(bots.size());
         for (Bot bot : bots) {
             try {
@@ -170,6 +168,8 @@ public class GameService {
         game.setPlayers(players);
 
         addGambits(game);
+
+        game.addCardsToTradeRow(5);
 
         game.startGame();
 
