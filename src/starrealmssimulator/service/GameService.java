@@ -705,19 +705,19 @@ public class GameService {
         gameState.includeYearOnePromos = "Y";
         gameState.turn = 20;
 
-        gameState.tradeRow = "junkyard, supplyb, flags, poc, bwheel";
+        gameState.tradeRow = "junkyard, supbot, flags, poc, bwheel";
 
         gameState.bot = "";
         gameState.authority = 41;
-        gameState.hand = "missilem, s*2, mc, tpod";
-        gameState.deck = "bpod, bf, tpod, co, fshuttle, tpost, supplyb, rs, s*5, v*2";
+        gameState.hand = "mismec, s*2, mercru, tpod";
+        gameState.deck = "bpod, blofig, tpod, comshi, fedshu, tpost, supbot, recsta, s*5, v*2";
         gameState.discard = "";
         gameState.basesInPlay = "fleethq, smarket";
 
         gameState.opponentBot = "defense";
         gameState.opponentAuthority = 20;
         gameState.opponentDiscard = "tescort, missileb, v, s, tpost";
-        gameState.opponentHandAndDeck = "bb, ram, twheel, ey, fshuttle, missileb, sn, spaces, s*5, v";
+        gameState.opponentHandAndDeck = "batbar, ram, twheel, embyac, fshuttle, missileb, stenee, spaces, s*5, v";
 
         return gameState;
     }
