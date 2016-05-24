@@ -12,8 +12,8 @@ import starrealmssimulator.cards.bases.starempire.OrbitalPlatform;
 import starrealmssimulator.cards.bases.starempire.StarbaseOmega;
 import starrealmssimulator.cards.bases.tradefederation.*;
 import starrealmssimulator.cards.events.*;
-import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.cards.gambits.*;
+import starrealmssimulator.cards.heroes.*;
 import starrealmssimulator.cards.ships.*;
 import starrealmssimulator.cards.ships.blob.*;
 import starrealmssimulator.cards.ships.machinecult.*;
@@ -24,6 +24,7 @@ import starrealmssimulator.model.*;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 public class GameService {
 
@@ -68,6 +69,8 @@ public class GameService {
 
         Map<String, SimulationStats> simulationStatsMap = new HashMap<>();
 
+        LinkedHashMap<String, Integer> winsByCard = new LinkedHashMap<>();
+
         for (Game game : games) {
             Player winner = game.getWinner();
             SimulationStats simulationStats = simulationStatsMap.get(winner.getPlayerName());
@@ -93,6 +96,18 @@ public class GameService {
             simulationStatsMap.put(winner.getPlayerName(), simulationStats);
 
             turns += game.getTurn();
+
+            winner.getAllCards().stream().forEach(c -> {
+                if (!(c instanceof Scout || c instanceof Viper)) {
+                    Integer wins = winsByCard.get(c.getName());
+                    if (wins == null) {
+                        wins = 1;
+                    } else {
+                        wins++;
+                    }
+                    winsByCard.put(c.getName(), wins);
+                }
+            });
         }
 
         DecimalFormat f = new DecimalFormat("##.00");
@@ -129,6 +144,9 @@ public class GameService {
 
         simulationInfo.setSimulationStats(simulationStatsMap);
 
+        LinkedHashMap<String, Integer> sortedWinsByCard = sortByValueDescending(winsByCard);
+        simulationInfo.setWinsByCard(sortedWinsByCard);
+
         String avgTurns = f.format((float) turns / gamesSimulated);
 
         if (playAgainstSelf) {
@@ -140,7 +158,22 @@ public class GameService {
             System.out.println(opponentName + " avg authority differential: " + opponentAuthorityDifferential);
         }
 
+        sortedWinsByCard.keySet().stream().forEach(cardName -> {
+            System.out.println(cardName + ": " + winsByCard.get(cardName));
+        });
+
         return simulationInfo;
+    }
+
+    public LinkedHashMap<String, Integer>
+    sortByValueDescending(LinkedHashMap<String, Integer> map) {
+        LinkedHashMap<String, Integer> result = new LinkedHashMap<>();
+        Stream<Map.Entry<String, Integer>> st = map.entrySet().stream();
+
+        st.sorted(Map.Entry.comparingByValue((o1, o2) -> o2 - o1))
+                .forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
+
+        return result;
     }
 
     public Game simulateGame(List<Bot> bots) {
