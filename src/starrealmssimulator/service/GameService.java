@@ -996,7 +996,8 @@ public class GameService {
 
         Map<String, Map<Integer, Integer>> averageAuthorityByPlayerByTurn = new HashMap<>();
 
-        LinkedHashMap<String, Integer> winDifferentialByCardsAtEndOfGame = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> playerWinDifferentialByCardsAtEndOfGame = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> opponentWinDifferentialByCardsAtEndOfGame = new LinkedHashMap<>();
 
         float turnTotal = 0;
 
@@ -1016,7 +1017,14 @@ public class GameService {
             if (cardToBuyThisTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn()) {
                 continue;
             }
+
+            LinkedHashMap<String, Integer> winnerMap;
+            LinkedHashMap<String, Integer> loserMap;
+
             if (game.getWinner().getPlayerName().equals(player.getPlayerName())) {
+                winnerMap = playerWinDifferentialByCardsAtEndOfGame;
+                loserMap = opponentWinDifferentialByCardsAtEndOfGame;
+
                 wins++;
                 if (createGameLog) {
                     if (!createdWinGameLog) {
@@ -1026,6 +1034,9 @@ public class GameService {
                     game.setGameLog(null);
                 }
             } else {
+                winnerMap = opponentWinDifferentialByCardsAtEndOfGame;
+                loserMap = playerWinDifferentialByCardsAtEndOfGame;
+
                 if (!createdLossGameLog) {
                     results.setLossGameLog(game.getGameLog().toString());
                     createdLossGameLog = true;
@@ -1035,25 +1046,25 @@ public class GameService {
 
             game.getWinner().getAllCards().stream().forEach(c -> {
                 if (!(c instanceof Scout || c instanceof Viper)) {
-                    Integer winDifferential = winDifferentialByCardsAtEndOfGame.get(c.getName());
+                    Integer winDifferential = winnerMap.get(c.getName());
                     if (winDifferential == null) {
                         winDifferential = 1;
                     } else {
                         winDifferential++;
                     }
-                    winDifferentialByCardsAtEndOfGame.put(c.getName(), winDifferential);
+                    winnerMap.put(c.getName(), winDifferential);
                 }
             });
 
             game.getLoser().getAllCards().stream().forEach(c -> {
                 if (!(c instanceof Scout || c instanceof Viper)) {
-                    Integer winDifferential = winDifferentialByCardsAtEndOfGame.get(c.getName());
+                    Integer winDifferential = loserMap.get(c.getName());
                     if (winDifferential == null) {
                         winDifferential = -1;
                     } else {
                         winDifferential--;
                     }
-                    winDifferentialByCardsAtEndOfGame.put(c.getName(), winDifferential);
+                    loserMap.put(c.getName(), winDifferential);
                 }
             });
 
@@ -1116,7 +1127,8 @@ public class GameService {
             }
         }
 
-        results.setWinDifferentialByCardsAtEndOfGame(sortByValueDescending(winDifferentialByCardsAtEndOfGame));
+        results.setPlayerWinDifferentialByCardsAtEndOfGame(sortByValueDescending(playerWinDifferentialByCardsAtEndOfGame));
+        results.setOpponentWinDifferentialByCardsAtEndOfGame(sortByValueDescending(opponentWinDifferentialByCardsAtEndOfGame));
 
         return results;
     }

@@ -16,7 +16,8 @@ public class SimulationResults {
     private String winGameLog;
     private String lossGameLog;
 
-    private LinkedHashMap<String, Integer> winDifferentialByCardsAtEndOfGame;
+    private LinkedHashMap<String, Integer> playerWinDifferentialByCardsAtEndOfGame;
+    private LinkedHashMap<String, Integer> opponentWinDifferentialByCardsAtEndOfGame;
 
     public float getWinPercentage() {
         return winPercentage;
@@ -74,11 +75,19 @@ public class SimulationResults {
         this.totalGamesCounted = totalGamesCounted;
     }
 
-    public LinkedHashMap<String, Integer> getWinDifferentialByCardsAtEndOfGame() {
-        return winDifferentialByCardsAtEndOfGame;
+    public LinkedHashMap<String, Integer> getPlayerWinDifferentialByCardsAtEndOfGame() {
+        return playerWinDifferentialByCardsAtEndOfGame;
     }
 
-    public void setWinDifferentialByCardsAtEndOfGame(LinkedHashMap<String, Integer> winDifferentialByCardsAtEndOfGame) {
-        this.winDifferentialByCardsAtEndOfGame = winDifferentialByCardsAtEndOfGame;
+    public void setPlayerWinDifferentialByCardsAtEndOfGame(LinkedHashMap<String, Integer> playerWinDifferentialByCardsAtEndOfGame) {
+        this.playerWinDifferentialByCardsAtEndOfGame = playerWinDifferentialByCardsAtEndOfGame;
+    }
+
+    public LinkedHashMap<String, Integer> getOpponentWinDifferentialByCardsAtEndOfGame() {
+        return opponentWinDifferentialByCardsAtEndOfGame;
+    }
+
+    public void setOpponentWinDifferentialByCardsAtEndOfGame(LinkedHashMap<String, Integer> opponentWinDifferentialByCardsAtEndOfGame) {
+        this.opponentWinDifferentialByCardsAtEndOfGame = opponentWinDifferentialByCardsAtEndOfGame;
     }
 }
