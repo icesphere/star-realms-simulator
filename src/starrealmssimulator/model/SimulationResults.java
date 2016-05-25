@@ -1,5 +1,6 @@
 package starrealmssimulator.model;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SimulationResults {
@@ -14,6 +15,8 @@ public class SimulationResults {
 
     private String winGameLog;
     private String lossGameLog;
+
+    private LinkedHashMap<String, Integer> winDifferentialByCardsAtEndOfGame;
 
     public float getWinPercentage() {
         return winPercentage;
@@ -69,5 +72,13 @@ public class SimulationResults {
 
     public void setTotalGamesCounted(int totalGamesCounted) {
         this.totalGamesCounted = totalGamesCounted;
+    }
+
+    public LinkedHashMap<String, Integer> getWinDifferentialByCardsAtEndOfGame() {
+        return winDifferentialByCardsAtEndOfGame;
+    }
+
+    public void setWinDifferentialByCardsAtEndOfGame(LinkedHashMap<String, Integer> winDifferentialByCardsAtEndOfGame) {
+        this.winDifferentialByCardsAtEndOfGame = winDifferentialByCardsAtEndOfGame;
     }
 }

@@ -996,6 +996,8 @@ public class GameService {
 
         Map<String, Map<Integer, Integer>> averageAuthorityByPlayerByTurn = new HashMap<>();
 
+        LinkedHashMap<String, Integer> winDifferentialByCardsAtEndOfGame = new LinkedHashMap<>();
+
         float turnTotal = 0;
 
         int wins = 0;
@@ -1030,6 +1032,31 @@ public class GameService {
                 }
                 game.setGameLog(null);
             }
+
+            game.getWinner().getAllCards().stream().forEach(c -> {
+                if (!(c instanceof Scout || c instanceof Viper)) {
+                    Integer winDifferential = winDifferentialByCardsAtEndOfGame.get(c.getName());
+                    if (winDifferential == null) {
+                        winDifferential = 1;
+                    } else {
+                        winDifferential++;
+                    }
+                    winDifferentialByCardsAtEndOfGame.put(c.getName(), winDifferential);
+                }
+            });
+
+            game.getLoser().getAllCards().stream().forEach(c -> {
+                if (!(c instanceof Scout || c instanceof Viper)) {
+                    Integer winDifferential = winDifferentialByCardsAtEndOfGame.get(c.getName());
+                    if (winDifferential == null) {
+                        winDifferential = -1;
+                    } else {
+                        winDifferential--;
+                    }
+                    winDifferentialByCardsAtEndOfGame.put(c.getName(), winDifferential);
+                }
+            });
+
             totalGamesCounted++;
             games.add(game);
             turnTotal += game.getTurn();
@@ -1088,6 +1115,8 @@ public class GameService {
                 results.setOpponentAverageAuthorityByTurn(averageAuthorityByTurn);
             }
         }
+
+        results.setWinDifferentialByCardsAtEndOfGame(sortByValueDescending(winDifferentialByCardsAtEndOfGame));
 
         return results;
     }
