@@ -428,6 +428,8 @@ public abstract class Player {
         if (!getGame().getTradeRow().isEmpty()) {
             Card card = chooseFreeShipToPutOnTopOfDeck();
             if (card != null) {
+                game.getTradeRow().remove(card);
+                game.addCardToTradeRow();
                 getGame().gameLog("Acquired free ship on top of deck: " + card.getName());
                 addCardToTopOfDeck(card);
             }
@@ -798,6 +800,8 @@ public abstract class Player {
     public void acquireFreeCardToTopOfDeck(int maxCost) {
         Card card = chooseFreeCardToAcquire(maxCost);
         if (card != null) {
+            game.getTradeRow().remove(card);
+            game.addCardToTradeRow();
             getGame().gameLog("Acquired free card: " + card.getName());
             addCardToTopOfDeck(card);
         }
