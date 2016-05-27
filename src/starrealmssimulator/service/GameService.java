@@ -1202,8 +1202,8 @@ public class GameService {
         results.setPlayerWinPercentageByFirstDeckCard(sortByValueDescending(playerWinPercentageByFirstDeckCard));
         results.setOpponentWinPercentageByFirstDeckCard(sortByValueDescending(opponentWinPercentageByFirstDeckCard));
 
-        results.setPlayerWinsByFirstDeckCard(playerWinsByFirstDeckCard);
-        results.setOpponentWinsByFirstDeckCard(opponentWinsByFirstDeckCard);
+        results.setPlayerTotalGamesByFirstDeckCard(playerTotalGamesByFirstDeckCard);
+        results.setOpponentTotalGamesByFirstDeckCard(opponentTotalGamesByFirstDeckCard);
 
         return results;
     }

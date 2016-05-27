@@ -22,8 +22,8 @@ public class SimulationResults {
     private LinkedHashMap<String, Float> playerWinPercentageByFirstDeckCard;
     private LinkedHashMap<String, Float> opponentWinPercentageByFirstDeckCard;
 
-    private Map<String, Integer> playerWinsByFirstDeckCard;
-    private Map<String, Integer> opponentWinsByFirstDeckCard;
+    private Map<String, Integer> playerTotalGamesByFirstDeckCard;
+    private Map<String, Integer> opponentTotalGamesByFirstDeckCard;
 
     public float getWinPercentage() {
         return winPercentage;
@@ -113,19 +113,19 @@ public class SimulationResults {
         this.opponentWinPercentageByFirstDeckCard = opponentWinPercentageByFirstDeckCard;
     }
 
-    public Map<String, Integer> getPlayerWinsByFirstDeckCard() {
-        return playerWinsByFirstDeckCard;
+    public Map<String, Integer> getPlayerTotalGamesByFirstDeckCard() {
+        return playerTotalGamesByFirstDeckCard;
     }
 
-    public void setPlayerWinsByFirstDeckCard(Map<String, Integer> playerWinsByFirstDeckCard) {
-        this.playerWinsByFirstDeckCard = playerWinsByFirstDeckCard;
+    public void setPlayerTotalGamesByFirstDeckCard(Map<String, Integer> playerTotalGamesByFirstDeckCard) {
+        this.playerTotalGamesByFirstDeckCard = playerTotalGamesByFirstDeckCard;
     }
 
-    public Map<String, Integer> getOpponentWinsByFirstDeckCard() {
-        return opponentWinsByFirstDeckCard;
+    public Map<String, Integer> getOpponentTotalGamesByFirstDeckCard() {
+        return opponentTotalGamesByFirstDeckCard;
     }
 
-    public void setOpponentWinsByFirstDeckCard(Map<String, Integer> opponentWinsByFirstDeckCard) {
-        this.opponentWinsByFirstDeckCard = opponentWinsByFirstDeckCard;
+    public void setOpponentTotalGamesByFirstDeckCard(Map<String, Integer> opponentTotalGamesByFirstDeckCard) {
+        this.opponentTotalGamesByFirstDeckCard = opponentTotalGamesByFirstDeckCard;
     }
 }
