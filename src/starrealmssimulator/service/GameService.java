@@ -1008,6 +1008,15 @@ public class GameService {
         Map<String, Integer> opponentWinsByFirstDeckCard = new HashMap<>();
         Map<String, Integer> opponentTotalGamesByFirstDeckCard = new HashMap<>();
 
+        LinkedHashMap<String, Float> playerWinPercentageBySecondDeckCard = new LinkedHashMap<>();
+        LinkedHashMap<String, Float> opponentWinPercentageBySecondDeckCard = new LinkedHashMap<>();
+
+        Map<String, Integer> playerWinsBySecondDeckCard = new HashMap<>();
+        Map<String, Integer> playerTotalGamesBySecondDeckCard = new HashMap<>();
+
+        Map<String, Integer> opponentWinsBySecondDeckCard = new HashMap<>();
+        Map<String, Integer> opponentTotalGamesBySecondDeckCard = new HashMap<>();
+
         float turnTotal = 0;
 
         int wins = 0;
@@ -1034,6 +1043,10 @@ public class GameService {
             Map<String, Integer> winnerFirstDeckTotalGamesMap;
             Map<String, Integer> loserFirstDeckTotalGamesMap;
 
+            Map<String, Integer> winnerSecondDeckWinsMap;
+            Map<String, Integer> winnerSecondDeckTotalGamesMap;
+            Map<String, Integer> loserSecondDeckTotalGamesMap;
+
             if (game.getWinner().getPlayerName().equals(player.getPlayerName())) {
                 winnerWinDifferentialMap = playerWinDifferentialByCardsAtEndOfGame;
                 loserWinDifferentialMap = opponentWinDifferentialByCardsAtEndOfGame;
@@ -1041,6 +1054,10 @@ public class GameService {
                 winnerFirstDeckWinsMap = playerWinsByFirstDeckCard;
                 winnerFirstDeckTotalGamesMap = playerTotalGamesByFirstDeckCard;
                 loserFirstDeckTotalGamesMap = opponentTotalGamesByFirstDeckCard;
+
+                winnerSecondDeckWinsMap = playerWinsBySecondDeckCard;
+                winnerSecondDeckTotalGamesMap = playerTotalGamesBySecondDeckCard;
+                loserSecondDeckTotalGamesMap = opponentTotalGamesBySecondDeckCard;
 
                 wins++;
                 if (createGameLog) {
@@ -1057,6 +1074,10 @@ public class GameService {
                 winnerFirstDeckWinsMap = opponentWinsByFirstDeckCard;
                 winnerFirstDeckTotalGamesMap = opponentTotalGamesByFirstDeckCard;
                 loserFirstDeckTotalGamesMap = playerTotalGamesByFirstDeckCard;
+
+                winnerSecondDeckWinsMap = opponentWinsBySecondDeckCard;
+                winnerSecondDeckTotalGamesMap = opponentTotalGamesBySecondDeckCard;
+                loserSecondDeckTotalGamesMap = playerTotalGamesBySecondDeckCard;
 
                 if (!createdLossGameLog) {
                     results.setLossGameLog(game.getGameLog().toString());
@@ -1117,6 +1138,34 @@ public class GameService {
                 loserFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
             });
 
+            game.getWinner().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
+                Integer winsForCard = winnerSecondDeckWinsMap.get(c.getName());
+                if (winsForCard == null) {
+                    winsForCard = 1;
+                } else {
+                    winsForCard++;
+                }
+                winnerSecondDeckWinsMap.put(c.getName(), winsForCard);
+
+                Integer totalGamesForCard = winnerSecondDeckTotalGamesMap.get(c.getName());
+                if (totalGamesForCard == null) {
+                    totalGamesForCard = 1;
+                } else {
+                    totalGamesForCard++;
+                }
+                winnerSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+            });
+
+            game.getLoser().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
+                Integer totalGamesForCard = loserSecondDeckTotalGamesMap.get(c.getName());
+                if (totalGamesForCard == null) {
+                    totalGamesForCard = 1;
+                } else {
+                    totalGamesForCard++;
+                }
+                loserSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+            });
+
             totalGamesCounted++;
             games.add(game);
             turnTotal += game.getTurn();
@@ -1170,6 +1219,26 @@ public class GameService {
             }
         });
 
+        playerTotalGamesBySecondDeckCard.keySet().stream().forEach(cardName -> {
+            Integer totalGamesForCard = playerTotalGamesBySecondDeckCard.get(cardName);
+            Integer winsForCard = playerWinsBySecondDeckCard.get(cardName);
+            if (winsForCard == null) {
+                playerWinPercentageBySecondDeckCard.put(cardName, 0f);
+            } else {
+                playerWinPercentageBySecondDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
+            }
+        });
+
+        opponentTotalGamesBySecondDeckCard.keySet().stream().forEach(cardName -> {
+            Integer totalGamesForCard = opponentTotalGamesBySecondDeckCard.get(cardName);
+            Integer winsForCard = opponentWinsBySecondDeckCard.get(cardName);
+            if (winsForCard == null) {
+                opponentWinPercentageBySecondDeckCard.put(cardName, 0f);
+            } else {
+                opponentWinPercentageBySecondDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
+            }
+        });
+
         DecimalFormat f = new DecimalFormat("##.00");
 
         float winPercentage;
@@ -1204,6 +1273,12 @@ public class GameService {
 
         results.setPlayerTotalGamesByFirstDeckCard(playerTotalGamesByFirstDeckCard);
         results.setOpponentTotalGamesByFirstDeckCard(opponentTotalGamesByFirstDeckCard);
+
+        results.setPlayerWinPercentageBySecondDeckCard(sortByValueDescending(playerWinPercentageBySecondDeckCard));
+        results.setOpponentWinPercentageBySecondDeckCard(sortByValueDescending(opponentWinPercentageBySecondDeckCard));
+
+        results.setPlayerTotalGamesBySecondDeckCard(playerTotalGamesBySecondDeckCard);
+        results.setOpponentTotalGamesBySecondDeckCard(opponentTotalGamesBySecondDeckCard);
 
         return results;
     }

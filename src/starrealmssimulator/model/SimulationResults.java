@@ -25,6 +25,12 @@ public class SimulationResults {
     private Map<String, Integer> playerTotalGamesByFirstDeckCard;
     private Map<String, Integer> opponentTotalGamesByFirstDeckCard;
 
+    private LinkedHashMap<String, Float> playerWinPercentageBySecondDeckCard;
+    private LinkedHashMap<String, Float> opponentWinPercentageBySecondDeckCard;
+
+    private Map<String, Integer> playerTotalGamesBySecondDeckCard;
+    private Map<String, Integer> opponentTotalGamesBySecondDeckCard;
+
     public float getWinPercentage() {
         return winPercentage;
     }
@@ -127,5 +133,37 @@ public class SimulationResults {
 
     public void setOpponentTotalGamesByFirstDeckCard(Map<String, Integer> opponentTotalGamesByFirstDeckCard) {
         this.opponentTotalGamesByFirstDeckCard = opponentTotalGamesByFirstDeckCard;
+    }
+
+    public LinkedHashMap<String, Float> getPlayerWinPercentageBySecondDeckCard() {
+        return playerWinPercentageBySecondDeckCard;
+    }
+
+    public void setPlayerWinPercentageBySecondDeckCard(LinkedHashMap<String, Float> playerWinPercentageBySecondDeckCard) {
+        this.playerWinPercentageBySecondDeckCard = playerWinPercentageBySecondDeckCard;
+    }
+
+    public LinkedHashMap<String, Float> getOpponentWinPercentageBySecondDeckCard() {
+        return opponentWinPercentageBySecondDeckCard;
+    }
+
+    public void setOpponentWinPercentageBySecondDeckCard(LinkedHashMap<String, Float> opponentWinPercentageBySecondDeckCard) {
+        this.opponentWinPercentageBySecondDeckCard = opponentWinPercentageBySecondDeckCard;
+    }
+
+    public Map<String, Integer> getPlayerTotalGamesBySecondDeckCard() {
+        return playerTotalGamesBySecondDeckCard;
+    }
+
+    public void setPlayerTotalGamesBySecondDeckCard(Map<String, Integer> playerTotalGamesBySecondDeckCard) {
+        this.playerTotalGamesBySecondDeckCard = playerTotalGamesBySecondDeckCard;
+    }
+
+    public Map<String, Integer> getOpponentTotalGamesBySecondDeckCard() {
+        return opponentTotalGamesBySecondDeckCard;
+    }
+
+    public void setOpponentTotalGamesBySecondDeckCard(Map<String, Integer> opponentTotalGamesBySecondDeckCard) {
+        this.opponentTotalGamesBySecondDeckCard = opponentTotalGamesBySecondDeckCard;
     }
 }
