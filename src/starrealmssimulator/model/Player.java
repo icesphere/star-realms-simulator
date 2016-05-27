@@ -29,6 +29,8 @@ public abstract class Player {
     private List<Gambit> gambits = new ArrayList<>();
     private List<Hero> heroes = new ArrayList<>();
 
+    private Map<Integer, List<Card>> cardsAcquiredByDeck = new HashMap<>();
+
     private int combat;
     private int trade;
 
@@ -450,6 +452,13 @@ public abstract class Player {
     }
 
     private void cardAcquired(Card card) {
+        List<Card> cardsAcquiredInCurrentDeck = cardsAcquiredByDeck.get(getCurrentDeckNumber());
+        if (cardsAcquiredInCurrentDeck == null) {
+            cardsAcquiredInCurrentDeck = new ArrayList<>();
+        }
+        cardsAcquiredInCurrentDeck.add(card);
+        cardsAcquiredByDeck.put(getCurrentDeckNumber(), cardsAcquiredInCurrentDeck);
+
         if ((card instanceof ColonySeedShip && factionPlayedThisTurn(Faction.TRADE_FEDERATION)) ||
                 (card instanceof EmperorsDreadnaught && factionPlayedThisTurn(Faction.STAR_EMPIRE)) ||
                 (card instanceof PlasmaVent && blobCardPlayedThisTurn()) ||
@@ -1084,5 +1093,9 @@ public abstract class Player {
 
     public void setGainTwoCombatWhenStarEmpireShipPlayed(boolean gainTwoCombatWhenStarEmpireShipPlayed) {
         this.gainTwoCombatWhenStarEmpireShipPlayed = gainTwoCombatWhenStarEmpireShipPlayed;
+    }
+
+    public Map<Integer, List<Card>> getCardsAcquiredByDeck() {
+        return cardsAcquiredByDeck;
     }
 }

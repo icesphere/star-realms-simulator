@@ -19,6 +19,12 @@ public class SimulationResults {
     private LinkedHashMap<String, Integer> playerWinDifferentialByCardsAtEndOfGame;
     private LinkedHashMap<String, Integer> opponentWinDifferentialByCardsAtEndOfGame;
 
+    private LinkedHashMap<String, Float> playerWinPercentageByFirstDeckCard;
+    private LinkedHashMap<String, Float> opponentWinPercentageByFirstDeckCard;
+
+    private Map<String, Integer> playerWinsByFirstDeckCard;
+    private Map<String, Integer> opponentWinsByFirstDeckCard;
+
     public float getWinPercentage() {
         return winPercentage;
     }
@@ -89,5 +95,37 @@ public class SimulationResults {
 
     public void setOpponentWinDifferentialByCardsAtEndOfGame(LinkedHashMap<String, Integer> opponentWinDifferentialByCardsAtEndOfGame) {
         this.opponentWinDifferentialByCardsAtEndOfGame = opponentWinDifferentialByCardsAtEndOfGame;
+    }
+
+    public LinkedHashMap<String, Float> getPlayerWinPercentageByFirstDeckCard() {
+        return playerWinPercentageByFirstDeckCard;
+    }
+
+    public void setPlayerWinPercentageByFirstDeckCard(LinkedHashMap<String, Float> playerWinPercentageByFirstDeckCard) {
+        this.playerWinPercentageByFirstDeckCard = playerWinPercentageByFirstDeckCard;
+    }
+
+    public LinkedHashMap<String, Float> getOpponentWinPercentageByFirstDeckCard() {
+        return opponentWinPercentageByFirstDeckCard;
+    }
+
+    public void setOpponentWinPercentageByFirstDeckCard(LinkedHashMap<String, Float> opponentWinPercentageByFirstDeckCard) {
+        this.opponentWinPercentageByFirstDeckCard = opponentWinPercentageByFirstDeckCard;
+    }
+
+    public Map<String, Integer> getPlayerWinsByFirstDeckCard() {
+        return playerWinsByFirstDeckCard;
+    }
+
+    public void setPlayerWinsByFirstDeckCard(Map<String, Integer> playerWinsByFirstDeckCard) {
+        this.playerWinsByFirstDeckCard = playerWinsByFirstDeckCard;
+    }
+
+    public Map<String, Integer> getOpponentWinsByFirstDeckCard() {
+        return opponentWinsByFirstDeckCard;
+    }
+
+    public void setOpponentWinsByFirstDeckCard(Map<String, Integer> opponentWinsByFirstDeckCard) {
+        this.opponentWinsByFirstDeckCard = opponentWinsByFirstDeckCard;
     }
 }
