@@ -29,7 +29,7 @@ public abstract class Player {
     private List<Gambit> gambits = new ArrayList<>();
     private List<Hero> heroes = new ArrayList<>();
 
-    private Map<Integer, List<Card>> cardsAcquiredByDeck = new HashMap<>();
+    private Map<Integer, Set<Card>> cardsAcquiredByDeck = new HashMap<>();
 
     private int combat;
     private int trade;
@@ -452,9 +452,9 @@ public abstract class Player {
     }
 
     private void cardAcquired(Card card) {
-        List<Card> cardsAcquiredInCurrentDeck = cardsAcquiredByDeck.get(getCurrentDeckNumber());
+        Set<Card> cardsAcquiredInCurrentDeck = cardsAcquiredByDeck.get(getCurrentDeckNumber());
         if (cardsAcquiredInCurrentDeck == null) {
-            cardsAcquiredInCurrentDeck = new ArrayList<>();
+            cardsAcquiredInCurrentDeck = new HashSet<>();
         }
         cardsAcquiredInCurrentDeck.add(card);
         cardsAcquiredByDeck.put(getCurrentDeckNumber(), cardsAcquiredInCurrentDeck);
@@ -1095,7 +1095,7 @@ public abstract class Player {
         this.gainTwoCombatWhenStarEmpireShipPlayed = gainTwoCombatWhenStarEmpireShipPlayed;
     }
 
-    public Map<Integer, List<Card>> getCardsAcquiredByDeck() {
+    public Map<Integer, Set<Card>> getCardsAcquiredByDeck() {
         return cardsAcquiredByDeck;
     }
 }
