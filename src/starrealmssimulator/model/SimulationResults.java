@@ -31,6 +31,12 @@ public class SimulationResults {
     private Map<String, Integer> playerTotalGamesBySecondDeckCard;
     private Map<String, Integer> opponentTotalGamesBySecondDeckCard;
 
+    private Map<String, Float> playerWinPercentageByNumScoutsFirstTwoHands;
+    private Map<String, Float> opponentWinPercentageByNumScoutsFirstTwoHands;
+
+    private Map<String, Integer> playerTotalGamesByNumScoutsFirstTwoHands;
+    private Map<String, Integer> opponentTotalGamesByNumScoutsFirstTwoHands;
+
     public float getWinPercentage() {
         return winPercentage;
     }
@@ -165,5 +171,37 @@ public class SimulationResults {
 
     public void setOpponentTotalGamesBySecondDeckCard(Map<String, Integer> opponentTotalGamesBySecondDeckCard) {
         this.opponentTotalGamesBySecondDeckCard = opponentTotalGamesBySecondDeckCard;
+    }
+
+    public Map<String, Float> getPlayerWinPercentageByNumScoutsFirstTwoHands() {
+        return playerWinPercentageByNumScoutsFirstTwoHands;
+    }
+
+    public void setPlayerWinPercentageByNumScoutsFirstTwoHands(Map<String, Float> playerWinPercentageByNumScoutsFirstTwoHands) {
+        this.playerWinPercentageByNumScoutsFirstTwoHands = playerWinPercentageByNumScoutsFirstTwoHands;
+    }
+
+    public Map<String, Float> getOpponentWinPercentageByNumScoutsFirstTwoHands() {
+        return opponentWinPercentageByNumScoutsFirstTwoHands;
+    }
+
+    public void setOpponentWinPercentageByNumScoutsFirstTwoHands(Map<String, Float> opponentWinPercentageByNumScoutsFirstTwoHands) {
+        this.opponentWinPercentageByNumScoutsFirstTwoHands = opponentWinPercentageByNumScoutsFirstTwoHands;
+    }
+
+    public Map<String, Integer> getPlayerTotalGamesByNumScoutsFirstTwoHands() {
+        return playerTotalGamesByNumScoutsFirstTwoHands;
+    }
+
+    public void setPlayerTotalGamesByNumScoutsFirstTwoHands(Map<String, Integer> playerTotalGamesByNumScoutsFirstTwoHands) {
+        this.playerTotalGamesByNumScoutsFirstTwoHands = playerTotalGamesByNumScoutsFirstTwoHands;
+    }
+
+    public Map<String, Integer> getOpponentTotalGamesByNumScoutsFirstTwoHands() {
+        return opponentTotalGamesByNumScoutsFirstTwoHands;
+    }
+
+    public void setOpponentTotalGamesByNumScoutsFirstTwoHands(Map<String, Integer> opponentTotalGamesByNumScoutsFirstTwoHands) {
+        this.opponentTotalGamesByNumScoutsFirstTwoHands = opponentTotalGamesByNumScoutsFirstTwoHands;
     }
 }

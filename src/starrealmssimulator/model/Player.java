@@ -1,16 +1,17 @@
 package starrealmssimulator.model;
 
-import starrealmssimulator.cards.bases.starempire.FleetHQ;
 import starrealmssimulator.cards.bases.blob.PlasmaVent;
-import starrealmssimulator.cards.bases.outposts.starempire.CommandCenter;
 import starrealmssimulator.cards.bases.outposts.machinecult.MechWorld;
 import starrealmssimulator.cards.bases.outposts.machinecult.StealthTower;
 import starrealmssimulator.cards.bases.outposts.machinecult.WarningBeacon;
+import starrealmssimulator.cards.bases.outposts.starempire.CommandCenter;
+import starrealmssimulator.cards.bases.starempire.FleetHQ;
 import starrealmssimulator.cards.ships.DoNotBuyCard;
-import starrealmssimulator.cards.ships.tradefederation.ColonySeedShip;
-import starrealmssimulator.cards.ships.starempire.EmperorsDreadnaught;
 import starrealmssimulator.cards.ships.Explorer;
+import starrealmssimulator.cards.ships.Scout;
 import starrealmssimulator.cards.ships.machinecult.StealthNeedle;
+import starrealmssimulator.cards.ships.starempire.EmperorsDreadnaught;
+import starrealmssimulator.cards.ships.tradefederation.ColonySeedShip;
 
 import java.util.*;
 import java.util.function.Function;
@@ -75,6 +76,9 @@ public abstract class Player {
     protected Card cardToBuyThisTurn;
     protected boolean firstTurn = true;
     protected boolean boughtSpecifiedCardOnFirstTurn = false;
+
+    private long scoutsInFirstHand;
+    private long scoutsInSecondHand;
 
     protected Player() {
     }
@@ -594,6 +598,13 @@ public abstract class Player {
         game.gameLog("");
 
         inPlay.addAll(bases);
+
+        long scoutsInHand = hand.stream().filter(c -> c instanceof Scout).count();
+        if (turns == 0) {
+            scoutsInFirstHand = scoutsInHand;
+        } else if (turns == 1) {
+            scoutsInSecondHand = scoutsInHand;
+        }
     }
 
     public abstract void takeTurn();
@@ -1097,5 +1108,13 @@ public abstract class Player {
 
     public Map<Integer, Set<Card>> getCardsAcquiredByDeck() {
         return cardsAcquiredByDeck;
+    }
+
+    public long getScoutsInFirstHand() {
+        return scoutsInFirstHand;
+    }
+
+    public long getScoutsInSecondHand() {
+        return scoutsInSecondHand;
     }
 }
