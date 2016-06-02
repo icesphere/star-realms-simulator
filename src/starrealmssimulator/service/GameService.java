@@ -938,7 +938,7 @@ public class GameService {
 
             GameStateHolder gameStateHolder = new GameStateGame(gameState, this);
 
-            SimulationResults results = simulateGameToEnd(gameStateHolder, timesToSimulate, null);
+            SimulationResults results = simulateGameToEnd(gameStateHolder, timesToSimulate, null, true, false);
 
             botResults.put(bot, results.getWinPercentage());
         }
@@ -962,7 +962,7 @@ public class GameService {
         for (Card card : cards) {
             CardToBuySimulationResults cardToBuySimulationResults = new CardToBuySimulationResults();
 
-            SimulationResults results = simulateGameToEnd(gameStateHolder, timesToSimulate, card);
+            SimulationResults results = simulateGameToEnd(gameStateHolder, timesToSimulate, card, false, true);
 
             float ableToBuyFirstTurnPercentage = ((float) results.getTotalGamesCounted() / timesToSimulate) * 100;
 
@@ -981,10 +981,10 @@ public class GameService {
     }
 
     public SimulationResults simulateGameToEnd(GameStateHolder gameStateHolder, int timesToSimulate) {
-        return simulateGameToEnd(gameStateHolder, timesToSimulate, null);
+        return simulateGameToEnd(gameStateHolder, timesToSimulate, null, false, false);
     }
 
-    public SimulationResults simulateGameToEnd(GameStateHolder gameStateHolder, int timesToSimulate, Card cardToBuyThisTurn) {
+    public SimulationResults simulateGameToEnd(GameStateHolder gameStateHolder, int timesToSimulate, Card cardToBuyThisTurn, boolean simulatingBestBot, boolean simulatingBestCardToBuy) {
         SimulationResults results = new SimulationResults();
 
         boolean createdWinGameLog = false;
@@ -1106,113 +1106,115 @@ public class GameService {
                 }
                 game.setGameLog(null);
             }
-            
-            String winnerStartingScoutsSplit = "";
-            winnerStartingScoutsSplit += game.getWinner().getScoutsInFirstHand() + "/" + game.getWinner().getScoutsInSecondHand();
-            Integer winsByStartingScouts = winnerNumScoutsFirstTwoHandsWinsMap.get(winnerStartingScoutsSplit);
-            if (winsByStartingScouts == null) {
-                winsByStartingScouts = 1;
-            } else {
-                winsByStartingScouts++;
-            }
-            winnerNumScoutsFirstTwoHandsWinsMap.put(winnerStartingScoutsSplit, winsByStartingScouts);
-            Integer winnerTotalGamesByStartingScouts = winnerNumScoutsFirstTwoHandsTotalGamesMap.get(winnerStartingScoutsSplit);
-            if (winnerTotalGamesByStartingScouts == null) {
-                winnerTotalGamesByStartingScouts = 1;
-            } else {
-                winnerTotalGamesByStartingScouts++;
-            }
-            winnerNumScoutsFirstTwoHandsTotalGamesMap.put(winnerStartingScoutsSplit, winnerTotalGamesByStartingScouts);
 
-            String loserStartingScoutsSplit = "";
-            loserStartingScoutsSplit += game.getLoser().getScoutsInFirstHand() + "/" + game.getLoser().getScoutsInSecondHand();
-            Integer loserTotalGamesByStartingScouts = loserNumScoutsFirstTwoHandsTotalGamesMap.get(loserStartingScoutsSplit);
-            if (loserTotalGamesByStartingScouts == null) {
-                loserTotalGamesByStartingScouts = 1;
-            } else {
-                loserTotalGamesByStartingScouts++;
-            }
-            loserNumScoutsFirstTwoHandsTotalGamesMap.put(loserStartingScoutsSplit, loserTotalGamesByStartingScouts);
+            if (!simulatingBestBot && !simulatingBestCardToBuy) {
+                String winnerStartingScoutsSplit = "";
+                winnerStartingScoutsSplit += game.getWinner().getScoutsInFirstHand() + "/" + game.getWinner().getScoutsInSecondHand();
+                Integer winsByStartingScouts = winnerNumScoutsFirstTwoHandsWinsMap.get(winnerStartingScoutsSplit);
+                if (winsByStartingScouts == null) {
+                    winsByStartingScouts = 1;
+                } else {
+                    winsByStartingScouts++;
+                }
+                winnerNumScoutsFirstTwoHandsWinsMap.put(winnerStartingScoutsSplit, winsByStartingScouts);
+                Integer winnerTotalGamesByStartingScouts = winnerNumScoutsFirstTwoHandsTotalGamesMap.get(winnerStartingScoutsSplit);
+                if (winnerTotalGamesByStartingScouts == null) {
+                    winnerTotalGamesByStartingScouts = 1;
+                } else {
+                    winnerTotalGamesByStartingScouts++;
+                }
+                winnerNumScoutsFirstTwoHandsTotalGamesMap.put(winnerStartingScoutsSplit, winnerTotalGamesByStartingScouts);
 
-            game.getWinner().getAllCards().stream().forEach(c -> {
-                if (!(c instanceof Scout || c instanceof Viper)) {
-                    Integer winDifferential = winnerWinDifferentialMap.get(c.getName());
-                    if (winDifferential == null) {
-                        winDifferential = 1;
-                    } else {
-                        winDifferential++;
+                String loserStartingScoutsSplit = "";
+                loserStartingScoutsSplit += game.getLoser().getScoutsInFirstHand() + "/" + game.getLoser().getScoutsInSecondHand();
+                Integer loserTotalGamesByStartingScouts = loserNumScoutsFirstTwoHandsTotalGamesMap.get(loserStartingScoutsSplit);
+                if (loserTotalGamesByStartingScouts == null) {
+                    loserTotalGamesByStartingScouts = 1;
+                } else {
+                    loserTotalGamesByStartingScouts++;
+                }
+                loserNumScoutsFirstTwoHandsTotalGamesMap.put(loserStartingScoutsSplit, loserTotalGamesByStartingScouts);
+
+                game.getWinner().getAllCards().stream().forEach(c -> {
+                    if (!(c instanceof Scout || c instanceof Viper)) {
+                        Integer winDifferential = winnerWinDifferentialMap.get(c.getName());
+                        if (winDifferential == null) {
+                            winDifferential = 1;
+                        } else {
+                            winDifferential++;
+                        }
+                        winnerWinDifferentialMap.put(c.getName(), winDifferential);
                     }
-                    winnerWinDifferentialMap.put(c.getName(), winDifferential);
-                }
-            });
+                });
 
-            game.getLoser().getAllCards().stream().forEach(c -> {
-                if (!(c instanceof Scout || c instanceof Viper)) {
-                    Integer winDifferential = loserWinDifferentialMap.get(c.getName());
-                    if (winDifferential == null) {
-                        winDifferential = -1;
-                    } else {
-                        winDifferential--;
+                game.getLoser().getAllCards().stream().forEach(c -> {
+                    if (!(c instanceof Scout || c instanceof Viper)) {
+                        Integer winDifferential = loserWinDifferentialMap.get(c.getName());
+                        if (winDifferential == null) {
+                            winDifferential = -1;
+                        } else {
+                            winDifferential--;
+                        }
+                        loserWinDifferentialMap.put(c.getName(), winDifferential);
                     }
-                    loserWinDifferentialMap.put(c.getName(), winDifferential);
-                }
-            });
+                });
 
-            game.getWinner().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
-                Integer winsForCard = winnerFirstDeckWinsMap.get(c.getName());
-                if (winsForCard == null) {
-                    winsForCard = 1;
-                } else {
-                    winsForCard++;
-                }
-                winnerFirstDeckWinsMap.put(c.getName(), winsForCard);
+                game.getWinner().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
+                    Integer winsForCard = winnerFirstDeckWinsMap.get(c.getName());
+                    if (winsForCard == null) {
+                        winsForCard = 1;
+                    } else {
+                        winsForCard++;
+                    }
+                    winnerFirstDeckWinsMap.put(c.getName(), winsForCard);
 
-                Integer totalGamesForCard = winnerFirstDeckTotalGamesMap.get(c.getName());
-                if (totalGamesForCard == null) {
-                    totalGamesForCard = 1;
-                } else {
-                    totalGamesForCard++;
-                }
-                winnerFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
-            });
+                    Integer totalGamesForCard = winnerFirstDeckTotalGamesMap.get(c.getName());
+                    if (totalGamesForCard == null) {
+                        totalGamesForCard = 1;
+                    } else {
+                        totalGamesForCard++;
+                    }
+                    winnerFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+                });
 
-            game.getLoser().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
-                Integer totalGamesForCard = loserFirstDeckTotalGamesMap.get(c.getName());
-                if (totalGamesForCard == null) {
-                    totalGamesForCard = 1;
-                } else {
-                    totalGamesForCard++;
-                }
-                loserFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
-            });
+                game.getLoser().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
+                    Integer totalGamesForCard = loserFirstDeckTotalGamesMap.get(c.getName());
+                    if (totalGamesForCard == null) {
+                        totalGamesForCard = 1;
+                    } else {
+                        totalGamesForCard++;
+                    }
+                    loserFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+                });
 
-            game.getWinner().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
-                Integer winsForCard = winnerSecondDeckWinsMap.get(c.getName());
-                if (winsForCard == null) {
-                    winsForCard = 1;
-                } else {
-                    winsForCard++;
-                }
-                winnerSecondDeckWinsMap.put(c.getName(), winsForCard);
+                game.getWinner().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
+                    Integer winsForCard = winnerSecondDeckWinsMap.get(c.getName());
+                    if (winsForCard == null) {
+                        winsForCard = 1;
+                    } else {
+                        winsForCard++;
+                    }
+                    winnerSecondDeckWinsMap.put(c.getName(), winsForCard);
 
-                Integer totalGamesForCard = winnerSecondDeckTotalGamesMap.get(c.getName());
-                if (totalGamesForCard == null) {
-                    totalGamesForCard = 1;
-                } else {
-                    totalGamesForCard++;
-                }
-                winnerSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
-            });
+                    Integer totalGamesForCard = winnerSecondDeckTotalGamesMap.get(c.getName());
+                    if (totalGamesForCard == null) {
+                        totalGamesForCard = 1;
+                    } else {
+                        totalGamesForCard++;
+                    }
+                    winnerSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+                });
 
-            game.getLoser().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
-                Integer totalGamesForCard = loserSecondDeckTotalGamesMap.get(c.getName());
-                if (totalGamesForCard == null) {
-                    totalGamesForCard = 1;
-                } else {
-                    totalGamesForCard++;
-                }
-                loserSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
-            });
+                game.getLoser().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
+                    Integer totalGamesForCard = loserSecondDeckTotalGamesMap.get(c.getName());
+                    if (totalGamesForCard == null) {
+                        totalGamesForCard = 1;
+                    } else {
+                        totalGamesForCard++;
+                    }
+                    loserSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+                });
+            }
 
             totalGamesCounted++;
             games.add(game);
@@ -1247,65 +1249,67 @@ public class GameService {
             }
         }
 
-        playerTotalGamesByFirstDeckCard.keySet().stream().forEach(cardName -> {
-            Integer totalGamesForCard = playerTotalGamesByFirstDeckCard.get(cardName);
-            Integer winsForCard = playerWinsByFirstDeckCard.get(cardName);
-            if (winsForCard == null) {
-                playerWinPercentageByFirstDeckCard.put(cardName, 0f);
-            } else {
-                playerWinPercentageByFirstDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
-            }
-        });
+        if (!simulatingBestBot && !simulatingBestCardToBuy) {
+            playerTotalGamesByFirstDeckCard.keySet().stream().forEach(cardName -> {
+                Integer totalGamesForCard = playerTotalGamesByFirstDeckCard.get(cardName);
+                Integer winsForCard = playerWinsByFirstDeckCard.get(cardName);
+                if (winsForCard == null) {
+                    playerWinPercentageByFirstDeckCard.put(cardName, 0f);
+                } else {
+                    playerWinPercentageByFirstDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
+                }
+            });
 
-        opponentTotalGamesByFirstDeckCard.keySet().stream().forEach(cardName -> {
-            Integer totalGamesForCard = opponentTotalGamesByFirstDeckCard.get(cardName);
-            Integer winsForCard = opponentWinsByFirstDeckCard.get(cardName);
-            if (winsForCard == null) {
-                opponentWinPercentageByFirstDeckCard.put(cardName, 0f);
-            } else {
-                opponentWinPercentageByFirstDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
-            }
-        });
+            opponentTotalGamesByFirstDeckCard.keySet().stream().forEach(cardName -> {
+                Integer totalGamesForCard = opponentTotalGamesByFirstDeckCard.get(cardName);
+                Integer winsForCard = opponentWinsByFirstDeckCard.get(cardName);
+                if (winsForCard == null) {
+                    opponentWinPercentageByFirstDeckCard.put(cardName, 0f);
+                } else {
+                    opponentWinPercentageByFirstDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
+                }
+            });
 
-        playerTotalGamesBySecondDeckCard.keySet().stream().forEach(cardName -> {
-            Integer totalGamesForCard = playerTotalGamesBySecondDeckCard.get(cardName);
-            Integer winsForCard = playerWinsBySecondDeckCard.get(cardName);
-            if (winsForCard == null) {
-                playerWinPercentageBySecondDeckCard.put(cardName, 0f);
-            } else {
-                playerWinPercentageBySecondDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
-            }
-        });
+            playerTotalGamesBySecondDeckCard.keySet().stream().forEach(cardName -> {
+                Integer totalGamesForCard = playerTotalGamesBySecondDeckCard.get(cardName);
+                Integer winsForCard = playerWinsBySecondDeckCard.get(cardName);
+                if (winsForCard == null) {
+                    playerWinPercentageBySecondDeckCard.put(cardName, 0f);
+                } else {
+                    playerWinPercentageBySecondDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
+                }
+            });
 
-        opponentTotalGamesBySecondDeckCard.keySet().stream().forEach(cardName -> {
-            Integer totalGamesForCard = opponentTotalGamesBySecondDeckCard.get(cardName);
-            Integer winsForCard = opponentWinsBySecondDeckCard.get(cardName);
-            if (winsForCard == null) {
-                opponentWinPercentageBySecondDeckCard.put(cardName, 0f);
-            } else {
-                opponentWinPercentageBySecondDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
-            }
-        });
+            opponentTotalGamesBySecondDeckCard.keySet().stream().forEach(cardName -> {
+                Integer totalGamesForCard = opponentTotalGamesBySecondDeckCard.get(cardName);
+                Integer winsForCard = opponentWinsBySecondDeckCard.get(cardName);
+                if (winsForCard == null) {
+                    opponentWinPercentageBySecondDeckCard.put(cardName, 0f);
+                } else {
+                    opponentWinPercentageBySecondDeckCard.put(cardName, ((float) winsForCard / totalGamesForCard) * 100);
+                }
+            });
 
-        playerTotalGamesByNumScoutsFirstTwoHands.keySet().stream().forEach(scoutSplit -> {
-            Integer totalGamesForScoutSplit = playerTotalGamesByNumScoutsFirstTwoHands.get(scoutSplit);
-            Integer winsForScoutSplit = playerWinsByNumScoutsFirstTwoHands.get(scoutSplit);
-            if (winsForScoutSplit == null) {
-                playerWinPercentageByNumScoutsFirstTwoHands.put(scoutSplit, 0f);
-            } else {
-                playerWinPercentageByNumScoutsFirstTwoHands.put(scoutSplit, ((float) winsForScoutSplit / totalGamesForScoutSplit) * 100);
-            }
-        });
+            playerTotalGamesByNumScoutsFirstTwoHands.keySet().stream().forEach(scoutSplit -> {
+                Integer totalGamesForScoutSplit = playerTotalGamesByNumScoutsFirstTwoHands.get(scoutSplit);
+                Integer winsForScoutSplit = playerWinsByNumScoutsFirstTwoHands.get(scoutSplit);
+                if (winsForScoutSplit == null) {
+                    playerWinPercentageByNumScoutsFirstTwoHands.put(scoutSplit, 0f);
+                } else {
+                    playerWinPercentageByNumScoutsFirstTwoHands.put(scoutSplit, ((float) winsForScoutSplit / totalGamesForScoutSplit) * 100);
+                }
+            });
 
-        opponentTotalGamesByNumScoutsFirstTwoHands.keySet().stream().forEach(scoutSplit -> {
-            Integer totalGamesForScoutSplit = opponentTotalGamesByNumScoutsFirstTwoHands.get(scoutSplit);
-            Integer winsForScoutSplit = opponentWinsByNumScoutsFirstTwoHands.get(scoutSplit);
-            if (winsForScoutSplit == null) {
-                opponentWinPercentageByNumScoutsFirstTwoHands.put(scoutSplit, 0f);
-            } else {
-                opponentWinPercentageByNumScoutsFirstTwoHands.put(scoutSplit, ((float) winsForScoutSplit / totalGamesForScoutSplit) * 100);
-            }
-        });
+            opponentTotalGamesByNumScoutsFirstTwoHands.keySet().stream().forEach(scoutSplit -> {
+                Integer totalGamesForScoutSplit = opponentTotalGamesByNumScoutsFirstTwoHands.get(scoutSplit);
+                Integer winsForScoutSplit = opponentWinsByNumScoutsFirstTwoHands.get(scoutSplit);
+                if (winsForScoutSplit == null) {
+                    opponentWinPercentageByNumScoutsFirstTwoHands.put(scoutSplit, 0f);
+                } else {
+                    opponentWinPercentageByNumScoutsFirstTwoHands.put(scoutSplit, ((float) winsForScoutSplit / totalGamesForScoutSplit) * 100);
+                }
+            });
+        }
 
         DecimalFormat f = new DecimalFormat("##.00");
 
@@ -1333,26 +1337,28 @@ public class GameService {
             }
         }
 
-        results.setPlayerWinDifferentialByCardsAtEndOfGame(sortByValueDescending(playerWinDifferentialByCardsAtEndOfGame));
-        results.setOpponentWinDifferentialByCardsAtEndOfGame(sortByValueDescending(opponentWinDifferentialByCardsAtEndOfGame));
+        if (cardToBuyThisTurn == null) {
+            results.setPlayerWinDifferentialByCardsAtEndOfGame(sortByValueDescending(playerWinDifferentialByCardsAtEndOfGame));
+            results.setOpponentWinDifferentialByCardsAtEndOfGame(sortByValueDescending(opponentWinDifferentialByCardsAtEndOfGame));
 
-        results.setPlayerWinPercentageByFirstDeckCard(sortByValueDescending(playerWinPercentageByFirstDeckCard));
-        results.setOpponentWinPercentageByFirstDeckCard(sortByValueDescending(opponentWinPercentageByFirstDeckCard));
+            results.setPlayerWinPercentageByFirstDeckCard(sortByValueDescending(playerWinPercentageByFirstDeckCard));
+            results.setOpponentWinPercentageByFirstDeckCard(sortByValueDescending(opponentWinPercentageByFirstDeckCard));
 
-        results.setPlayerTotalGamesByFirstDeckCard(playerTotalGamesByFirstDeckCard);
-        results.setOpponentTotalGamesByFirstDeckCard(opponentTotalGamesByFirstDeckCard);
+            results.setPlayerTotalGamesByFirstDeckCard(playerTotalGamesByFirstDeckCard);
+            results.setOpponentTotalGamesByFirstDeckCard(opponentTotalGamesByFirstDeckCard);
 
-        results.setPlayerWinPercentageBySecondDeckCard(sortByValueDescending(playerWinPercentageBySecondDeckCard));
-        results.setOpponentWinPercentageBySecondDeckCard(sortByValueDescending(opponentWinPercentageBySecondDeckCard));
+            results.setPlayerWinPercentageBySecondDeckCard(sortByValueDescending(playerWinPercentageBySecondDeckCard));
+            results.setOpponentWinPercentageBySecondDeckCard(sortByValueDescending(opponentWinPercentageBySecondDeckCard));
 
-        results.setPlayerTotalGamesBySecondDeckCard(playerTotalGamesBySecondDeckCard);
-        results.setOpponentTotalGamesBySecondDeckCard(opponentTotalGamesBySecondDeckCard);
+            results.setPlayerTotalGamesBySecondDeckCard(playerTotalGamesBySecondDeckCard);
+            results.setOpponentTotalGamesBySecondDeckCard(opponentTotalGamesBySecondDeckCard);
 
-        results.setPlayerWinPercentageByNumScoutsFirstTwoHands(sortByValueDescending(playerWinPercentageByNumScoutsFirstTwoHands));
-        results.setOpponentWinPercentageByNumScoutsFirstTwoHands(sortByValueDescending(opponentWinPercentageByNumScoutsFirstTwoHands));
+            results.setPlayerWinPercentageByNumScoutsFirstTwoHands(sortByValueDescending(playerWinPercentageByNumScoutsFirstTwoHands));
+            results.setOpponentWinPercentageByNumScoutsFirstTwoHands(sortByValueDescending(opponentWinPercentageByNumScoutsFirstTwoHands));
 
-        results.setPlayerTotalGamesByNumScoutsFirstTwoHands(playerTotalGamesByNumScoutsFirstTwoHands);
-        results.setOpponentTotalGamesByNumScoutsFirstTwoHands(opponentTotalGamesByNumScoutsFirstTwoHands);
+            results.setPlayerTotalGamesByNumScoutsFirstTwoHands(playerTotalGamesByNumScoutsFirstTwoHands);
+            results.setOpponentTotalGamesByNumScoutsFirstTwoHands(opponentTotalGamesByNumScoutsFirstTwoHands);
+        }
 
         return results;
     }
