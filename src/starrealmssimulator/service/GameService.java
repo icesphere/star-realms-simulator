@@ -1159,61 +1159,69 @@ public class GameService {
                     }
                 });
 
-                game.getWinner().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
-                    Integer winsForCard = winnerFirstDeckWinsMap.get(c.getName());
-                    if (winsForCard == null) {
-                        winsForCard = 1;
-                    } else {
-                        winsForCard++;
-                    }
-                    winnerFirstDeckWinsMap.put(c.getName(), winsForCard);
+                if (game.getWinner().getCardsAcquiredByDeck().get(1) != null) {
+                    game.getWinner().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
+                        Integer winsForCard = winnerFirstDeckWinsMap.get(c.getName());
+                        if (winsForCard == null) {
+                            winsForCard = 1;
+                        } else {
+                            winsForCard++;
+                        }
+                        winnerFirstDeckWinsMap.put(c.getName(), winsForCard);
 
-                    Integer totalGamesForCard = winnerFirstDeckTotalGamesMap.get(c.getName());
-                    if (totalGamesForCard == null) {
-                        totalGamesForCard = 1;
-                    } else {
-                        totalGamesForCard++;
-                    }
-                    winnerFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
-                });
+                        Integer totalGamesForCard = winnerFirstDeckTotalGamesMap.get(c.getName());
+                        if (totalGamesForCard == null) {
+                            totalGamesForCard = 1;
+                        } else {
+                            totalGamesForCard++;
+                        }
+                        winnerFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+                    });
+                }
 
-                game.getLoser().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
-                    Integer totalGamesForCard = loserFirstDeckTotalGamesMap.get(c.getName());
-                    if (totalGamesForCard == null) {
-                        totalGamesForCard = 1;
-                    } else {
-                        totalGamesForCard++;
-                    }
-                    loserFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
-                });
+                if (game.getLoser().getCardsAcquiredByDeck().get(1) != null) {
+                    game.getLoser().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
+                        Integer totalGamesForCard = loserFirstDeckTotalGamesMap.get(c.getName());
+                        if (totalGamesForCard == null) {
+                            totalGamesForCard = 1;
+                        } else {
+                            totalGamesForCard++;
+                        }
+                        loserFirstDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+                    });
+                }
 
-                game.getWinner().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
-                    Integer winsForCard = winnerSecondDeckWinsMap.get(c.getName());
-                    if (winsForCard == null) {
-                        winsForCard = 1;
-                    } else {
-                        winsForCard++;
-                    }
-                    winnerSecondDeckWinsMap.put(c.getName(), winsForCard);
+                if (game.getWinner().getCardsAcquiredByDeck().get(2) != null) {
+                    game.getWinner().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
+                        Integer winsForCard = winnerSecondDeckWinsMap.get(c.getName());
+                        if (winsForCard == null) {
+                            winsForCard = 1;
+                        } else {
+                            winsForCard++;
+                        }
+                        winnerSecondDeckWinsMap.put(c.getName(), winsForCard);
 
-                    Integer totalGamesForCard = winnerSecondDeckTotalGamesMap.get(c.getName());
-                    if (totalGamesForCard == null) {
-                        totalGamesForCard = 1;
-                    } else {
-                        totalGamesForCard++;
-                    }
-                    winnerSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
-                });
+                        Integer totalGamesForCard = winnerSecondDeckTotalGamesMap.get(c.getName());
+                        if (totalGamesForCard == null) {
+                            totalGamesForCard = 1;
+                        } else {
+                            totalGamesForCard++;
+                        }
+                        winnerSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+                    });
+                }
 
-                game.getLoser().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
-                    Integer totalGamesForCard = loserSecondDeckTotalGamesMap.get(c.getName());
-                    if (totalGamesForCard == null) {
-                        totalGamesForCard = 1;
-                    } else {
-                        totalGamesForCard++;
-                    }
-                    loserSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
-                });
+                if (game.getLoser().getCardsAcquiredByDeck().get(2) != null) {
+                    game.getLoser().getCardsAcquiredByDeck().get(2).stream().forEach(c -> {
+                        Integer totalGamesForCard = loserSecondDeckTotalGamesMap.get(c.getName());
+                        if (totalGamesForCard == null) {
+                            totalGamesForCard = 1;
+                        } else {
+                            totalGamesForCard++;
+                        }
+                        loserSecondDeckTotalGamesMap.put(c.getName(), totalGamesForCard);
+                    });
+                }
             }
 
             totalGamesCounted++;
