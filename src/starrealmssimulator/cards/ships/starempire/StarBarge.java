@@ -15,7 +15,7 @@ public class StarBarge extends Ship implements AlliableCard
 
     @Override
     public void cardPlayed(Player player) {
-        player.addCombat(2);
+        player.addTrade(2);
     }
 
     @Override
